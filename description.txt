@@ -1,0 +1,35 @@
+A self-care/positivity app, with a supportive maternal avatar who encourages you to take care of yourself and complete your tasks.
+A cross between habitica and Toriel from Undertale. You have a number of things to do before you leave the house (morning tasks), things to do during the afternoon, and things to do before going to bed. Morning tasks include getting out of bed, taking a shower, eating breakfast. Users have the option to have tasks dependent on the day's weather also appear, such as "bring a jacket" if it's cold outside or "grab an umbrella" if there is rain in the forecast. Evening tasks include "finish x homework",  go to bed on time, clean your room a little. Tasks in the afternoon include going to events throughout the day, which are synced from google calendar, as well as items the user adds themselves.
+
+The app's main screen is an image of panda mama in her house.
+She has misc. dialogue that appears when you are just checking in on the app, of her talking to herself or reminding you to have a great day.
+
+You set what time you would like to be woken up in the morning, and you have a limited (custom) amount of time to complete these tasks, or until you leave the house (determined  by GPS location) to complete them before you can no longer check them off. When you check off an item, you get a positive dialogue and +10 panda points. If you do not complete the tasks in the allotted time frame, panda mama gives sad dialogue and (maybe?) -10 panda points per unfinished item. You can use these panda points to buy gifts in the shop for panda mama, such as a tasty bug snack, flowers, a power drill for panda mama's projects, or fireworks, for fun. The next day, your tasks reset and you must complete them again in each time frame.
+ 
+Sidebar menu contains 3 options:
+1. Tasks: Here, you can add or delete tasks that you would like do for each time period of the day. 
+2. Gift Shop: Here, you can buy items for panda mama. The items you buy will appear in the home screen. We may animate her using the items.
+3. Settings: Toggle settings such as suggesting tasks based on weather. Edit alarm time and bedtime, and also edit the time limit you have for each block.
+
+
+
+Dialogue possibilities
+(Did not complete tasks)
+- "That's alright darling, we all make mistakes."
+- "You're trying your best, and I admire that."
+- "I'm proud of you, even if you didn't meet your goals!"
+- "I know you can do it in the future."
+- "You don't have to be perfect to be great."
+- "Don't worry! There's always tomorrow."
+- "Lighten up on yourself. No one is perfect."
+
+(Did complete tasks)
+- "You're doing a fantastic job!"
+- "I'm so proud of you!!"
+- "You handled that so well, darling!"
+- "I'm so impressed!"
+- "I'm so glad you're taking care of yourself."
+- "You're so on top of things today."
+
+(Other dialogue)
+- [some cute stuff to make user love panda mama]
