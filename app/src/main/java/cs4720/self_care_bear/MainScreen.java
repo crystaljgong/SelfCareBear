@@ -17,6 +17,9 @@ public class MainScreen extends AppCompatActivity {
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
+
+
+    //THIS IS ME CHANGING SOMETHING
     private static final boolean AUTO_HIDE = true;
 
     /**
