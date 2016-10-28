@@ -19,7 +19,7 @@ public class MainScreen extends AppCompatActivity {
      */
 
 
-    //THIS IS ME CHANGING SOMETHING
+    //SOME CHANGE ??? TEST
     private static final boolean AUTO_HIDE = true;
 
     /**
