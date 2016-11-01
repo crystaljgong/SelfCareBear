@@ -18,9 +18,6 @@ public class MainScreen extends AppCompatActivity {
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
-
-
-    //SOME CHANGE ??? TEST
     private static final boolean AUTO_HIDE = true;
 
     /**
@@ -87,6 +84,12 @@ public class MainScreen extends AppCompatActivity {
         }
     };
 
+
+    ///////////THIS IS WHERE ALL THE FULLSCREEN OVERLAY SET UP STUFF STOPS
+
+    private TaskListRecyclerViewAdapter mTaskLiskRVAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,8 +97,8 @@ public class MainScreen extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen);
 
         mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = findViewById(R.id.fullscreen_content);
+        mControlsView = findViewById(R.id.rvTaskListView);
+        mContentView = findViewById(R.id.careBearHome);
 
         Log.i("test","creating");
 
@@ -111,7 +114,8 @@ public class MainScreen extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+
+        //    findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override
