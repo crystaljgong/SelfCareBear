@@ -23,9 +23,10 @@ public class TaskListRecyclerViewAdapter extends RecyclerView.Adapter<TaskListRe
     private Context mContext;
     private final OnListFragmentInteractionListener mListener;
 
-    public TaskListRecyclerViewAdapter(ArrayList<TaskItem> tasks, OnListFragmentInteractionListener listener) {
+    public TaskListRecyclerViewAdapter(Context context, ArrayList<TaskItem> tasks, OnListFragmentInteractionListener listener) {
         taskList = tasks;
         mListener = listener;
+        mContext = context;
     }
 
 

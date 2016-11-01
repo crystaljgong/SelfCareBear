@@ -31,8 +31,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvTaskListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="367dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorLight"
+            />
 
     </FrameLayout>
 

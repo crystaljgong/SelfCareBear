@@ -60,6 +60,12 @@ public class TaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasklist_list, container, false);
 
+        tasks = new ArrayList<TaskItem>();
+        TaskItem thing1 = new TaskItem("get out of bed", false);
+        TaskItem thing2 = new TaskItem("brush your teeth", false);
+        tasks.add(thing1);
+        tasks.add(thing2);
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -69,7 +75,7 @@ public class TaskListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new TaskListRecyclerViewAdapter(tasks, mListener));
+            recyclerView.setAdapter(new TaskListRecyclerViewAdapter(context, tasks, mListener));
         }
         return view;
     }

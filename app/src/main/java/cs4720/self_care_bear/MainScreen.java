@@ -5,9 +5,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -86,9 +89,6 @@ public class MainScreen extends AppCompatActivity {
 
 
     ///////////THIS IS WHERE ALL THE FULLSCREEN OVERLAY SET UP STUFF STOPS
-
-    private TaskListRecyclerViewAdapter mTaskLiskRVAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
