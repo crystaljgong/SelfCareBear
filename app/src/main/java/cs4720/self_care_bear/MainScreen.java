@@ -1,10 +1,12 @@
 package cs4720.self_care_bear;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Button;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,6 +19,9 @@ import java.util.ArrayList;
  * status bar and navigation/system bar) with user interaction.
  */
 public class MainScreen extends AppCompatActivity {
+
+    Button button;
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -102,6 +107,14 @@ public class MainScreen extends AppCompatActivity {
 
         Log.i("test","creating");
 
+        button = (Button)findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainScreen.this, TaskManagerScreen.class));
+            }
+        });
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
