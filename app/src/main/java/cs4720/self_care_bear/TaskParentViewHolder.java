@@ -1,5 +1,6 @@
 package cs4720.self_care_bear;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,7 +11,7 @@ import android.widget.TextView;
  * Created by annie_000 on 11/2/2016.
  */
 
-public class TaskParentViewHolder {
+public class TaskParentViewHolder extends RecyclerView.ViewHolder {
     public TextView mTaskTitleTextView;
     public ImageButton mParentDropDownArrow;
 

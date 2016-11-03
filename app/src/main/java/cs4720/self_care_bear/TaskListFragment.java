@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class TaskListFragment extends Fragment {
         TaskItem thing2 = new TaskItem("brush your teeth", false);
         tasks.add(thing1);
         tasks.add(thing2);
+        Log.i("tasks", tasks.toString());
 
         // Set the adapter
         if (view instanceof RecyclerView) {

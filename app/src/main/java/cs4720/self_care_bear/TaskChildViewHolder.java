@@ -15,7 +15,7 @@ public class TaskChildViewHolder {
     public CheckBox mCrimeSolvedCheckBox;
 
     public TaskChildViewHolder(View itemView) {
-        super(itemView);
+      //  super(itemView);
 
         mCrimeDateText = (TextView) itemView.findViewById(R.id.child_list_item_task_panda_points_text_view);
         mCrimeSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.child_list_item_task_completed_check_box);

@@ -14,7 +14,7 @@ public class TaskManagerScreen extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private TaskManagerRecyclerViewAdapter recyclerViewAdapter;
     private ArrayList<TaskItem> morning, afternoon, evening;
 
     @Override

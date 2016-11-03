@@ -2,5 +2,6 @@
     <string name="app_name">Self-Care-Bear</string>
 
     <string name="dummy_button">Dummy Button</string>
+    <string name="add_task_button">string</string>
 
 </resources>
