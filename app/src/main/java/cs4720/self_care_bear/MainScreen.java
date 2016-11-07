@@ -61,13 +61,19 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
     private Button calendarButton;
     ProgressDialog mProgress;
 
+    //for google calendar API
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
-        private static final String PREF_ACCOUNT_NAME = "accountName";
+    private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
+
+    //for the recyclerview
+    private ArrayList<TaskItem> tasks;
+    static public TaskListFragment homeTaskList;
+
 
     //initialize views
     Button button;
@@ -156,6 +162,16 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
         mVisible = true;
         mControlsView = findViewById(R.id.menuButton);
         homeScreenPage = findViewById(R.id.homeScreen);
+
+        //make a list of tasks
+        tasks = new ArrayList<>();
+        TaskItem thing1 = new TaskItem("get out of bed", false);
+        TaskItem thing2 = new TaskItem("brush your teeth", false);
+        tasks.add(thing1);
+        tasks.add(thing2);
+
+        //make the recyclerview
+        homeTaskList = TaskListFragment.newInstance(tasks);
 
         Log.i("test","creating");
 

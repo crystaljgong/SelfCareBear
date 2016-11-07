@@ -3,6 +3,7 @@ package cs4720.self_care_bear;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,10 +33,10 @@ public class TaskListFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TaskListFragment newInstance(int columnCount) {
+    public static TaskListFragment newInstance(ArrayList<TaskItem> list) {
         TaskListFragment fragment = new TaskListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putParcelableArrayList("taskList", list);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,22 +62,15 @@ public class TaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasklist_list, container, false);
 
-        tasks = new ArrayList<TaskItem>();
-        TaskItem thing1 = new TaskItem("get out of bed", false);
-        TaskItem thing2 = new TaskItem("brush your teeth", false);
-        tasks.add(thing1);
-        tasks.add(thing2);
+
         Log.i("tasks", tasks.toString());
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.taskListRV);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(new TaskListRecyclerViewAdapter(context, tasks, mListener));
         }
         return view;

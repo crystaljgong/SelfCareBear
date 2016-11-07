@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 /**
@@ -34,7 +35,7 @@ public class TaskManagerRecyclerViewAdapter extends RecyclerView.Adapter<ViewHol
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView changeThisToSomethingElse;
-        public final TextView mContentView;
+        public final ImageButton mContentView;
         public TaskItem mItem;
 
         public ViewHolder(View view) {
@@ -42,7 +43,7 @@ public class TaskManagerRecyclerViewAdapter extends RecyclerView.Adapter<ViewHol
             mView = view;
             changeThisToSomethingElse = (TextView) view.findViewById(R.id.parent_list_item_task_title_text_view);
             //I just picked something and put it in this id, idk what actually goes here
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (ImageButton) view.findViewById(R.id.parent_list_item_expand_arrow);
         }
 
     }
