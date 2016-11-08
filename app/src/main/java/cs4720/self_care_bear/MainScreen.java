@@ -72,6 +72,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
     //for the recyclerview
     private ArrayList<TaskItem> tasks;
+    private List<String> googCalTasks;
     static public TaskListFragment homeTaskList;
 
 
@@ -163,6 +164,8 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
         mControlsView = findViewById(R.id.menuButton);
         homeScreenPage = findViewById(R.id.homeScreen);
 
+        //initialize google calendar list
+        googCalTasks = new ArrayList<>();
         //make a list of tasks
         tasks = new ArrayList<>();
         TaskItem thing1 = new TaskItem("get out of bed", false);
@@ -181,7 +184,9 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainScreen.this, TaskManagerScreen.class));
+                Intent startTaskManager = new Intent(MainScreen.this, TaskManagerScreen.class);
+                startTaskManager.putStringArrayListExtra("google calendar tasks", (ArrayList) googCalTasks);
+                startActivity(startTaskManager);
             }
         });
 
@@ -484,6 +489,7 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
     @Override
     protected List<String> doInBackground(Void... params) {
         try {
+            googCalTasks = getDataFromApi();
             return getDataFromApi();
         } catch (Exception e) {
             mLastError = e;

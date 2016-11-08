@@ -66,6 +66,13 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         TaskManagerItem after = new TaskManagerItem("Afternoon task", false, 30, "Afternoon");
         TaskManagerItem evenin2 = new TaskManagerItem("Evening task 2", true, 20, "Evening");
 
+        //get data from google calendar
+        ArrayList<String> googCalData = getIntent().getStringArrayListExtra("google calendar tasks");
+        for(String s : googCalData) {
+            TaskManagerItem item = new TaskManagerItem(s, false, 10, "Afternoon");
+            aftTasks.add(item);
+        }
+
         mornTasks.add(mornin);
         aftTasks.add(after);
         evenTasks.add(evenin);
@@ -174,9 +181,9 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
                 case 0:
                     return morn;
                 case 1:
-                    return even;
-                case 2:
                     return aft;
+                case 2:
+                    return even;
 
             }
             return null;

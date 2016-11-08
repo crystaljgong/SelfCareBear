@@ -40,4 +40,5 @@ public class TaskItem implements Parcelable{
         dest.writeString(name);
         dest.writeByte((byte) (completed ? 1 : 0));
     }
+
 }
