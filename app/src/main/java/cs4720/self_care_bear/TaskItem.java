@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by crystalgong on 11/1/16.
  */
-public class TaskItem implements Parcelable{
+public class TaskItem implements Parcelable {
     private String name;
     private boolean completed;
 
@@ -14,6 +14,24 @@ public class TaskItem implements Parcelable{
         this.name = name;
         this.completed = completed;
     }
+
+    //necessary parcelable tasks added
+    protected TaskItem(Parcel in) {
+        name = in.readString();
+        completed = in.readByte() != 0;
+    }
+
+    public static final Creator<TaskItem> CREATOR = new Creator<TaskItem>() {
+        @Override
+        public TaskItem createFromParcel(Parcel in) {
+            return new TaskItem(in);
+        }
+
+        @Override
+        public TaskItem[] newArray(int size) {
+            return new TaskItem[size];
+        }
+    };
 
     public String getName() {
         return this.name;

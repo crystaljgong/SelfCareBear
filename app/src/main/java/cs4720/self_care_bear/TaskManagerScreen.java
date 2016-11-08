@@ -1,6 +1,13 @@
+// db stuff taken from c;ass example
+
 package cs4720.self_care_bear;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +28,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.provider.Telephony.Mms.Part.FILENAME;
 
 public class TaskManagerScreen extends AppCompatActivity implements TaskManagerListFragment.OnListFragmentInteractionListener{
 
@@ -32,6 +45,8 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
     static public TaskManagerListFragment morn;
     static public TaskManagerListFragment aft;
     static public TaskManagerListFragment even;
+
+    //public static final String PREFS_NAME = "PrefsFile";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,8 +68,32 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_manager);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        // restore preferences
+//        SharedPreferences defaultTasks = getSharedPreferences(PREFS_NAME, 0);
+//        String taskValue = defaultTasks.getString("taskValue", "none");
+//
+//        TextView taskItemName = (TextView)findViewById(R.id.taskName);
+//        taskItemName.setText(taskValue);
+//
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        // restore file
+//        String FILENAME = "a_file";
+//        TextView editText2 = (TextView)findViewById(R.id.PandaPoints);
+//
+//        try {
+//            FileInputStream fis = openFileInput(FILENAME);
+//            StringBuilder builder = new StringBuilder();
+//            int ch;
+//            while((ch = fis.read()) != -1){
+//                builder.append((char)ch);
+//            }
+//            editText2.setText(builder.toString());
+//            fis.close();
+//        }catch(Exception e) {
+//            Log.e("Storage", e.getMessage());
+//        }
 
         // make tasks
         mornTasks = new ArrayList<>();
@@ -83,6 +122,11 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         aft = TaskManagerListFragment.newInstance(aftTasks);
 
         Log.i("this is onCreate", "created the tasks");
+
+        // db test
+        DBHelper helper = new DBHelper(this);
+        helper.addTask(mornin);
+
 //        morn.setData(mornTasks);
 //        even.setData(evenTasks);
 //        aft.setData(aftTasks);
@@ -107,6 +151,66 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 
     }
 
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//
+//        SharedPreferences defaultTasks = getSharedPreferences(PREFS_NAME, 0);
+//        SharedPreferences.Editor editor = defaultTasks.edit();
+//        TextView taskItemName = (TextView)findViewById(R.id.taskItemName);
+//        editor.putString("taskValue", taskItemName.getText().toString());
+//
+//        editor.commit();
+//
+//        // Using a file
+//        String FILENAME = "a_file";
+//        TextView PandaPoints = (TextView)findViewById(R.id.PandaPoints);
+//        String string = PandaPoints.getText().toString();
+//        try {
+//            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//            fos.write(string.getBytes());
+//            fos.close();
+//        }catch(Exception e) {
+//            Log.e("StorageExample", e.getMessage());
+//        }
+//    }
+//
+//    public void saveToDB(View view) {
+//        DBHelper helper = new DBHelper(this);
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        TextView taskItemName = (TextView)findViewById(R.id.taskItemName);
+//        TextView PandaPoints = (TextView)findViewById(R.id.PandaPoints);
+//        String name = taskItemName.getText().toString();
+//        String panda_points = PandaPoints.getText().toString();
+//        values.put("name", name);
+//        values.put("panda_points", panda_points);
+//
+//        long newRowId;
+//        newRowId = db.insert(
+//                "tasks",
+//                null,
+//                values);
+//
+//        String[] projection = {
+//                "name",
+//                "panda_points"
+//        };
+//
+//        String sortOrder =
+//                "name" + " DESC";
+//
+//        Cursor cursor = db.query("tasks", projection, null, null, null, null, sortOrder);
+//
+//        while(cursor.moveToNext()) {
+//            String currTask = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("name")
+//            );
+//            Log.i("DBData", currTask);
+//        }
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -211,10 +315,10 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 
     public void onListFragmentInteraction(TaskManagerItem taskNum) {
         if (taskNum.getCompleted() == true) {
-            Toast.makeText(TaskManagerScreen.this, "You didn't complete this task yet? :(", Toast.LENGTH_LONG).show();
+            Toast.makeText(TaskManagerScreen.this, "You didn't complete this task yet? :(", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(false);
         } else {
-            Toast.makeText(TaskManagerScreen.this, "You completed this task, good job! :3", Toast.LENGTH_LONG).show();
+            Toast.makeText(TaskManagerScreen.this, "You completed this task, good job! :3", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(true);
         }
     }
