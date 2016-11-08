@@ -42,6 +42,7 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
         return new ViewHolder(view);
     }
 
+    //TODO figure out why check isn't initalized as checked when completed is true...?
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final TaskManagerItem item = tasks.get(position);
@@ -87,7 +88,7 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Delete icon has been clicked", Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), "Delete icon has been pressed", Toast.LENGTH_LONG).show();
                 }
             });
         }
