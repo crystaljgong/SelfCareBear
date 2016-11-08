@@ -474,7 +474,7 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         mService = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential)
-                .setApplicationName("Google Calendar API Android Quickstart")
+                .setApplicationName("Self_Care_Bear")
                 .build();
     }
     /**
@@ -497,6 +497,7 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
      * @throws IOException
      */
     private List<String> getDataFromApi() throws IOException {
+        //TODO: put this into a tasks list
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
         List<String> eventStrings = new ArrayList<String>();
