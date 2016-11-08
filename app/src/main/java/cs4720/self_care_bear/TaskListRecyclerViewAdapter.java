@@ -5,12 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import cs4720.self_care_bear.TaskListFragment.OnListFragmentInteractionListener;
 //import cs4720.self_care_bear.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
+
+import static cs4720.self_care_bear.R.id.checkbox;
+import static cs4720.self_care_bear.R.id.taskItemName;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link TaskItem} and makes a call to the
@@ -40,17 +44,17 @@ public class TaskListRecyclerViewAdapter extends RecyclerView.Adapter<TaskListRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = taskList.get(position);
+        final TaskItem item = taskList.get(position);
         holder.taskItemName.setText(taskList.get(position).getName());
-        holder.mContentView.setText(taskList.get(position).getName());
+        holder.completed.setChecked(taskList.get(position).getCompleted());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.completed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(item);
                 }
             }
         });
@@ -62,21 +66,18 @@ public class TaskListRecyclerViewAdapter extends RecyclerView.Adapter<TaskListRe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView taskItemName;
-        public final TextView mContentView;
-        public TaskItem mItem;
+        public TextView taskItemName;
+        public CheckBox completed;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
+            completed = (CheckBox) view.findViewById(R.id.checkBox);
             taskItemName = (TextView) view.findViewById(R.id.taskItemName);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
+                }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + taskItemName.getText() + "'";
         }
     }
 }
