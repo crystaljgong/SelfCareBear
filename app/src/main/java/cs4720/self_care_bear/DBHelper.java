@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 
@@ -58,6 +59,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(TABLE_TASKS,
             null,
             contentValues);
+
+        Log.i("addTask", "task added to db");
+
         db.close();
     }
 
