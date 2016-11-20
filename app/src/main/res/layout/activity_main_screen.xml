@@ -72,15 +72,6 @@
         android:layout_margin="10dp"
         android:text="CALL GOOGLE CALENDAR API" />
 
-
-    <!-- <fragment android:name="cs4720.self_care_bear.TaskListFragment"
-        android:id="@+id/taskListFrag"
-        android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="60dp"
-        tools:layout="@layout/fragment_tasklist_list" /> -->
-
     <FrameLayout
         android:id="@+id/taskListFrag"
         android:layout_width="match_parent"

@@ -496,15 +496,12 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         int id = item.getItemId();
 
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_task_manager) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_shop) {
 
 
-        } else if (id == R.id.nav_slideshow) {
-
-
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_settings) {
 
 
         } else if (id == R.id.nav_share) {
