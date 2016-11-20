@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -59,10 +61,10 @@ import pub.devrel.easypermissions.EasyPermissions;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class MainScreen extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, NavigationView.OnNavigationItemSelectedListener{
+public class MainScreen extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, NavigationView.OnNavigationItemSelectedListener, TaskListFragment.OnListFragmentInteractionListener{
 
 
-    //initialize googCalendar thing
+    //initialize google Calendar thing
     GoogleAccountCredential mCredential;
     private TextView someText;
     private Button calendarButton;
@@ -107,6 +109,8 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
         //make the recyclerview
         homeTaskList = TaskListFragment.newInstance(tasks);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.taskListFrag, homeTaskList).commit();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -515,6 +519,14 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onListFragmentInteraction(TaskItem taskNum) {
+        if (taskNum.getCompleted() == true) {
+            taskNum.setCompleted(false);
+        } else {
+            taskNum.setCompleted(true);
+        }
     }
 
 }

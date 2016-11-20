@@ -1,5 +1,6 @@
 package cs4720.self_care_bear;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -30,11 +32,18 @@ public class TaskListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private OnListFragmentInteractionListener mListener;
+    private Context mContext;
+    private RecyclerView rv;
+
+    @SuppressLint("ValidFragment")
+    public TaskListFragment(ArrayList<TaskItem> items) {
+        tasks = items;
+    }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static TaskListFragment newInstance(ArrayList<TaskItem> list) {
-        TaskListFragment fragment = new TaskListFragment();
+        TaskListFragment fragment = new TaskListFragment(list);
         Bundle args = new Bundle();
         args.putParcelableArrayList("taskList", list);
         fragment.setArguments(args);
@@ -55,6 +64,22 @@ public class TaskListFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        setRetainInstance(true);
+
+    }
+
+    public void setData(ArrayList<TaskItem> tasks) {
+        this.tasks = tasks;
+    }
+
+    public ArrayList<TaskItem> getData() {
+        return tasks;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("onDestroy", "onDestroy was called");
     }
 
     @Override
@@ -66,13 +91,13 @@ public class TaskListFragment extends Fragment {
         Log.i("tasks", tasks.toString());
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.taskListRV);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(new TaskListRecyclerViewAdapter(context, tasks, mListener));
-        }
+       // if (view instanceof RecyclerView) {
+            mContext = view.getContext();
+            rv = (RecyclerView)view.findViewById(R.id.taskListRV);
+            rv.setLayoutManager(new LinearLayoutManager(mContext));
+            rv.setItemAnimator(new DefaultItemAnimator());
+            rv.setAdapter(new TaskListRecyclerViewAdapter(mContext, tasks, mListener));
+      //  }
         return view;
     }
 
@@ -90,22 +115,22 @@ public class TaskListFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
+super.onDetach();
         mListener = null;
-    }
+        }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(TaskItem item);
-    }
+/**
+ * This interface must be implemented by activities that contain this
+ * fragment to allow an interaction in this fragment to be communicated
+ * to the activity and potentially other fragments contained in that
+ * activity.
+ * <p/>
+ * See the Android Training lesson <a href=
+ * "http://developer.android.com/training/basics/fragments/communicating.html"
+ * >Communicating with Other Fragments</a> for more information.
+ */
+public interface OnListFragmentInteractionListener {
+    // TODO: Update argument type and name
+    void onListFragmentInteraction(TaskItem item);
+}
 }

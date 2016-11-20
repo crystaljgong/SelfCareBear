@@ -100,10 +100,12 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         aftTasks = new ArrayList<>();
         evenTasks = new ArrayList<>();
 
-        TaskManagerItem mornin = new TaskManagerItem("Morning task", false, 10, "Morning");
-        TaskManagerItem evenin = new TaskManagerItem("Evening task", false, 40, "Evening");
-        TaskManagerItem after = new TaskManagerItem("Afternoon task", false, 30, "Afternoon");
-        TaskManagerItem evenin2 = new TaskManagerItem("Evening task 2", true, 20, "Evening");
+        TaskManagerItem mornin = new TaskManagerItem("Get out of bed", false, 10, "Morning");
+        TaskManagerItem mornin2 = new TaskManagerItem("Brush your teeth", false, 10, "Morning");
+        TaskManagerItem mornin3 = new TaskManagerItem("Eat breakfast", false, 10, "Morning");
+        TaskManagerItem evenin = new TaskManagerItem("Brush your teeth", false, 10, "Evening");
+        TaskManagerItem after = new TaskManagerItem("Eat lunch", false, 10, "Afternoon");
+        TaskManagerItem evenin2 = new TaskManagerItem("Go to sleep", false, 20, "Evening");
 
         //get data from google calendar
         ArrayList<String> googCalData = getIntent().getStringArrayListExtra("google calendar tasks");
@@ -113,6 +115,8 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         }
 
         mornTasks.add(mornin);
+        mornTasks.add(mornin2);
+        mornTasks.add(mornin3);
         aftTasks.add(after);
         evenTasks.add(evenin);
         evenTasks.add(evenin2);
