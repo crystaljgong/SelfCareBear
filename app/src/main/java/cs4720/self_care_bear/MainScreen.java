@@ -497,17 +497,13 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
 
 
         if (id == R.id.nav_task_manager) {
-            // Handle the camera action
+            Intent startTaskManager = new Intent(MainScreen.this, TaskManagerScreen.class);
+            startTaskManager.putStringArrayListExtra("google calendar tasks", (ArrayList) googCalTasks);
+            startActivity(startTaskManager);
         } else if (id == R.id.nav_shop) {
 
 
         } else if (id == R.id.nav_settings) {
-
-
-        } else if (id == R.id.nav_share) {
-
-
-        } else if (id == R.id.nav_send) {
 
 
         }
