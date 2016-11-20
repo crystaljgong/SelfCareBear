@@ -128,8 +128,8 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         Log.i("this is onCreate", "created the tasks");
 
         // db test
-        DBHelper helper = new DBHelper(this);
-        helper.addTask(mornin);
+ //       DBHelper helper = new DBHelper(this);
+//        helper.addTask(mornin);
 
 //        morn.setData(mornTasks);
 //        even.setData(evenTasks);
