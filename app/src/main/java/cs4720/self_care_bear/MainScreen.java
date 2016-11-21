@@ -8,6 +8,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -15,8 +17,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -33,9 +37,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -57,11 +68,17 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class MainScreen extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, NavigationView.OnNavigationItemSelectedListener, TaskListFragment.OnListFragmentInteractionListener{
+public class MainScreen extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,
+        NavigationView.OnNavigationItemSelectedListener,
+        TaskListFragment.OnListFragmentInteractionListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
 
     //initialize google Calendar thing
@@ -78,6 +95,12 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
+
+    //for location stuff
+    static final int REQUEST_LOCATION = 1004;
+
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
     //for the recyclerview
     private ArrayList<TaskItem> tasks;
@@ -98,6 +121,15 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
         homeScreenPage = findViewById(R.id.homeScreen);
 
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
         //initialize google calendar list
         googCalTasks = new ArrayList<>();
         //make a list of tasks
@@ -112,6 +144,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
         getSupportFragmentManager().beginTransaction().add(R.id.taskListFrag, homeTaskList).commit();
 
+        //navigation drawer stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -148,6 +181,49 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
     }
 
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    //Location services stuff
+    @Override
+    public void onConnected(Bundle connectionHint) {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        }
+
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+            Toast.makeText(this, "" + mLastLocation.getLatitude() + mLastLocation.getLongitude(), LENGTH_SHORT);
+
+        }
+    }
+
+    public void onConnectionSuspended(int arg0) {
+        //apparently it automatically tries to reconnect
+    }
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.i("E", "Connection failed: ConnectionResult.getErrorCode() = "
+                + result.getErrorCode());
+    }
+    public void onConnectionFailedListener() {
+        //truly i don't know what i'm doing
+    }
 
     //Google Calendar API stuff
     /**
@@ -495,7 +571,8 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
             startActivity(startGiftShop);
 
         } else if (id == R.id.nav_settings) {
-
+            Intent startSettings = new Intent(MainScreen.this, SettingsMenu.class);
+            startActivity(startSettings);
 
         }
 
