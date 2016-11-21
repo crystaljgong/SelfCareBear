@@ -76,9 +76,8 @@ import static android.widget.Toast.LENGTH_SHORT;
  */
 public class MainScreen extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,
         NavigationView.OnNavigationItemSelectedListener,
-        TaskListFragment.OnListFragmentInteractionListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        TaskListFragment.OnListFragmentInteractionListener
+{
 
 
     //initialize google Calendar thing
@@ -96,22 +95,15 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
 
-    //for location stuff
-    static final int REQUEST_LOCATION = 1004;
-
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    private List<String> googCalTasks;
 
     //for the recyclerview
     private ArrayList<TaskItem> tasks;
-    private List<String> googCalTasks;
     static public TaskListFragment homeTaskList;
-
 
     //initialize views
     Button button;
     private View homeScreenPage;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,14 +113,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
         homeScreenPage = findViewById(R.id.homeScreen);
 
-        // Create an instance of GoogleAPIClient.
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
+
 
         //initialize google calendar list
         googCalTasks = new ArrayList<>();
@@ -181,49 +166,9 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
     }
 
-    protected void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
 
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
 
-    //Location services stuff
-    @Override
-    public void onConnected(Bundle connectionHint) {
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        }
-
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-            Toast.makeText(this, "" + mLastLocation.getLatitude() + mLastLocation.getLongitude(), LENGTH_SHORT);
-
-        }
-    }
-
-    public void onConnectionSuspended(int arg0) {
-        //apparently it automatically tries to reconnect
-    }
-    public void onConnectionFailed(ConnectionResult result) {
-        Log.i("E", "Connection failed: ConnectionResult.getErrorCode() = "
-                + result.getErrorCode());
-    }
-    public void onConnectionFailedListener() {
-        //truly i don't know what i'm doing
-    }
 
     //Google Calendar API stuff
     /**
