@@ -129,7 +129,6 @@ public class AddTaskFragment extends DialogFragment {
                 }
                 dListener = (DataListener) getActivity();
                 dListener.onDataRecieved(name.getText().toString(), time, point);
-
                 dismiss();
             }
         });

@@ -1,4 +1,4 @@
-// db stuff taken from c;ass example
+// db stuff taken from class example
 
 package cs4720.self_care_bear;
 
@@ -8,9 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -35,7 +34,6 @@ import org.w3c.dom.Text;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.provider.Telephony.Mms.Part.FILENAME;
 
@@ -50,7 +48,7 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 
     Button button;
 
-    //public static final String PREFS_NAME = "PrefsFile";
+    public static final String PREFS_NAME = "PrefsFile";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -72,32 +70,32 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_manager);
 
-//        // restore preferences
-//        SharedPreferences defaultTasks = getSharedPreferences(PREFS_NAME, 0);
-//        String taskValue = defaultTasks.getString("taskValue", "none");
-//
-//        TextView taskItemName = (TextView)findViewById(R.id.taskName);
-//        taskItemName.setText(taskValue);
-//
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        // restore file
-//        String FILENAME = "a_file";
-//        TextView editText2 = (TextView)findViewById(R.id.PandaPoints);
-//
-//        try {
-//            FileInputStream fis = openFileInput(FILENAME);
-//            StringBuilder builder = new StringBuilder();
-//            int ch;
-//            while((ch = fis.read()) != -1){
-//                builder.append((char)ch);
-//            }
-//            editText2.setText(builder.toString());
-//            fis.close();
-//        }catch(Exception e) {
-//            Log.e("Storage", e.getMessage());
-//        }
+        // restore preferences
+        SharedPreferences defaultTasks = getSharedPreferences(PREFS_NAME, 0);
+        String taskValue = defaultTasks.getString("taskValue", "none");
+
+        TextView taskItemName = (TextView)findViewById(R.id.taskName);
+        //taskItemName.setText(taskValue);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // restore file
+        String FILENAME = "a_file";
+        TextView editText2 = (TextView)findViewById(R.id.PandaPoints);
+
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            StringBuilder builder = new StringBuilder();
+            int ch;
+            while((ch = fis.read()) != -1){
+                builder.append((char)ch);
+            }
+            editText2.setText(builder.toString());
+            fis.close();
+        }catch(Exception e) {
+            Log.e("Storage", e.getMessage());
+        }
 
         button = (Button)findViewById(R.id.addTaskButton);
 
@@ -145,10 +143,6 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         DBHelper helper = new DBHelper(this);
         helper.addTask(mornin);
 
-//        morn.setData(mornTasks);
-//        even.setData(evenTasks);
-//        aft.setData(aftTasks);
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -178,6 +172,7 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         } else {
             aftTasks.add(newItem);
         }
+        mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
 //    @Override
@@ -214,7 +209,7 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 //        String name = taskItemName.getText().toString();
 //        String panda_points = PandaPoints.getText().toString();
 //        values.put("name", name);
-//        values.put("panda_points", panda_points);
+//        values.put("PandaPoints", panda_points);
 //
 //        long newRowId;
 //        newRowId = db.insert(
@@ -224,7 +219,7 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 //
 //        String[] projection = {
 //                "name",
-//                "panda_points"
+//                "PandaPoints"
 //        };
 //
 //        String sortOrder =
