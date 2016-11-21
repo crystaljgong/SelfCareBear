@@ -32,6 +32,10 @@
             android:name=".TaskManagerScreen"
             android:label="@string/title_activity_task_manager"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GiftShop"
+            android:label="@string/title_activity_gift_shop"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
