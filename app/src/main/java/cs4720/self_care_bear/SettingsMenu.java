@@ -74,7 +74,7 @@ public class SettingsMenu extends AppCompatActivity implements
         if (mLastLocation != null) {
 //            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
 //            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-            Toast.makeText(this, "" + mLastLocation.getLatitude() + mLastLocation.getLongitude(), LENGTH_SHORT);
+           Log.i("location", "" + mLastLocation.getLatitude() + ", " + mLastLocation.getLongitude());
 
         }
     }
