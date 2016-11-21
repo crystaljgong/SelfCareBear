@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="morningStrings">
+        <item>Do your best today!</item>
+
+    </string-array>
+
+    <string-array
+        name="afternoonStrings">
+        <item>How are you doing today?</item>
+
+    </string-array>
+
+    <string-array
+        name="rewardStrings">
+        <item></item>
+    </string-array>
+</resources>
