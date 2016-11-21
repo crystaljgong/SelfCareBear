@@ -126,17 +126,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
         //button initializations
 
-        button = (Button)findViewById(R.id.taskManagerButton);
         calendarButton = (Button)findViewById(R.id.calendarTestButton);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startTaskManager = new Intent(MainScreen.this, TaskManagerScreen.class);
-                startTaskManager.putStringArrayListExtra("google calendar tasks", (ArrayList) googCalTasks);
-                startActivity(startTaskManager);
-            }
-        });
 
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -501,7 +491,8 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
             startTaskManager.putStringArrayListExtra("google calendar tasks", (ArrayList) googCalTasks);
             startActivity(startTaskManager);
         } else if (id == R.id.nav_shop) {
-
+            Intent startGiftShop = new Intent(MainScreen.this, GiftShop.class);
+            startActivity(startGiftShop);
 
         } else if (id == R.id.nav_settings) {
 
