@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-       android:background="@color/colorLight"
+        android:background="@color/colorLight"
         android:id="@+id/taskListRV"
         app:layoutManager="LinearLayoutManager"
         tools:context="cs4720.self_care_bear.TaskListFragment"

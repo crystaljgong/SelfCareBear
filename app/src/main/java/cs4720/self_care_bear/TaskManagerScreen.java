@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +39,16 @@ import java.util.List;
 
 import static android.provider.Telephony.Mms.Part.FILENAME;
 
-public class TaskManagerScreen extends AppCompatActivity implements TaskManagerListFragment.OnListFragmentInteractionListener{
+public class TaskManagerScreen extends AppCompatActivity implements TaskManagerListFragment.OnListFragmentInteractionListener, AddTaskFragment.OnFragmentInteractionListener, AddTaskFragment.DataListener{
 
-    public List<TaskManagerItem> mornTasks;
-    public List<TaskManagerItem> aftTasks;
-    public List<TaskManagerItem> evenTasks;
+    public ArrayList<TaskManagerItem> mornTasks;
+    public ArrayList<TaskManagerItem> aftTasks;
+    public ArrayList<TaskManagerItem> evenTasks;
     static public TaskManagerListFragment morn;
     static public TaskManagerListFragment aft;
     static public TaskManagerListFragment even;
+
+    Button button;
 
     //public static final String PREFS_NAME = "PrefsFile";
 
@@ -95,6 +99,16 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 //            Log.e("Storage", e.getMessage());
 //        }
 
+        button = (Button)findViewById(R.id.addTaskButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddTaskFragment frag = new AddTaskFragment();
+                frag.show(getSupportFragmentManager(), "Add Task");
+            }
+        });
+
         // make tasks
         mornTasks = new ArrayList<>();
         aftTasks = new ArrayList<>();
@@ -128,8 +142,8 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         Log.i("this is onCreate", "created the tasks");
 
         // db test
- //       DBHelper helper = new DBHelper(this);
-//        helper.addTask(mornin);
+        DBHelper helper = new DBHelper(this);
+        helper.addTask(mornin);
 
 //        morn.setData(mornTasks);
 //        even.setData(evenTasks);
@@ -153,6 +167,17 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
             }
         });**/
 
+    }
+
+    public void onDataRecieved(String name, String timeOfDay, int points) {
+        TaskManagerItem newItem = new TaskManagerItem(name, false, points, timeOfDay);
+        if(timeOfDay.equals("Morning")) {
+            mornTasks.add(newItem);
+        } else if (timeOfDay.equals("Evening")) {
+            evenTasks.add(newItem);
+        } else {
+            aftTasks.add(newItem);
+        }
     }
 
 //    @Override
@@ -236,6 +261,11 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 //    /**

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 //import cs4720.self_care_bear.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,11 +22,11 @@ import java.util.List;
  */
 public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<TaskManagerListRecyclerViewAdapter.ViewHolder> {
 
-    private final List<TaskManagerItem> tasks;
+    private final ArrayList<TaskManagerItem> tasks;
     private final TaskManagerListFragment.OnListFragmentInteractionListener mListener;
     private Context mContext;
 
-    public TaskManagerListRecyclerViewAdapter(List<TaskManagerItem> items, TaskManagerListFragment.OnListFragmentInteractionListener listener, Context context) {
+    public TaskManagerListRecyclerViewAdapter(ArrayList<TaskManagerItem> items, TaskManagerListFragment.OnListFragmentInteractionListener listener, Context context) {
         tasks = items;
         mListener = listener;
         mContext = context;

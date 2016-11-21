@@ -16,6 +16,7 @@ import cs4720.self_care_bear.TaskManagerListFragment.OnListFragmentInteractionLi
 import cs4720.self_care_bear.dummy.DummyContent;
 import cs4720.self_care_bear.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public class TaskManagerListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private Context mContext;
-    private List<TaskManagerItem> allTasks;
+    private ArrayList<TaskManagerItem> allTasks;
     private RecyclerView rv;
 
     /**
@@ -43,15 +44,16 @@ public class TaskManagerListFragment extends Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public TaskManagerListFragment(List<TaskManagerItem> items) {
+    public TaskManagerListFragment(ArrayList<TaskManagerItem> items) {
         allTasks = items;
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TaskManagerListFragment newInstance(List<TaskManagerItem> items) {
+    public static TaskManagerListFragment newInstance(ArrayList<TaskManagerItem> items) {
         TaskManagerListFragment frag= new TaskManagerListFragment(items);
         Bundle args = new Bundle();
+        args.putParcelableArrayList("tasksHere", items);
         frag.setArguments(args);
         return frag;
     }
@@ -66,11 +68,11 @@ public class TaskManagerListFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    public void setData(List<TaskManagerItem> tasks) {
+    public void setData(ArrayList<TaskManagerItem> tasks) {
         this.allTasks = tasks;
     }
 
-    public List<TaskManagerItem> getData() {
+    public ArrayList<TaskManagerItem> getData() {
         return allTasks;
     }
 
