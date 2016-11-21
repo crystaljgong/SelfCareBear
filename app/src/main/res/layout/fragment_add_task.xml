@@ -99,6 +99,30 @@
 
     </RadioGroup>
 
+    <TextView
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="15dp"
+        android:text="Location"
+        android:id="@+id/textViewLocation" />
+
+    <Button
+        android:text="Choose Location (Optional)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonLocation" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="2"
+        android:textColor="@color/colorPrimaryDark"
+        android:id="@+id/selectedLocation" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
