@@ -51,6 +51,8 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
         holder.mTaskName.setText(tasks.get(position).getName());
         holder.mPandaPoints.setText("" + tasks.get(position).getPandaPoints() + " PandaPoints");
         holder.mCompleted.setChecked(tasks.get(position).getCompleted());
+        holder.mLocation.setText("Complete at " + tasks.get(position).getLocation());
+
 
         Log.d("onBindViewHolder", "" + tasks.get(position).getCompleted());
 
@@ -77,6 +79,7 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
         public final CheckBox mCompleted;
         public final TextView mPandaPoints;
         public ImageView deleteIcon;
+        public final TextView mLocation;
         //public TaskManagerItem mItem;
 
         public ViewHolder(View view) {
@@ -85,6 +88,8 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
             mPandaPoints = (TextView) view.findViewById(R.id.PandaPoints);
             mCompleted = (CheckBox) view.findViewById(R.id.completed);
             deleteIcon = (ImageView)itemView.findViewById(R.id.task_delete);
+            mLocation = (TextView)view.findViewById(R.id.location);
+
 
             deleteIcon.setOnClickListener(new Button.OnClickListener() {
                 @Override

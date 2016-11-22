@@ -17,7 +17,8 @@
         android:layout_marginTop="@dimen/text_margin"
         android:textStyle="bold"
         android:text="This would be the task title"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?attr/textAppearanceListItem"
+    />
 
     <TextView
         android:id="@+id/PandaPoints"
@@ -27,8 +28,20 @@
         android:layout_toRightOf="@+id/thumbnail"
         android:layout_marginLeft="@dimen/text_margin"
         android:layout_marginRight="@dimen/text_margin"
-        android:layout_marginBottom="@dimen/text_margin"
+
         android:text="5 PandaPoints"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/PandaPoints"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:layout_marginBottom="@dimen/text_margin"
+        android:text="Name of Location"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <CheckBox
