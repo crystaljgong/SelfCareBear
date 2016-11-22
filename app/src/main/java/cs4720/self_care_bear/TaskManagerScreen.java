@@ -2,13 +2,7 @@
 
 package cs4720.self_care_bear;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,23 +13,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-
-import static android.provider.Telephony.Mms.Part.FILENAME;
 
 public class TaskManagerScreen extends AppCompatActivity implements TaskManagerListFragment.OnListFragmentInteractionListener, AddTaskFragment.OnFragmentInteractionListener, AddTaskFragment.DataListener{
 
@@ -112,17 +99,17 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         aftTasks = new ArrayList<>();
         evenTasks = new ArrayList<>();
 
-        TaskManagerItem mornin = new TaskManagerItem("Get out of bed", false, 10, "Morning");
-        TaskManagerItem mornin2 = new TaskManagerItem("Brush your teeth", false, 10, "Morning");
-        TaskManagerItem mornin3 = new TaskManagerItem("Eat breakfast", false, 10, "Morning");
-        TaskManagerItem evenin = new TaskManagerItem("Brush your teeth", false, 10, "Evening");
-        TaskManagerItem after = new TaskManagerItem("Eat lunch", false, 10, "Afternoon");
-        TaskManagerItem evenin2 = new TaskManagerItem("Go to sleep", false, 20, "Evening");
+        TaskManagerItem mornin = new TaskManagerItem("Get out of bed", false, 10, "Morning", "home");
+        TaskManagerItem mornin2 = new TaskManagerItem("Brush your teeth", false, 10, "Morning", "home");
+        TaskManagerItem mornin3 = new TaskManagerItem("Eat breakfast", false, 10, "Morning", "home");
+        TaskManagerItem evenin = new TaskManagerItem("Brush your teeth", false, 10, "Evening", "home");
+        TaskManagerItem after = new TaskManagerItem("Eat lunch", false, 10, "Afternoon", "home");
+        TaskManagerItem evenin2 = new TaskManagerItem("Go to sleep", false, 20, "Evening", "home");
 
         //get data from google calendar
         ArrayList<String> googCalData = getIntent().getStringArrayListExtra("google calendar tasks");
         for(String s : googCalData) {
-            TaskManagerItem item = new TaskManagerItem(s, false, 10, "Afternoon");
+            TaskManagerItem item = new TaskManagerItem(s, false, 10, "Afternoon", "home");
             aftTasks.add(item);
         }
 
@@ -163,8 +150,8 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 
     }
 
-    public void onDataRecieved(String name, String timeOfDay, int points) {
-        TaskManagerItem newItem = new TaskManagerItem(name, false, points, timeOfDay);
+    public void onDataRecieved(String name, String timeOfDay, int points, String location) {
+        TaskManagerItem newItem = new TaskManagerItem(name, false, points, timeOfDay, location);
         if(timeOfDay.equals("Morning")) {
             mornTasks.add(newItem);
         } else if (timeOfDay.equals("Evening")) {
