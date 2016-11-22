@@ -64,7 +64,7 @@ public class SettingsMenu extends AppCompatActivity
         locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(getBaseContext(), "Location on", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Location on", Toast.LENGTH_SHORT).show();
                     //connect
                     mGoogleApiClient.connect();
                     mRequestingLocationUpdates = true;
@@ -74,6 +74,7 @@ public class SettingsMenu extends AppCompatActivity
                        // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                         mGoogleApiClient.disconnect();
                         mRequestingLocationUpdates = false;
+
                     }
                 }
             }

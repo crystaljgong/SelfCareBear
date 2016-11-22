@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
 
@@ -15,8 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".GeofenceTransitionsIntentService"/>
-        <meta-data
+                <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAUmOklkfmG5NNP7q2ZzYAU4ikZRVTt1DI"/>
         <meta-data

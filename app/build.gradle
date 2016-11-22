@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        InitialSigning {
+            keyAlias 'CareBearKey'
+            keyPassword '712167'
+            storeFile file('/Users/crystalgong/Devel/AndroidStudioProjects/keystore/android.jks')
+            storePassword '712167'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "25.0.0"
-
     defaultConfig {
         applicationId "cs4720.self_care_bear"
         minSdkVersion 22
@@ -15,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.InitialSigning
         }
     }
 }

@@ -88,7 +88,7 @@ public class TaskListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tasklist_list, container, false);
 
 
-        Log.i("tasks", tasks.toString());
+     //   Log.i("tasks", tasks.toString());
 
         // Set the adapter
        // if (view instanceof RecyclerView) {

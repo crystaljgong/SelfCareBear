@@ -109,7 +109,7 @@
         android:id="@+id/textViewLocation" />
 
     <Button
-        android:text="Choose Location (Optional)"
+        android:text="Choose Location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/buttonLocation" />
