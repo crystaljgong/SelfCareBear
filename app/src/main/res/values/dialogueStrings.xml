@@ -13,7 +13,15 @@
     </string-array>
 
     <string-array
-        name="rewardStrings">
-        <item></item>
+        name="eveningStrings">
+
     </string-array>
+    <string-array
+        name="rewardStrings">
+        <item>Great job, I knew you could do it!</item>
+        <item>You did your best, you should be proud!</item>
+        <item>The last time I tried to do that, it took me three days...</item>
+    </string-array>
+
+
 </resources>

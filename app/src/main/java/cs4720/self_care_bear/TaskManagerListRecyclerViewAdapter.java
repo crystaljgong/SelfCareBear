@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -80,16 +81,17 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
 
         public ViewHolder(View view) {
             super(view);
-            //mView = view;
             mTaskName = (TextView) view.findViewById(R.id.taskName);
             mPandaPoints = (TextView) view.findViewById(R.id.PandaPoints);
             mCompleted = (CheckBox) view.findViewById(R.id.completed);
             deleteIcon = (ImageView)itemView.findViewById(R.id.task_delete);
 
-            deleteIcon.setOnClickListener(new View.OnClickListener() {
+            deleteIcon.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Delete icon has been pressed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), "Task item has been deleted", Toast.LENGTH_LONG).show();
+                    tasks.remove(getAdapterPosition());
+                    notifyDataSetChanged();
                 }
             });
         }

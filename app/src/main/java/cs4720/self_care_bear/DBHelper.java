@@ -1,3 +1,5 @@
+// used this tutorial: http://mobilesiri.com/android-sqlite-database-tutorial-using-android-studio/
+
 package cs4720.self_care_bear;
 
 import android.content.ContentValues;
@@ -9,6 +11,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,27 +23,29 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "DataStorage.db";
+    //TODO: make primary key incrementing thingy
     // table name
     public static final String TABLE_TASKS = "tasks";
     // table columns
     public static final String KEY_NAME = "name";
     public static final String KEY_COMPLETED = "completed";
     public static final String KEY_PANDA_POINTS = "PandaPoints";
-    public static final String[] COLUMNS = {KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS};
-    //public static final String KEY_TIME_OF_DAY = "time_of_day";
+    public static final String KEY_TIME_OF_DAY = "time_of_day";
+    public static final String KEY_LOCATION = "location";
+    public static final String[] COLUMNS = {KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS, KEY_TIME_OF_DAY, KEY_LOCATION};
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        Log.i("dbhelper", "constructor was just called");
         this.onCreate(this.getWritableDatabase());
+        Log.i("dbhelper constructor", "db was made");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         String DROP_TABLE_TASK = "DROP TABLE " + TABLE_TASKS + ";";
         db.execSQL(DROP_TABLE_TASK);
-        //String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_NAME + " TEXT PRIMARY KEY " + KEY_COMPLETED + " INTEGER " + KEY_PANDA_POINTS + " INTEGER " + KEY_TIME_OF_DAY + " TEXT" + ")";
-        String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_NAME + " varchar(50) PRIMARY KEY, " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER " + ");";
-        //String CREATE_TASK_TABLE = "create table tasks (name varchar(25), panda_points varChar(25))";
+        String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_NAME + " varchar(50) PRIMARY KEY, " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER, " + KEY_TIME_OF_DAY + " varchar(50), " + KEY_LOCATION + " varchar(50) " + ");";
         System.out.println(CREATE_TASK_TABLE);
         db.execSQL(CREATE_TASK_TABLE);
         //String result = null;
@@ -67,6 +72,8 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_NAME, item.getName());
         contentValues.put(KEY_COMPLETED, "" + item.getCompleted());
         contentValues.put(KEY_PANDA_POINTS, "" + item.getPandaPoints());
+        contentValues.put(KEY_TIME_OF_DAY, "" + item.getTimeOfDay());
+        contentValues.put(KEY_LOCATION, "" + item.getLocation());
         db.insert(TABLE_TASKS,
             null,
             contentValues);
@@ -74,6 +81,54 @@ public class DBHelper extends SQLiteOpenHelper {
         //Log.i("addTask", "task added to db");
         System.out.println("task added to db");
         printOutTasks();
+        db.close();
+    }
+
+    public TaskManagerItem getManageTask(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_TASKS, new String[] {KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS, KEY_TIME_OF_DAY, KEY_LOCATION}, KEY_NAME + "=?", new String[] {String.valueOf(name) }, null, null, null, null);
+
+        if(cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Boolean comp = cursor.getInt(1) > 0;
+        TaskManagerItem item = new TaskManagerItem(cursor.getString(0), comp, Integer.parseInt(cursor.getString(2)), cursor.getString(3), cursor.getString(3));
+
+        return item;
+    }
+
+    public List<TaskManagerItem> getAllTasks() {
+        List<TaskManagerItem> taskList = new ArrayList<TaskManagerItem>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_TASKS;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Boolean comp = cursor.getInt(1) > 0;
+                TaskManagerItem item = new TaskManagerItem(cursor.getString(0), comp, Integer.parseInt(cursor.getString(2)), cursor.getString(3), cursor.getString(4));
+
+                taskList.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        return taskList;
+    }
+
+    public int getTaskCount() {
+        String countQuery = "SELECT * FROM " + TABLE_TASKS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.close();
+
+        return cursor.getCount();
+    }
+
+    public void deleteTask(TaskManagerItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TASKS, KEY_NAME + " = ?", new String[] {String.valueOf(item.getName())});
         db.close();
     }
 

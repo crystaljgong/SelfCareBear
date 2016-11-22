@@ -1,16 +1,10 @@
 package cs4720.self_care_bear;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ShareCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +18,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLngBounds;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -99,7 +91,7 @@ public class AddTaskFragment extends DialogFragment {
     }
 
     public interface DataListener {
-        public void onDataRecieved(String name, String timeOfDay, int pandaPoints);
+        public void onDataRecieved(String name, String timeOfDay, int pandaPoints, String location);
     }
 
     @Override
@@ -166,7 +158,7 @@ public class AddTaskFragment extends DialogFragment {
 
 
                 dListener = (DataListener) getActivity();
-                dListener.onDataRecieved(name.getText().toString(), time, point);
+                dListener.onDataRecieved(name.getText().toString(), time, point, (String) place.getName());
                 dismiss();
             }
         });

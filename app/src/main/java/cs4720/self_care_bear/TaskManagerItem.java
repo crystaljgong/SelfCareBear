@@ -1,10 +1,6 @@
 package cs4720.self_care_bear;
 
 
-import java.util.List;
-
-import cs4720.self_care_bear.TaskItem;
-
 /**
  * Created by annie_000 on 11/2/2016.
  */
@@ -16,11 +12,22 @@ public class TaskManagerItem extends TaskItem {
     private int pandaPoints;
     private String timeOfDay;
     private boolean completed;
+    private String location;
 
-    public TaskManagerItem(String name, boolean completed, int pandaPoints, String timeOfDay) {
+
+    public TaskManagerItem(String name, boolean completed, int pandaPoints, String timeOfDay, String location) {
         super(name, completed);
         this.pandaPoints = pandaPoints;
         this.timeOfDay = timeOfDay;
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getTimeOfDay() {
