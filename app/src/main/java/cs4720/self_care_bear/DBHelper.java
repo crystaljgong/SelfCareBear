@@ -98,8 +98,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return item;
     }
 
-    public List<TaskManagerItem> getAllTasks() {
-        List<TaskManagerItem> taskList = new ArrayList<TaskManagerItem>();
+    public ArrayList<TaskManagerItem> getAllTasks() {
+        ArrayList<TaskManagerItem> taskList = new ArrayList<TaskManagerItem>();
 
         String selectQuery = "SELECT * FROM " + TABLE_TASKS;
         SQLiteDatabase db = this.getWritableDatabase();

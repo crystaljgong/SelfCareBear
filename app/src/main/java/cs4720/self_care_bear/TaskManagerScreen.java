@@ -34,6 +34,7 @@ import org.w3c.dom.Text;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.provider.Telephony.Mms.Part.FILENAME;
 
@@ -112,12 +113,12 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         aftTasks = new ArrayList<>();
         evenTasks = new ArrayList<>();
 
-        TaskManagerItem mornin = new TaskManagerItem("Get out of bed", false, 10, "Morning");
-        TaskManagerItem mornin2 = new TaskManagerItem("Brush your teeth", false, 10, "Morning");
-        TaskManagerItem mornin3 = new TaskManagerItem("Eat breakfast", false, 10, "Morning");
-        TaskManagerItem evenin = new TaskManagerItem("Brush your teeth", false, 10, "Evening");
-        TaskManagerItem after = new TaskManagerItem("Eat lunch", false, 10, "Afternoon");
-        TaskManagerItem evenin2 = new TaskManagerItem("Go to sleep", false, 20, "Evening");
+        TaskManagerItem mornin = new TaskManagerItem("Get out of bed", false, 10, "Morning", "home");
+        TaskManagerItem mornin2 = new TaskManagerItem("Brush your teeth", false, 10, "Morning", "home");
+        TaskManagerItem mornin3 = new TaskManagerItem("Eat breakfast", false, 10, "Morning", "home");
+        TaskManagerItem evenin = new TaskManagerItem("Brush your teeth", false, 10, "Evening", "home");
+        TaskManagerItem after = new TaskManagerItem("Eat lunch", false, 10, "Afternoon", "home");
+        TaskManagerItem evenin2 = new TaskManagerItem("Go to sleep", false, 20, "Evening", "home");
 
         //get data from google calendar
         ArrayList<String> googCalData = getIntent().getStringArrayListExtra("google calendar tasks");
@@ -149,6 +150,13 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         }
         for(int i = 0; i < evenTasks.size(); i++) {
             helper.addTask(evenTasks.get(i));
+        }
+
+        //reading from database
+        ArrayList<TaskManagerItem> tasksss = helper.getAllTasks();
+        for(TaskManagerItem item : tasksss) {
+            String log = "Name: " + item.getName() + ", completed: " + item.getCompleted() + ", points: " + item.getPandaPoints() + ", time: " + item.getTimeOfDay() + ", place: " + item.getLocation();
+            Log.i("reading from database", log);
         }
 
         // Create the adapter that will return a fragment for each of the three
