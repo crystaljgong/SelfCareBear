@@ -1,8 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
 
 
     <TextView
@@ -19,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:selectAllOnFocus="false"/>
 
     <TextView
         android:layout_width="118dp"
@@ -108,12 +112,6 @@
         android:text="Location"
         android:id="@+id/textViewLocation" />
 
-    <Button
-        android:text="Choose Location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonLocation" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -122,6 +120,18 @@
         android:layout_weight="2"
         android:textColor="@color/colorPrimaryDark"
         android:id="@+id/selectedLocation" />
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        tools:layout="@android:layout/select_dialog_item" />
+</FrameLayout>
+
 
     <RelativeLayout
         android:layout_width="wrap_content"

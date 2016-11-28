@@ -105,6 +105,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
     Button button;
     private View homeScreenPage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,21 +127,11 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
         //make the recyclerview
         homeTaskList = TaskListFragment.newInstance(tasks);
-
         getSupportFragmentManager().beginTransaction().add(R.id.taskListFrag, homeTaskList).commit();
 
         //navigation drawer stuff
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        createNavigationDrawer();
 
         //button initializations
 
@@ -166,9 +157,19 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
     }
 
+    private void createNavigationDrawer() {
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
     //Google Calendar API stuff
     /**
@@ -311,7 +312,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
  * Checks whether the device currently has a network connection.
  * @return true if the device has a network connection, false otherwise.
  */
-private boolean isDeviceOnline() {
+    private boolean isDeviceOnline() {
     ConnectivityManager connMgr =
             (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

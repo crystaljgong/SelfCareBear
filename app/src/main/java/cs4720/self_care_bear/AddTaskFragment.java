@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -18,8 +19,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -49,14 +54,14 @@ public class AddTaskFragment extends DialogFragment {
     EditText name;
     RadioGroup timeOfDay;
     RadioGroup points;
-    Button locationButton;
-    TextView locationSelected;
+//    Button locationButton;
+//    TextView locationSelected;
     Button cancel;
     Button confirmAdd;
 
     //for getting location
-    int PLACE_PICKER_REQUEST = 1;
-    Place place;
+   // int PLACE_PICKER_REQUEST = 1;
+    Place placeSelected;
 
 
     public AddTaskFragment() {
@@ -104,8 +109,8 @@ public class AddTaskFragment extends DialogFragment {
         name = (EditText) rootView.findViewById(R.id.enterTaskName);
         timeOfDay = (RadioGroup) rootView.findViewById(R.id.radioTimeOfDay);
         points = (RadioGroup) rootView.findViewById(R.id.radioPoints);
-        locationButton = (Button) rootView.findViewById(R.id.buttonLocation);
-        locationSelected = (TextView) rootView.findViewById(R.id.selectedLocation);
+//        locationButton = (Button) rootView.findViewById(R.id.buttonLocation);
+//        locationSelected = (TextView) rootView.findViewById(R.id.selectedLocation);
         cancel = (Button) rootView.findViewById(R.id.cancel);
         confirmAdd = (Button) rootView.findViewById(R.id.confirm);
 
@@ -117,16 +122,35 @@ public class AddTaskFragment extends DialogFragment {
             }
         });
 
-        //add location using Places api
-        locationButton.setOnClickListener(new View.OnClickListener() {
+
+//        //add location using Places api
+//        locationButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startPlacePicker();
+//            }
+//        });
+
+        //make Place autocomplete fragment
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onClick(View v) {
-                startPlacePicker();
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("place", "Place: " + place.getName());
+                placeSelected = place;
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("error", "An error occurred: " + status);
             }
         });
 
         // confirm add task with confirm button
-
         confirmAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,17 +178,18 @@ public class AddTaskFragment extends DialogFragment {
                 }
 
                 //add location!! it might be null so watch out!
-                Toast.makeText(getActivity(), "Place: " + place, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Place: " + placeSelected, Toast.LENGTH_LONG).show();
 
 
                 dListener = (DataListener) getActivity();
-                dListener.onDataRecieved(name.getText().toString(), time, point, (String) place.getName());
+                dListener.onDataRecieved(name.getText().toString(), time, point, (String) placeSelected.getName());
                 dismiss();
             }
         });
 
         return rootView;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -212,49 +237,49 @@ public class AddTaskFragment extends DialogFragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void startPlacePicker() {
+//    public void startPlacePicker() {
+//
+//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//
+//        // Check Google Play Service Available
+//        Toast.makeText(getActivity(), "Starting place picker...",
+//                Toast.LENGTH_SHORT).show();
+//        try {
+//            if (checkPlayServices()) {
+//                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+//            }
+//        } catch (Exception e) {
+//            Log.e("E ", "GooglePlayServices: " + e);
+//        }
+//
+//    }
 
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == PLACE_PICKER_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                Place selectedPlace = PlacePicker.getPlace(getActivity(), data);
+//                // Do something with the place
+//                placeSelected = selectedPlace;
+//                locationSelected.setText(selectedPlace.getName());
+//                locationButton.setVisibility(View.GONE);
+//                locationSelected.setVisibility(View.VISIBLE);
+//            }
+//        }
+//    }
 
-        // Check Google Play Service Available
-        Toast.makeText(getActivity(), "starting place picker...",
-                Toast.LENGTH_SHORT).show();
-        try {
-            if (checkPlayServices()) {
-                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-            }
-        } catch (Exception e) {
-            Log.e("E ", "GooglePlayServices: " + e);
-        }
-
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place selectedPlace = PlacePicker.getPlace(getActivity(), data);
-                // Do something with the place
-                place = selectedPlace;
-                locationSelected.setText(selectedPlace.getName());
-                locationButton.setVisibility(View.GONE);
-                locationSelected.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-        int result = googleAPI.isGooglePlayServicesAvailable(getActivity());
-        if(result != ConnectionResult.SUCCESS) {
-            if(googleAPI.isUserResolvableError(result)) {
-                googleAPI.getErrorDialog(getActivity(), result, PLACE_PICKER_REQUEST).show();
-            }
-
-            return false;
-        }
-
-        return true;
-    }
+//    private boolean checkPlayServices() {
+//        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+//        int result = googleAPI.isGooglePlayServicesAvailable(getActivity());
+//        if(result != ConnectionResult.SUCCESS) {
+//            if(googleAPI.isUserResolvableError(result)) {
+//                googleAPI.getErrorDialog(getActivity(), result, PLACE_PICKER_REQUEST).show();
+//            }
+//
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
 
 

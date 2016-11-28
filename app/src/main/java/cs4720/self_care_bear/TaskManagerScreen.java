@@ -49,6 +49,11 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 
     Button button;
 
+
+    //Fields for points and steps!
+    int pandapoints;
+    int steps;
+
     public static final String PREFS_NAME = "PrefsFile";
 
     /**
@@ -362,6 +367,7 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         if (taskNum.getCompleted() == true) {
             Toast.makeText(TaskManagerScreen.this, "You didn't complete this task yet? :(", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(false);
+            taskNum.getPandaPoints();
         } else {
             Toast.makeText(TaskManagerScreen.this, "You completed this task, good job! :3", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(true);

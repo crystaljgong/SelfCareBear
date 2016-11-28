@@ -1,0 +1,24 @@
+Milestone 3 progress update:
+- Implementation of google location services
+  - A field for location was added to TaskManagerItem
+  - Location is retrieved when the setting is turned on
+- Implemented Google Places as a web service 
+    - When button to add location is pressed, a place picker is pulled up and a location can be picked to attach to the new item
+      - Location is stored as a string
+- DBHelper is more functional
+  - DBHelper can properly add tasks to a database
+  - Methods for deleting from database and getting all tasks in database made
+- Navigation drawer was created and implemented
+  - Has task manager, gift shop, and settings; each opens a separate activity
+  - Task manager screen is almost fully functional- add task button is implemented
+    - Add task takes in task name, has radio buttons for time of day and panda points, and has option to add location to the task
+      - Delete task icon works
+      - Gift shop is currently an empty fragment, but gift item icons are in the project folder
+      - Settings menu has some items, not completely implemented yet
+      	- Location services here
+	- Custom icons for navigation drawer was made and put in
+- Task list on the main screen properly displays tasks
+- Main screen no longer has awkward white border around task list
+- Dialogue strings have been made for panda
+- Image files are now in mipmap instead of the drawable folder to decrease load on main thread
+
