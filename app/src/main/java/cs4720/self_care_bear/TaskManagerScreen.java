@@ -96,12 +96,11 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         });
 
         //get data from google calendar
-        ArrayList<String> googCalData = getIntent().getStringArrayListExtra("google calendar tasks");
-        for(String s : googCalData) {
-            TaskItem item = new TaskItem(s, false, 10, "Afternoon", "home");
-            MainScreen.AFT_TASKS.add(item);
-        }
-
+//        ArrayList<String> googCalData = getIntent().getStringArrayListExtra("google calendar tasks");
+//        for(String s : googCalData) {
+//            TaskItem item = new TaskItem(s, false, 10, "Afternoon", "home");
+//            MainScreen.AFT_TASKS.add(item);
+//        }
         // make tasks
         //addTasks();
 

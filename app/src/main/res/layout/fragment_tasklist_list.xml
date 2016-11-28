@@ -6,6 +6,7 @@
         android:name="cs4720.self_care_bear.TaskListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:id="@+id/taskListRV"
         app:layoutManager="LinearLayoutManager"
         tools:context="cs4720.self_care_bear.TaskListFragment"

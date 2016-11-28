@@ -63,8 +63,12 @@
             android:layout_weight="2"
             />
 
-
     </LinearLayout>
 
-
+    <TextView
+        android:id="@+id/textView"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click the button to test the API." />
 </LinearLayout>

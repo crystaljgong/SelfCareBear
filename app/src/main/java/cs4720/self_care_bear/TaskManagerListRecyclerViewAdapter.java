@@ -73,6 +73,8 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
         return tasks.size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         //public final View mView;
         public final TextView mTaskName;
@@ -100,6 +102,8 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
                 }
             });
         }
+
+
 
         @Override
         public String toString() {

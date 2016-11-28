@@ -2,6 +2,6 @@
 
 Things to do to make everything run properly:
 1. Make sure you’re signed in with a google account for Google calendar to work.
-2. When choosing a location, keep clicking around the map, on current location, until clickable red Places appear. Only the Places can be assigned as location.
-3. Do not add a task without entering a location.
+2. Google Calendar will pull from all of the calendars you have selected in your Calendar UI. Meaning, if you have “Holidays” selected, it will add holidays to your task list.
+
 
