@@ -1,6 +1,8 @@
 package cs4720.self_care_bear;
 
 
+import com.google.android.gms.tasks.Task;
+
 /**
  * Created by annie_000 on 11/2/2016.
  */
@@ -9,11 +11,11 @@ package cs4720.self_care_bear;
 
 public class TaskManagerItem extends TaskItem {
 
+    private int id;
     private int pandaPoints;
     private String timeOfDay;
     private boolean completed;
     private String location;
-
 
     public TaskManagerItem(String name, boolean completed, int pandaPoints, String timeOfDay, String location) {
         super(name, completed);
@@ -21,6 +23,17 @@ public class TaskManagerItem extends TaskItem {
         this.timeOfDay = timeOfDay;
         this.location = location;
     }
+    public TaskManagerItem(int id, String name, boolean completed, int pandaPoints, String timeOfDay, String location) {
+        super(name, completed);
+        this.id = id;
+        this.pandaPoints = pandaPoints;
+        this.timeOfDay = timeOfDay;
+        this.location = location;
+    }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getLocation() {
         return location;

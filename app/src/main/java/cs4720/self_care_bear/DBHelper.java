@@ -27,12 +27,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // table name
     public static final String TABLE_TASKS = "tasks";
     // table columns
+    public static final String KEY_ID = "idNum";
     public static final String KEY_NAME = "name";
     public static final String KEY_COMPLETED = "completed";
     public static final String KEY_PANDA_POINTS = "PandaPoints";
     public static final String KEY_TIME_OF_DAY = "time_of_day";
     public static final String KEY_LOCATION = "location";
-    public static final String[] COLUMNS = {KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS, KEY_TIME_OF_DAY, KEY_LOCATION};
+    public static final String[] COLUMNS = {KEY_ID, KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS, KEY_TIME_OF_DAY, KEY_LOCATION};
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,7 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String DROP_TABLE_TASK = "DROP TABLE " + TABLE_TASKS + ";";
         db.execSQL(DROP_TABLE_TASK);
-        String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_NAME + " varchar(50) PRIMARY KEY, " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER, " + KEY_TIME_OF_DAY + " varchar(50), " + KEY_LOCATION + " varchar(50) " + ");";
+        String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " varchar(50), " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER, " + KEY_TIME_OF_DAY + " varchar(50), " + KEY_LOCATION + " varchar(50) " + ");";
         System.out.println(CREATE_TASK_TABLE);
         db.execSQL(CREATE_TASK_TABLE);
         //String result = null;
@@ -86,14 +87,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public TaskManagerItem getManageTask(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS, new String[] {KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS, KEY_TIME_OF_DAY, KEY_LOCATION}, KEY_NAME + "=?", new String[] {String.valueOf(name) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_TASKS, new String[] {KEY_ID, KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS, KEY_TIME_OF_DAY, KEY_LOCATION}, KEY_ID + "=?", new String[] {String.valueOf(name) }, null, null, null, null);
 
         if(cursor != null) {
             cursor.moveToFirst();
         }
 
-        Boolean comp = cursor.getInt(1) > 0;
-        TaskManagerItem item = new TaskManagerItem(cursor.getString(0), comp, Integer.parseInt(cursor.getString(2)), cursor.getString(3), cursor.getString(3));
+        Boolean comp = cursor.getInt(2) > 0;
+        TaskManagerItem item = new TaskManagerItem(Integer.parseInt(cursor.getString(0)), cursor.getString(1), comp, Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5));
 
         return item;
     }
@@ -107,8 +108,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Boolean comp = cursor.getInt(1) > 0;
-                TaskManagerItem item = new TaskManagerItem(cursor.getString(0), comp, Integer.parseInt(cursor.getString(2)), cursor.getString(3), cursor.getString(4));
+                Boolean comp = cursor.getInt(2) > 0;
+                TaskManagerItem item = new TaskManagerItem(Integer.parseInt(cursor.getString(0)), cursor.getString(1), comp, Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5));
 
                 taskList.add(item);
             } while (cursor.moveToNext());
@@ -126,9 +127,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    public int updateTask (TaskManagerItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_NAME, item.getName());
+        contentValues.put(KEY_COMPLETED, "" + item.getCompleted());
+        contentValues.put(KEY_PANDA_POINTS, "" + item.getPandaPoints());
+        contentValues.put(KEY_TIME_OF_DAY, "" + item.getTimeOfDay());
+        contentValues.put(KEY_LOCATION, "" + item.getLocation());
+
+        return db.update(TABLE_TASKS, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(item.getId())});
+
+    }
     public void deleteTask(TaskManagerItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TASKS, KEY_NAME + " = ?", new String[] {String.valueOf(item.getName())});
+        db.delete(TABLE_TASKS, KEY_ID + " = ?", new String[] {String.valueOf(item.getId())});
         db.close();
     }
 
