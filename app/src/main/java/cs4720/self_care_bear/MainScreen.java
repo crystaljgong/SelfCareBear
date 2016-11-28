@@ -2,51 +2,33 @@ package cs4720.self_care_bear;
 
 import android.Manifest;
 import android.accounts.AccountManager;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.gcm.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -63,12 +45,11 @@ import com.google.api.services.calendar.model.Events;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
-import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -82,7 +63,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
     //initialize google Calendar thing
     GoogleAccountCredential mCredential;
-    private TextView someText;
+    private TextView calendarText;
     private Button calendarButton;
     ProgressDialog mProgress;
 
@@ -102,8 +83,16 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
     static public TaskListFragment homeTaskList;
 
     //initialize views
-    Button button;
     private View homeScreenPage;
+    private TextView pointsStatus;
+
+    //fields
+    static public ArrayList<TaskItem> MORN_TASKS;
+    static public ArrayList<TaskItem> AFT_TASKS;
+    static public ArrayList<TaskItem> EVEN_TASKS;
+    //Fields for points and steps!
+    public static int P_POINTS;
+    public static int STEPS;
 
 
     @Override
@@ -120,10 +109,29 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
         googCalTasks = new ArrayList<>();
         //make a list of tasks
         tasks = new ArrayList<>();
-        TaskItem thing1 = new TaskItem("get out of bed", false);
-        TaskItem thing2 = new TaskItem("brush your teeth", false);
-        tasks.add(thing1);
-        tasks.add(thing2);
+        TaskItem dummy = new TaskItem("dummyThing", false, 10, "morning", "home");
+        tasks.add(dummy);
+
+        //initialize all task lists
+        addTasks();
+
+        //initialize points, steps
+        P_POINTS = 0;
+        STEPS = 0;
+
+        //check time of day
+        Calendar c = Calendar.getInstance();
+        if (c.HOUR_OF_DAY < 9 && MORN_TASKS != null) {
+            tasks = MORN_TASKS;
+        }
+        else if (c.HOUR_OF_DAY >= 9 && c.HOUR_OF_DAY < 10 && AFT_TASKS != null) {
+            tasks = AFT_TASKS;
+        }
+        else {
+            if (EVEN_TASKS != null) {
+                tasks = EVEN_TASKS;
+            }
+        }
 
         //make the recyclerview
         homeTaskList = TaskListFragment.newInstance(tasks);
@@ -133,7 +141,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
 
         createNavigationDrawer();
 
-        //button initializations
+        //calendar Button stuff
 
         calendarButton = (Button)findViewById(R.id.calendarTestButton);
 
@@ -141,19 +149,57 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
             @Override
             public void onClick(View v) {
                 calendarButton.setEnabled(false);
-                someText.setText("");
+                calendarText.setText("");
                 getResultsFromApi();
                 calendarButton.setEnabled(true);
             }
         });
 
-        someText = (TextView)findViewById(R.id.textView);
+        calendarText = (TextView)findViewById(R.id.textView);
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Calendar API ...");
 
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+
+        //textview for panda points, steps
+        pointsStatus = (TextView)findViewById(R.id.main_screen_status);
+
+    }
+
+
+    public void addTasks() {
+
+        MORN_TASKS = new ArrayList<>();
+
+        AFT_TASKS = new ArrayList<>();
+
+        EVEN_TASKS = new ArrayList<>();
+
+        TaskItem mornin = new TaskItem("Get out of bed", false, 10, "Morning", "home");
+        TaskItem mornin2 = new TaskItem("Brush your teeth", false, 10, "Morning", "home");
+        TaskItem mornin3 = new TaskItem("Eat breakfast", false, 10, "Morning", "home");
+        TaskItem evenin = new TaskItem("Brush your teeth", false, 10, "Evening", "home");
+        TaskItem after = new TaskItem("Eat lunch", false, 10, "Afternoon", "home");
+        TaskItem evenin2 = new TaskItem("Go to sleep", false, 20, "Evening", "home");
+
+        MORN_TASKS.add(mornin);
+        MORN_TASKS.add(mornin2);
+        MORN_TASKS.add(mornin3);
+        AFT_TASKS.add(after);
+        EVEN_TASKS.add(evenin);
+        EVEN_TASKS.add(evenin2);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        pointsStatus.setText(
+//                "Panda Points: " + P_POINTS + "\n" +
+//                        "Steps today: " + STEPS
+//        );
+
 
     }
 
@@ -185,7 +231,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (! isDeviceOnline()) {
-            someText.setText("No network connection available.");
+            calendarText.setText("No network connection available.");
         } else {
             new MakeRequestTask(mCredential).execute();
         }
@@ -240,7 +286,7 @@ public class MainScreen extends AppCompatActivity implements EasyPermissions.Per
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
-                    someText.setText(
+                    calendarText.setText(
                             "This app requires Google Play Services. Please install " +
                                     "Google Play Services on your device and relaunch this app.");
                 } else {
@@ -422,7 +468,7 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
 
     @Override
     protected void onPreExecute() {
-        someText.setText("");
+        calendarText.setText("");
         mProgress.show();
     }
 
@@ -430,10 +476,10 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
     protected void onPostExecute(List<String> output) {
         mProgress.hide();
         if (output == null || output.size() == 0) {
-            someText.setText("No results returned.");
+            calendarText.setText("No results returned.");
         } else {
             output.add(0, "Data retrieved using the Google Calendar API:");
-            someText.setText(TextUtils.join("\n", output));
+            calendarText.setText(TextUtils.join("\n", output));
         }
     }
 
@@ -450,11 +496,11 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
                         ((UserRecoverableAuthIOException) mLastError).getIntent(),
                         MainScreen.REQUEST_AUTHORIZATION);
             } else {
-                someText.setText("The following error occurred:\n"
+                calendarText.setText("The following error occurred:\n"
                         + mLastError.getMessage());
             }
         } else {
-            someText.setText("Request cancelled.");
+            calendarText.setText("Request cancelled.");
         }
     }
 }
@@ -530,9 +576,21 @@ private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
 
     public void onListFragmentInteraction(TaskItem taskNum) {
         if (taskNum.getCompleted() == true) {
+            P_POINTS -= taskNum.getPandaPoints();
+            Toast.makeText(this, "You didn't complete this task yet? Panda Points = " + P_POINTS, Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(false);
+            pointsStatus.setText(
+                "Panda Points: " + P_POINTS + "\n" +
+                        "Steps today: " + STEPS
+        );
         } else {
+            P_POINTS += taskNum.getPandaPoints();
+            Toast.makeText(this, "You completed this task, good job! Panda Points =  " + P_POINTS, Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(true);
+            pointsStatus.setText(
+                    "Panda Points: " + P_POINTS + "\n" +
+                            "Steps today: " + STEPS
+            );
         }
     }
 

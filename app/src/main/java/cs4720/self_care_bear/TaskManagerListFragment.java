@@ -33,7 +33,7 @@ public class TaskManagerListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private Context mContext;
-    private ArrayList<TaskManagerItem> allTasks;
+    private ArrayList<TaskItem> allTasks;
     private RecyclerView rv;
 
     /**
@@ -44,13 +44,13 @@ public class TaskManagerListFragment extends Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public TaskManagerListFragment(ArrayList<TaskManagerItem> items) {
+    public TaskManagerListFragment(ArrayList<TaskItem> items) {
         allTasks = items;
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TaskManagerListFragment newInstance(ArrayList<TaskManagerItem> items) {
+    public static TaskManagerListFragment newInstance(ArrayList<TaskItem> items) {
         TaskManagerListFragment frag= new TaskManagerListFragment(items);
         Bundle args = new Bundle();
         args.putParcelableArrayList("tasksHere", items);
@@ -68,11 +68,11 @@ public class TaskManagerListFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    public void setData(ArrayList<TaskManagerItem> tasks) {
+    public void setData(ArrayList<TaskItem> tasks) {
         this.allTasks = tasks;
     }
 
-    public ArrayList<TaskManagerItem> getData() {
+    public ArrayList<TaskItem> getData() {
         return allTasks;
     }
 
@@ -129,18 +129,18 @@ public class TaskManagerListFragment extends Fragment {
      */
 
 
-    public void addT(TaskManagerItem addMe) {
+    public void addT(TaskItem addMe) {
         allTasks.add(addMe);
         rv.getAdapter().notifyDataSetChanged();
     }
 
-    public void removeT(TaskManagerItem removeMe) {
+    public void removeT(TaskItem removeMe) {
         allTasks.remove(removeMe);
         rv.getAdapter().notifyDataSetChanged();
     }
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(TaskManagerItem item);
+        void onListFragmentInteraction(TaskItem item);
     }
 }

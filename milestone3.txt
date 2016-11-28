@@ -1,6 +1,6 @@
 Milestone 3 progress update:
 - Implementation of google location services
-  - A field for location was added to TaskManagerItem
+  - A field for location was added to TaskItem
   - Location is retrieved when the setting is turned on
 - Implemented Google Places as a web service 
     - When button to add location is pressed, a place picker is pulled up and a location can be picked to attach to the new item

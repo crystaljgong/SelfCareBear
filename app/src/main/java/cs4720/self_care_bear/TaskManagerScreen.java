@@ -2,13 +2,7 @@
 
 package cs4720.self_care_bear;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,30 +13,20 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.provider.Telephony.Mms.Part.FILENAME;
 
 public class TaskManagerScreen extends AppCompatActivity implements TaskManagerListFragment.OnListFragmentInteractionListener, AddTaskFragment.OnFragmentInteractionListener, AddTaskFragment.DataListener{
 
-    public ArrayList<TaskManagerItem> mornTasks;
-    public ArrayList<TaskManagerItem> aftTasks;
-    public ArrayList<TaskManagerItem> evenTasks;
+
     static public TaskManagerListFragment morn;
     static public TaskManagerListFragment aft;
     static public TaskManagerListFragment even;
@@ -50,9 +34,7 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
     Button button;
 
 
-    //Fields for points and steps!
-    int pandapoints;
-    int steps;
+
 
     public static final String PREFS_NAME = "PrefsFile";
 
@@ -113,53 +95,37 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
             }
         });
 
-        // make tasks
-        mornTasks = new ArrayList<>();
-        aftTasks = new ArrayList<>();
-        evenTasks = new ArrayList<>();
-
-        TaskManagerItem mornin = new TaskManagerItem("Get out of bed", false, 10, "Morning", "home");
-        TaskManagerItem mornin2 = new TaskManagerItem("Brush your teeth", false, 10, "Morning", "home");
-        TaskManagerItem mornin3 = new TaskManagerItem("Eat breakfast", false, 10, "Morning", "home");
-        TaskManagerItem evenin = new TaskManagerItem("Brush your teeth", false, 10, "Evening", "home");
-        TaskManagerItem after = new TaskManagerItem("Eat lunch", false, 10, "Afternoon", "home");
-        TaskManagerItem evenin2 = new TaskManagerItem("Go to sleep", false, 20, "Evening", "home");
-
         //get data from google calendar
         ArrayList<String> googCalData = getIntent().getStringArrayListExtra("google calendar tasks");
         for(String s : googCalData) {
-            TaskManagerItem item = new TaskManagerItem(s, false, 10, "Afternoon", "home");
-            aftTasks.add(item);
+            TaskItem item = new TaskItem(s, false, 10, "Afternoon", "home");
+            MainScreen.AFT_TASKS.add(item);
         }
 
-        mornTasks.add(mornin);
-        mornTasks.add(mornin2);
-        mornTasks.add(mornin3);
-        aftTasks.add(after);
-        evenTasks.add(evenin);
-        evenTasks.add(evenin2);
+        // make tasks
+        //addTasks();
 
-        morn = TaskManagerListFragment.newInstance(mornTasks);
-        even = TaskManagerListFragment.newInstance(evenTasks);
-        aft = TaskManagerListFragment.newInstance(aftTasks);
+        morn = TaskManagerListFragment.newInstance(MainScreen.MORN_TASKS);
+        even = TaskManagerListFragment.newInstance(MainScreen.EVEN_TASKS);
+        aft = TaskManagerListFragment.newInstance(MainScreen.AFT_TASKS);
 
         Log.i("this is onCreate", "created the tasks");
 
         // db test
         DBHelper helper = new DBHelper(this);
-        for(int i = 0; i < mornTasks.size(); i++) {
-            helper.addTask(mornTasks.get(i));
+        for(int i = 0; i < MainScreen.MORN_TASKS.size(); i++) {
+            helper.addTask(MainScreen.MORN_TASKS.get(i));
         }
-        for(int i = 0; i < aftTasks.size(); i++) {
-            helper.addTask(aftTasks.get(i));
+        for(int i = 0; i < MainScreen.AFT_TASKS.size(); i++) {
+            helper.addTask(MainScreen.AFT_TASKS.get(i));
         }
-        for(int i = 0; i < evenTasks.size(); i++) {
-            helper.addTask(evenTasks.get(i));
+        for(int i = 0; i < MainScreen.EVEN_TASKS.size(); i++) {
+            helper.addTask(MainScreen.EVEN_TASKS.get(i));
         }
 
         //reading from database
-        ArrayList<TaskManagerItem> tasksss = helper.getAllTasks();
-        for(TaskManagerItem item : tasksss) {
+        ArrayList<TaskItem> tasksss = helper.getAllTasks();
+        for(TaskItem item : tasksss) {
             String log = "Name: " + item.getName() + ", completed: " + item.getCompleted() + ", points: " + item.getPandaPoints() + ", time: " + item.getTimeOfDay() + ", place: " + item.getLocation();
             Log.i("reading from database", log);
         }
@@ -182,16 +148,20 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
             }
         });**/
 
+
+
     }
 
+
+
     public void onDataRecieved(String name, String timeOfDay, int points, String location) {
-        TaskManagerItem newItem = new TaskManagerItem(name, false, points, timeOfDay, location);
+        TaskItem newItem = new TaskItem(name, false, points, timeOfDay, location);
         if(timeOfDay.equals("Morning")) {
-            mornTasks.add(newItem);
+            MainScreen.MORN_TASKS.add(newItem);
         } else if (timeOfDay.equals("Evening")) {
-            evenTasks.add(newItem);
+            MainScreen.EVEN_TASKS.add(newItem);
         } else {
-            aftTasks.add(newItem);
+            MainScreen.AFT_TASKS.add(newItem);
         }
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
@@ -363,14 +333,14 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         }
     }
 
-    public void onListFragmentInteraction(TaskManagerItem taskNum) {
+    public void onListFragmentInteraction(TaskItem taskNum) {
         if (taskNum.getCompleted() == true) {
-            Toast.makeText(TaskManagerScreen.this, "You didn't complete this task yet? :(", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TaskManagerScreen.this, "You didn't complete this task yet?", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(false);
-            taskNum.getPandaPoints();
         } else {
-            Toast.makeText(TaskManagerScreen.this, "You completed this task, good job! :3", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TaskManagerScreen.this, "You completed this task, good job!", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(true);
+
         }
     }
 }

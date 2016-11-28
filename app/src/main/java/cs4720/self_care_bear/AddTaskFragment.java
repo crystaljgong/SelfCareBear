@@ -138,7 +138,6 @@ public class AddTaskFragment extends DialogFragment {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
                 Log.i("place", "Place: " + place.getName());
                 placeSelected = place;
             }
@@ -157,7 +156,6 @@ public class AddTaskFragment extends DialogFragment {
                 // save task name string, and point and time of day from buttons
                 String time = "";
                 String pPoints = "";
-                //Place location = "";
 
                 int point = 0;
                 if (timeOfDay.getCheckedRadioButtonId() != -1) {
@@ -177,11 +175,11 @@ public class AddTaskFragment extends DialogFragment {
                     point = Integer.parseInt(pPoints);
                 }
 
-                //add location!! it might be null so watch out!
                 Toast.makeText(getActivity(), "Place: " + placeSelected, Toast.LENGTH_LONG).show();
 
 
                 dListener = (DataListener) getActivity();
+                //TODO: DISABLE CONFIRM BUTTON IF NO NAME OR LOCATION
                 dListener.onDataRecieved(name.getText().toString(), time, point, (String) placeSelected.getName());
                 dismiss();
             }

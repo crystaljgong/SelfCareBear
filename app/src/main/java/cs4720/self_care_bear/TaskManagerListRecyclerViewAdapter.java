@@ -17,17 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link TaskManagerItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link TaskItem} and makes a call to the
  * specified {@link cs4720.self_care_bear.TaskManagerListFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<TaskManagerListRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<TaskManagerItem> tasks;
+    private final ArrayList<TaskItem> tasks;
     private final TaskManagerListFragment.OnListFragmentInteractionListener mListener;
     private Context mContext;
 
-    public TaskManagerListRecyclerViewAdapter(ArrayList<TaskManagerItem> items, TaskManagerListFragment.OnListFragmentInteractionListener listener, Context context) {
+    public TaskManagerListRecyclerViewAdapter(ArrayList<TaskItem> items, TaskManagerListFragment.OnListFragmentInteractionListener listener, Context context) {
         tasks = items;
         mListener = listener;
         mContext = context;
@@ -47,25 +47,25 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
     //TODO figure out why check isn't initalized as checked when completed is true...?
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final TaskManagerItem item = tasks.get(position);
+        final TaskItem item = tasks.get(position);
         holder.mTaskName.setText(tasks.get(position).getName());
         holder.mPandaPoints.setText("" + tasks.get(position).getPandaPoints() + " PandaPoints");
-        holder.mCompleted.setChecked(tasks.get(position).getCompleted());
+       // holder.mCompleted.setChecked(tasks.get(position).getCompleted());
         holder.mLocation.setText("Complete at " + tasks.get(position).getLocation());
 
 
         Log.d("onBindViewHolder", "" + tasks.get(position).getCompleted());
 
-        holder.mCompleted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(item);
-                }
-            }
-        });
+//        holder.mCompleted.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (null != mListener) {
+//                    // Notify the active callbacks interface (the activity, if the
+//                    // fragment is attached to one) that an item has been selected.
+//                    mListener.onListFragmentInteraction(item);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -76,17 +76,17 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
     public class ViewHolder extends RecyclerView.ViewHolder {
         //public final View mView;
         public final TextView mTaskName;
-        public final CheckBox mCompleted;
+       // public final CheckBox mCompleted;
         public final TextView mPandaPoints;
         public ImageView deleteIcon;
         public final TextView mLocation;
-        //public TaskManagerItem mItem;
+        //public TaskItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mTaskName = (TextView) view.findViewById(R.id.taskName);
             mPandaPoints = (TextView) view.findViewById(R.id.PandaPoints);
-            mCompleted = (CheckBox) view.findViewById(R.id.completed);
+          //  mCompleted = (CheckBox) view.findViewById(R.id.completed);
             deleteIcon = (ImageView)itemView.findViewById(R.id.task_delete);
             mLocation = (TextView)view.findViewById(R.id.location);
 

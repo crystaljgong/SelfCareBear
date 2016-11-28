@@ -67,7 +67,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void addTask(TaskManagerItem item) {
+    public void addTask(TaskItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, item.getName());
@@ -85,7 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public TaskManagerItem getManageTask(String name) {
+    public TaskItem getManageTask(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_TASKS, new String[] {KEY_ID, KEY_NAME, KEY_COMPLETED, KEY_PANDA_POINTS, KEY_TIME_OF_DAY, KEY_LOCATION}, KEY_ID + "=?", new String[] {String.valueOf(name) }, null, null, null, null);
 
@@ -94,13 +94,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         Boolean comp = cursor.getInt(2) > 0;
-        TaskManagerItem item = new TaskManagerItem(Integer.parseInt(cursor.getString(0)), cursor.getString(1), comp, Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5));
+        TaskItem item = new TaskItem(Integer.parseInt(cursor.getString(0)), cursor.getString(1), comp, Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5));
 
         return item;
     }
 
-    public ArrayList<TaskManagerItem> getAllTasks() {
-        ArrayList<TaskManagerItem> taskList = new ArrayList<TaskManagerItem>();
+    public ArrayList<TaskItem> getAllTasks() {
+        ArrayList<TaskItem> taskList = new ArrayList<TaskItem>();
 
         String selectQuery = "SELECT * FROM " + TABLE_TASKS;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -109,8 +109,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Boolean comp = cursor.getInt(2) > 0;
-                TaskManagerItem item = new TaskManagerItem(Integer.parseInt(cursor.getString(0)), cursor.getString(1), comp, Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5));
-
+                TaskItem item = new TaskItem(Integer.parseInt(cursor.getString(0)), cursor.getString(1), comp, Integer.parseInt(cursor.getString(3)), cursor.getString(4), cursor.getString(5));
                 taskList.add(item);
             } while (cursor.moveToNext());
         }
@@ -127,7 +126,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public int updateTask (TaskManagerItem item) {
+    public int updateTask (TaskItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, item.getName());
@@ -139,7 +138,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.update(TABLE_TASKS, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(item.getId())});
 
     }
-    public void deleteTask(TaskManagerItem item) {
+    public void deleteTask(TaskItem item) {
+
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TASKS, KEY_ID + " = ?", new String[] {String.valueOf(item.getId())});
         db.close();

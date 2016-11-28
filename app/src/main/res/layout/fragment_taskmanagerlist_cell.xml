@@ -44,17 +44,6 @@
         android:text="Name of Location"
         android:textAppearance="?attr/textAppearanceListItem" />
 
-    <CheckBox
-        android:id="@+id/completed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Completed"
-        android:layout_marginLeft="@dimen/text_margin"
-        android:layout_marginRight="@dimen/text_margin"
-        android:layout_marginEnd="29dp"
-        android:layout_alignBaseline="@+id/PandaPoints"
-        android:layout_alignBottom="@+id/PandaPoints"
-        android:layout_alignParentEnd="true" />
 
     <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="wrap_content"

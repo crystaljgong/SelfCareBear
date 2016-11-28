@@ -8,11 +8,27 @@ import android.os.Parcelable;
  */
 public class TaskItem implements Parcelable {
     private String name;
+    private int id;
     private boolean completed;
+    private int pandaPoints;
+    private String timeOfDay;
+    private String location;
 
-    public TaskItem(String name, boolean completed) {
+    public TaskItem(String name, boolean completed, int pandaPoints, String timeOfDay, String location) {
         this.name = name;
         this.completed = completed;
+        this.pandaPoints = pandaPoints;
+        this.timeOfDay = timeOfDay;
+        this.location = location;
+    }
+
+    public TaskItem(int id, String name, boolean completed, int pandaPoints, String timeOfDay, String location) {
+        this.id = id;
+        this.name = name;
+        this.completed = completed;
+        this.pandaPoints = pandaPoints;
+        this.timeOfDay = timeOfDay;
+        this.location = location;
     }
 
     //necessary parcelable tasks added
@@ -33,18 +49,44 @@ public class TaskItem implements Parcelable {
         }
     };
 
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
     public String getName() {
         return this.name;
     }
     public void changeName(String name) {
         this.name = name;
     }
+
     public boolean getCompleted() {
         return this.completed;
     }
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getTimeOfDay() {
+        return this.timeOfDay;
+    }
+    public void setTimeOfDay(String timeOfDay) {
+        this.timeOfDay = timeOfDay;
+    }
+
+    public int getPandaPoints() {
+        return this.pandaPoints;
+    }
+    public void setPandaPoints(int pandaPoints) {
+        this.pandaPoints = pandaPoints;
+    }
+
 
 
 
