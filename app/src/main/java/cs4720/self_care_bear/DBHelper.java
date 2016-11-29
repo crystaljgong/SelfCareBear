@@ -22,7 +22,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "DataStorage.db";
+    public static final String DATABASE_NAME = "Da taStorage.db";
     //TODO: make primary key incrementing thingy
     // table name
     public static final String TABLE_TASKS = "tasks";
@@ -44,9 +44,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String DROP_TABLE_TASK = "DROP TABLE " + TABLE_TASKS + ";";
-        db.execSQL(DROP_TABLE_TASK);
-        String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " varchar(50), " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER, " + KEY_TIME_OF_DAY + " varchar(50), " + KEY_LOCATION + " varchar(50) " + ");";
+       // String DROP_TABLE_TASK = "DROP TABLE " + TABLE_TASKS + ";";
+       // db.execSQL(DROP_TABLE_TASK);
+        String CREATE_TASK_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " varchar(50), " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER, " + KEY_TIME_OF_DAY + " varchar(50), " + KEY_LOCATION + " varchar(50) " + ");";
         System.out.println(CREATE_TASK_TABLE);
         db.execSQL(CREATE_TASK_TABLE);
         //String result = null;
@@ -57,6 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //db.execSQL();
     }
 
+//    public boolean dbExists()
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("delete table tasks");

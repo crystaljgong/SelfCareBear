@@ -2,26 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_margin="10dp"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/giftImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@color/black_overlay"
         android:adjustViewBounds="true"/>
 
     <TextView
         android:id="@+id/giftName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_margin="0dp"
+        android:layout_gravity="center"
+        android:text="Gift Name"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/giftPoints"
         android:layout_width="wrap_content"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_marginBottom="10dp"
+        android:text="xx PandaPoints"
         android:textAppearance="?attr/textAppearanceListItem" />
 
 </LinearLayout>

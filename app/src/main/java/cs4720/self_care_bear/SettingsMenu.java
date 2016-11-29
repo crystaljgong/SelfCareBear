@@ -157,16 +157,17 @@ public class SettingsMenu extends AppCompatActivity implements
                 if (isChecked) {
                     calendarSwitch.setEnabled(false);
                     calendarText.setText("");
+                    getResultsFromApi();
                     calendarSwitch.setEnabled(true);
 
-                    //Call calendar every 2 hours
-                    Timer t = new Timer();
-                    t.scheduleAtFixedRate(new TimerTask() {
-                        @Override
-                        public void run() {
-                            getResultsFromApi();
-                        }
-                    }, 0, 2 * 60000 * 60000); //0 delay, min*hr*2
+//                    //Call calendar every 2 hours
+//                    Timer t = new Timer();
+//                    t.scheduleAtFixedRate(new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            getResultsFromApi();
+//                        }
+//                    }, 0, 2 * 60000 * 60000); //0 delay, min*hr*2
                 } else {
                     googCalTasks.clear();
                     calendarText.setText("");

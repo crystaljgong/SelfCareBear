@@ -78,6 +78,7 @@ public class MainScreen extends AppCompatActivity implements
     public static int P_POINTS;
     public static int STEPS;
 
+    public boolean initialStartup = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,7 @@ public class MainScreen extends AppCompatActivity implements
 
     }
 
-
+    // preloaded tasks for first startup
     public void addTasks() {
 
         MORN_TASKS = new ArrayList<>();

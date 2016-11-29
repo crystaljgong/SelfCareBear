@@ -3,25 +3,44 @@
     <string-array
         name="morningStrings">
         <item>Do your best today!</item>
-
+        <item>*yawn* Good morning!</item>
+        <item>Last night I dreamt I was surrounded by polar bears...</item>
+        <item>Caring for yourself is a priority and a necessity-- not a luxury.</item>
+        <item>Do something today that makes you feel proud.</item>
+        <item>Remember to eat breakfast!</item>
     </string-array>
 
     <string-array
         name="afternoonStrings">
         <item>How are you doing today?</item>
-
+        <item>Trust your instincts.</item>
+        <item>You have so much potential! Don\'t give up on yourself.</item>
+        <item>Be kind to yourself today!</item>
+        <item>Respect yourself.</item>
+        <item>You are brilliant!</item>
     </string-array>
 
     <string-array
         name="eveningStrings">
-
+        <item>It\'s getting late, isn\'t it?</item>
+        <item>Did you have a good day today?</item>
+        <item>I\'m getting a bit sleepy... how about you?</item>
+        <item>How are you feeling? Are you tired?</item>
+        <item>Make sure to brush your teeth before you go to bed!</item>
     </string-array>
+
     <string-array
         name="rewardStrings">
         <item>Great job, I knew you could do it!</item>
         <item>You did your best, you should be proud!</item>
         <item>The last time I tried to do that, it took me three days...</item>
+        <item>That must\'ve been hard, keep it up!</item>
     </string-array>
 
+    <string name="snack">How did you know I was hungry?</string>
+    <string name="flowers">These are my favorite! Thank you so much.</string>
+    <string name="umbrella">I needed a new umbrella, this one is perfect!</string>
+    <string name="powerDrill">I\'ve been meaning to fix up the house, this\'ll get the job done nicely.</string>
+    <string name="fireworks">Fireworks! We should set them off tonight for fun.</string>
 
 </resources>

@@ -7,6 +7,14 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Do your best today! Etc, etc"
+        android:gravity="top"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"/>
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -35,7 +43,6 @@
                 android:contentDescription="a cartoon panda sitting in a house with wooden floors, a window made of bamboo in the top right corner, and a small bamboo forest in the top left corner"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/care_bear_home" />
-
 
         </FrameLayout>
 
