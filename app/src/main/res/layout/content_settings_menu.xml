@@ -20,7 +20,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="Automatically complete task when arriving at location"
+            android:text="Set location as Current Location when adding task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"
@@ -46,7 +46,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="Add Google Calendar events to Afternoon Tasks"
+            android:text="Sync Google Calendar with Afternoon Tasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"
@@ -71,4 +71,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click the button to test the API." />
+
+    <Button
+        android:text="Camera Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2" />
 </LinearLayout>

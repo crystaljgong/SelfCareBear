@@ -3,6 +3,8 @@ package cs4720.self_care_bear;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.gcm.Task;
+
 /**
  * Created by crystalgong on 11/1/16.
  */
@@ -49,12 +51,18 @@ public class TaskItem implements Parcelable {
         }
     };
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return this.name;
     }
+
     public void changeName(String name) {
         this.name = name;
     }
@@ -62,6 +70,7 @@ public class TaskItem implements Parcelable {
     public boolean getCompleted() {
         return this.completed;
     }
+
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
@@ -69,6 +78,7 @@ public class TaskItem implements Parcelable {
     public String getLocation() {
         return location;
     }
+
     public void setLocation(String location) {
         this.location = location;
     }
@@ -76,6 +86,7 @@ public class TaskItem implements Parcelable {
     public String getTimeOfDay() {
         return this.timeOfDay;
     }
+
     public void setTimeOfDay(String timeOfDay) {
         this.timeOfDay = timeOfDay;
     }
@@ -83,11 +94,10 @@ public class TaskItem implements Parcelable {
     public int getPandaPoints() {
         return this.pandaPoints;
     }
+
     public void setPandaPoints(int pandaPoints) {
         this.pandaPoints = pandaPoints;
     }
-
-
 
 
     @Override
@@ -101,4 +111,18 @@ public class TaskItem implements Parcelable {
         dest.writeByte((byte) (completed ? 1 : 0));
     }
 
+    @Override
+    public boolean equals(Object o) { //name, location, points, and time are same
+        boolean theySame = false;
+        if (o instanceof TaskItem) {
+            TaskItem item = (TaskItem) o;
+            theySame = (item.getName().equals(this.getName()) &&
+                    item.getLocation().equals(this.getLocation()) &&
+                    item.getPandaPoints() == this.getPandaPoints()) &&
+                    item.getTimeOfDay().equals(this.getTimeOfDay());
+
+        }
+        return theySame;
+
+    }
 }

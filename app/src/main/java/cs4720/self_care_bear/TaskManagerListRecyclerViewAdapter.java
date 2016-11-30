@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-//import cs4720.self_care_bear.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static cs4720.self_care_bear.SettingsMenu.REQUEST_AUTHORIZATION;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link TaskItem} and makes a call to the
@@ -82,6 +82,7 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
         public final TextView mPandaPoints;
         public ImageView deleteIcon;
         public final TextView mLocation;
+        public ImageButton addToCal;
         //public TaskItem mItem;
 
         public ViewHolder(View view) {
@@ -91,6 +92,7 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
           //  mCompleted = (CheckBox) view.findViewById(R.id.completed);
             deleteIcon = (ImageView)itemView.findViewById(R.id.task_delete);
             mLocation = (TextView)view.findViewById(R.id.location);
+            addToCal = (ImageButton) itemView.findViewById(R.id.addToCalendarButton);
 
 
             deleteIcon.setOnClickListener(new Button.OnClickListener() {
@@ -99,6 +101,27 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
                     Toast.makeText(v.getContext(), "Task item has been deleted", Toast.LENGTH_LONG).show();
                     tasks.remove(getAdapterPosition());
                     notifyDataSetChanged();
+                }
+            });
+
+            //only show the add calendar option if calendar is on
+            if (SettingsMenu.CALENDAR_ON) {
+                addToCal.setVisibility(View.VISIBLE);
+            }
+            else addToCal.setVisibility(View.GONE);
+
+            //when click on add to calendar, make a POST to calendar api to add this event to calendar.
+            //this is only available when CALENDAR_ON = true so credential should always be there
+            addToCal.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //notifyDataSetChanged();
+                    //Make an Object array with context and task to pass into async task
+//                    Object[] params = new Object[2];
+//                    params[0] = tasks.get(getAdapterPosition());
+//                    params[1] = v.getContext();
+                    new MakeAddEventTask(SettingsMenu.MCREDENTIAL, v.getContext()).execute(tasks.get(getAdapterPosition()));
+
                 }
             });
         }
@@ -111,3 +134,7 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
         }
     }
 }
+
+
+
+
