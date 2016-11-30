@@ -1,22 +1,21 @@
 package cs4720.self_care_bear;
 
-import android.*;
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +45,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
@@ -55,16 +54,16 @@ import com.google.api.services.calendar.model.Events;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static android.widget.Toast.LENGTH_SHORT;
+import static cs4720.self_care_bear.MainScreen.EVEN_START_TIME;
+
 
 public class SettingsMenu extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -74,6 +73,7 @@ public class SettingsMenu extends AppCompatActivity implements
 
     //for location stuff
     static final int REQUEST_LOCATION = 1004;
+    public static boolean LOCATION_ON;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -84,11 +84,11 @@ public class SettingsMenu extends AppCompatActivity implements
 
     //FOR CALENDAR STUFF
     Switch calendarSwitch;
+    public static boolean CALENDAR_ON;
 
-    GoogleAccountCredential mCredential;
+    static GoogleAccountCredential MCREDENTIAL;
     private TextView calendarText;
-    private Button calendarButton;
-    ProgressDialog mProgress;
+  //  ProgressDialog mProgress;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -96,10 +96,16 @@ public class SettingsMenu extends AppCompatActivity implements
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY};
+    private static final String[] SCOPES = {CalendarScopes.CALENDAR};
 
     private List<String> googCalTasks;
-    private DateTime datetime;
+
+    boolean timerRunning; //don't need to instantiate bc boolean i think
+
+    //for camera
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private Button cameraButton;
+    private ImageView mImageView;
 
 
     @Override
@@ -111,6 +117,16 @@ public class SettingsMenu extends AppCompatActivity implements
 
         locationSwitch = (Switch) findViewById(R.id.locationSwitch);
         calendarSwitch = (Switch) findViewById(R.id.calendarSwitch);
+        if (LOCATION_ON) {
+            locationSwitch.setChecked(true);
+        }
+        else locationSwitch.setChecked(false);
+
+        if (CALENDAR_ON) {
+            calendarSwitch.setChecked(true);
+        }
+        else calendarSwitch.setChecked(false);
+
 
         //LOCATION
 
@@ -126,11 +142,13 @@ public class SettingsMenu extends AppCompatActivity implements
         locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    LOCATION_ON = true;
                     Toast.makeText(getBaseContext(), "Location on", Toast.LENGTH_SHORT).show();
                     //connect
                     mGoogleApiClient.connect();
                     mRequestingLocationUpdates = true;
                 } else {
+                    LOCATION_ON = false;
                     if (mGoogleApiClient.isConnected()) {
                         // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                         mGoogleApiClient.disconnect();
@@ -154,20 +172,49 @@ public class SettingsMenu extends AppCompatActivity implements
         //calendar Switch stuff
         calendarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    calendarSwitch.setEnabled(false);
-                    calendarText.setText("");
-                    calendarSwitch.setEnabled(true);
+                final Handler handler = new Handler();
+                Timer timer = new Timer();
 
-                    //Call calendar every 2 hours
-                    Timer t = new Timer();
-                    t.scheduleAtFixedRate(new TimerTask() {
-                        @Override
-                        public void run() {
-                            getResultsFromApi();
-                        }
-                    }, 0, 2 * 60000 * 60000); //0 delay, min*hr*2
+                if (isChecked) {
+                    CALENDAR_ON = true;
+
+                    //calendarSwitch.setEnabled(false);
+                    calendarText.setText("");
+                    callCalAPI();
+                    //calendarSwitch.setEnabled(true);
+
+                    //call every 30 minutes
+                    if (!timerRunning) {
+                        timerRunning = true;
+                        TimerTask task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        callCalAPI();
+                                    }
+                                });
+                            }
+                        };
+                        timer.schedule(task, 0, 30 * 60000); //every 30 minutes
+                    }
+
                 } else {
+                    CALENDAR_ON = false;
+                    if (timerRunning) {
+                        timerRunning = false;
+                        timer.cancel();
+                        timer.purge();
+                    }
+
+                    //CharSequence fromCal = "(from Calendar)";
+//                    for (TaskItem item : MainScreen.AFT_TASKS) {
+//                        if (item.getName().contains(fromCal)) {
+//                            MainScreen.AFT_TASKS.remove(item);
+//                        }
+//                    }
+
+                    //Toast.makeText(getBaseContext(), "Removed tasks", Toast.LENGTH_SHORT).show();
                     googCalTasks.clear();
                     calendarText.setText("");
                     //somehow disconnect google play calendar?
@@ -176,15 +223,32 @@ public class SettingsMenu extends AppCompatActivity implements
         });
 
         calendarText = (TextView) findViewById(R.id.textView);
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Calendar API ...");
+       // mProgress = new ProgressDialog(this);
+       // mProgress.setMessage("Calling Google Calendar API ...");
 
-        mCredential = GoogleAccountCredential.usingOAuth2(
+        MCREDENTIAL = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
+
+        //camera button - temp
+        //camera test
+        cameraButton = (Button)findViewById(R.id.button2);
+
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
 
     protected void onStart() {
         super.onStart();
@@ -266,15 +330,16 @@ public class SettingsMenu extends AppCompatActivity implements
      * of the preconditions are not satisfied, the app will prompt the user as
      * appropriate.
      */
-    private void getResultsFromApi() {
+    private void callCalAPI() {
         if (!isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();
-        } else if (mCredential.getSelectedAccountName() == null) {
+        } else if (MCREDENTIAL.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!isDeviceOnline()) {
-            calendarText.setText("No network connection available.");
+            Toast.makeText(this, "No network connection available.", Toast.LENGTH_SHORT).show();
+            calendarSwitch.setChecked(false);
         } else {
-            new MakeRequestTask(mCredential).execute();
+            new MakeRequestTask(MCREDENTIAL).execute();
         }
     }
 
@@ -295,12 +360,12 @@ public class SettingsMenu extends AppCompatActivity implements
             String accountName = getPreferences(Context.MODE_PRIVATE)
                     .getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
-                mCredential.setSelectedAccountName(accountName);
-                getResultsFromApi();
+                MCREDENTIAL.setSelectedAccountName(accountName);
+                callCalAPI();
             } else {
                 // Start a dialog from which the user can choose an account
                 startActivityForResult(
-                        mCredential.newChooseAccountIntent(),
+                        MCREDENTIAL.newChooseAccountIntent(),
                         REQUEST_ACCOUNT_PICKER);
             }
         } else {
@@ -331,11 +396,13 @@ public class SettingsMenu extends AppCompatActivity implements
         switch (requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
-                    calendarText.setText(
+                    Toast.makeText(this,
                             "This app requires Google Play Services. Please install " +
-                                    "Google Play Services on your device and relaunch this app.");
+                                    "Google Play Services on your device and relaunch this app.",
+                            Toast.LENGTH_LONG).show();
+                    calendarSwitch.setChecked(false);
                 } else {
-                    getResultsFromApi();
+                    callCalAPI();
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
@@ -349,16 +416,22 @@ public class SettingsMenu extends AppCompatActivity implements
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
-                        mCredential.setSelectedAccountName(accountName);
-                        getResultsFromApi();
+                        MCREDENTIAL.setSelectedAccountName(accountName);
+                        callCalAPI();
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
-                    getResultsFromApi();
+                    callCalAPI();
                 }
                 break;
+            case REQUEST_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    mImageView.setImageBitmap(imageBitmap);
+                } //TODO: ADD AN IMAGEVIEW. TO THE LAYOUT.
         }
     }
 
@@ -474,12 +547,15 @@ public class SettingsMenu extends AppCompatActivity implements
                 nameLoc[1] = "N/A";
             }
 
-            TaskItem calTask = new TaskItem(nameLoc[0], false, 10, "afternoon", nameLoc[1]);
-            MainScreen.AFT_TASKS.add(calTask);
-            System.out.println(task);
+            TaskItem calTask = new TaskItem(nameLoc[0] + " (from Calendar)", false, 10, "afternoon", nameLoc[1]);
+            if (!MainScreen.AFT_TASKS.contains(calTask)) {
+                MainScreen.AFT_TASKS.add(calTask);
+                System.out.println(task);
+            }
+            else Log.i("addTask", "didn't add " + calTask.getName() + " bc duplicate!");
         }
 
-        Toast.makeText(this, "add caltasks", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Added tasks.", Toast.LENGTH_SHORT).show();
         //notify the main screen recyclerview if it's afternoon as well as task manager recycler view
     }
 
@@ -508,8 +584,8 @@ public class SettingsMenu extends AppCompatActivity implements
         @Override
         protected List<String> doInBackground(Void... params) {
             try {
-                googCalTasks = getDataFromApi();
-                return getDataFromApi();
+                googCalTasks = getEventsFromCalApi();
+                return getEventsFromCalApi();
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
@@ -523,13 +599,14 @@ public class SettingsMenu extends AppCompatActivity implements
          * @return List of Strings describing returned events.
          * @throws IOException
          */
-        private List<String> getDataFromApi() throws IOException {
-            // List the next 10 events from the primary calendar.
+        private List<String> getEventsFromCalApi() throws IOException {
             DateTime now = new DateTime(System.currentTimeMillis());
 
             //get evening time
             java.util.Calendar cal = java.util.Calendar.getInstance();
-            cal.set(java.util.Calendar.HOUR_OF_DAY, 21); // set to 10pm? //TODO: make 21 a static var
+            cal.set(java.util.Calendar.HOUR_OF_DAY, EVEN_START_TIME);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
             long millis = cal.getTimeInMillis();
 
             DateTime eveningTime = new DateTime(millis);
@@ -545,9 +622,8 @@ public class SettingsMenu extends AppCompatActivity implements
                 List<CalendarListEntry> gotItems = calendarList.getItems();
 
                 for (CalendarListEntry calendarListEntry : gotItems) {
-                    System.out.println(calendarListEntry.getId());
+                    Log.i("cal", calendarListEntry.getId());
                     if (calendarListEntry.isSelected()) {
-
                         //a list of events makes a bunch of events from specific calendarList
                         Events events = mService.events().list(calendarListEntry.getId())
                                 .setMaxResults(10)
@@ -568,9 +644,11 @@ public class SettingsMenu extends AppCompatActivity implements
                                 start = event.getStart().getDate();
                             }
                             //add that string to the list of events
-                            eventStrings.add(
-                                    //String.format("%s (%s)", event.getSummary(), start)); This has time and date stamp
-                                    String.format("%s,%s", event.getSummary(), event.getLocation())); //Just has name of the event
+                            if(!event.getSummary().contains("(From Self-Care-Bear)")) {
+                                eventStrings.add(
+                                        //String.format("%s (%s)", event.getSummary(), start)); This has time and date stamp
+                                        String.format("%s,%s", event.getSummary(), event.getLocation())); //Just has name of the event
+                            }
                         }
                     }
                 }
@@ -585,24 +663,26 @@ public class SettingsMenu extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             calendarText.setText("");
-            mProgress.show();
+            //Toast.makeText(getBaseContext(), "Calling Google Calendar API...", Toast.LENGTH_SHORT).show();
+           // mProgress.show();
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
-            mProgress.hide();
+           // mProgress.hide();
             if (output == null || output.size() == 0) {
-                calendarText.setText("No results returned.");
+                Toast.makeText(getBaseContext(), "No results returned.", Toast.LENGTH_SHORT).show();
             } else {
                 output.add(0, "Data retrieved using the Google Calendar API:");
                 calendarText.setText(TextUtils.join("\n", output));
+                Toast.makeText(getBaseContext(), "Retrieving events from Calendar...", Toast.LENGTH_SHORT).show();
                 addCalTasks();
             }
         }
 
         @Override
         protected void onCancelled() {
-            mProgress.hide();
+           // mProgress.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
                     showGooglePlayServicesAvailabilityErrorDialog(
@@ -613,11 +693,11 @@ public class SettingsMenu extends AppCompatActivity implements
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             REQUEST_AUTHORIZATION);
                 } else {
-                    calendarText.setText("The following error occurred:\n"
-                            + mLastError.getMessage());
+                    Toast.makeText(getBaseContext(), "The following error occurred:\n"
+                            + mLastError.getMessage(), Toast.LENGTH_LONG).show();
                 }
             } else {
-                calendarText.setText("Request cancelled.");
+                Toast.makeText(getBaseContext(), "Request cancelled.", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -35,6 +35,7 @@ public class TaskManagerListFragment extends Fragment {
     private Context mContext;
     private ArrayList<TaskItem> allTasks;
     private RecyclerView rv;
+    public TaskManagerListRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -89,10 +90,11 @@ public class TaskManagerListFragment extends Fragment {
 
         // Set the adapter
 
-        mContext = view.getContext();
+        mContext = this.getContext();
+
         rv = (RecyclerView) view.findViewById(R.id.task_manager_list);
 
-        TaskManagerListRecyclerViewAdapter adapter = new TaskManagerListRecyclerViewAdapter(allTasks, mListener, mContext);
+        adapter = new TaskManagerListRecyclerViewAdapter(allTasks, mListener, mContext);
         rv.setAdapter(adapter);
         Log.i("TaskManagerListFragment", "Adapter was set");
 

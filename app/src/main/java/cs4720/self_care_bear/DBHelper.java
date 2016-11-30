@@ -44,11 +44,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String DROP_TABLE_TASK = "DROP TABLE " + TABLE_TASKS + ";";
-        db.execSQL(DROP_TABLE_TASK);
-        String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " varchar(50), " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER, " + KEY_TIME_OF_DAY + " varchar(50), " + KEY_LOCATION + " varchar(50) " + ");";
+//        String DROP_TABLE_TASK = "DROP TABLE " + TABLE_TASKS + ";";
+//        db.execSQL(DROP_TABLE_TASK);
+        String CREATE_TASK_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " varchar(50), " + KEY_COMPLETED + " varchar(50), " + KEY_PANDA_POINTS + " INTEGER, " + KEY_TIME_OF_DAY + " varchar(50), " + KEY_LOCATION + " varchar(50) " + ");";
         System.out.println(CREATE_TASK_TABLE);
         db.execSQL(CREATE_TASK_TABLE);
+
+
+
         //String result = null;
         //Object[] array = new Object[1];
         //array[0] = result;

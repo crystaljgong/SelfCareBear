@@ -2,6 +2,8 @@
 
 package cs4720.self_care_bear;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -24,19 +26,20 @@ import android.widget.Toast;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
-public class TaskManagerScreen extends AppCompatActivity implements TaskManagerListFragment.OnListFragmentInteractionListener, AddTaskFragment.OnFragmentInteractionListener, AddTaskFragment.DataListener{
+public class TaskManagerScreen extends AppCompatActivity
+        implements TaskManagerListFragment.OnListFragmentInteractionListener,
+        AddTaskFragment.OnFragmentInteractionListener,
+        AddTaskFragment.DataListener {
 
 
     static public TaskManagerListFragment morn;
     static public TaskManagerListFragment aft;
     static public TaskManagerListFragment even;
 
+    static ProgressDialog mProgress;
     Button button;
-
-
-
-
     public static final String PREFS_NAME = "PrefsFile";
+    Context mContext;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -62,7 +65,7 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         SharedPreferences defaultTasks = getSharedPreferences(PREFS_NAME, 0);
         String taskValue = defaultTasks.getString("taskValue", "none");
 
-        TextView taskItemName = (TextView)findViewById(R.id.taskName);
+        TextView taskItemName = (TextView) findViewById(R.id.taskName);
         //taskItemName.setText(taskValue);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -70,22 +73,22 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 
         // restore file
         String FILENAME = "a_file";
-        TextView editText2 = (TextView)findViewById(R.id.PandaPoints);
+        TextView editText2 = (TextView) findViewById(R.id.PandaPoints);
 
         try {
             FileInputStream fis = openFileInput(FILENAME);
             StringBuilder builder = new StringBuilder();
             int ch;
-            while((ch = fis.read()) != -1){
-                builder.append((char)ch);
+            while ((ch = fis.read()) != -1) {
+                builder.append((char) ch);
             }
             editText2.setText(builder.toString());
             fis.close();
-        }catch(Exception e) {
+        } catch (Exception e) {
             Log.e("Storage", e.getMessage());
         }
 
-        button = (Button)findViewById(R.id.addTaskButton);
+        button = (Button) findViewById(R.id.addTaskButton);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,19 +115,19 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
 
         // db test
         DBHelper helper = new DBHelper(this);
-        for(int i = 0; i < MainScreen.MORN_TASKS.size(); i++) {
+        for (int i = 0; i < MainScreen.MORN_TASKS.size(); i++) {
             helper.addTask(MainScreen.MORN_TASKS.get(i));
         }
-        for(int i = 0; i < MainScreen.AFT_TASKS.size(); i++) {
+        for (int i = 0; i < MainScreen.AFT_TASKS.size(); i++) {
             helper.addTask(MainScreen.AFT_TASKS.get(i));
         }
-        for(int i = 0; i < MainScreen.EVEN_TASKS.size(); i++) {
+        for (int i = 0; i < MainScreen.EVEN_TASKS.size(); i++) {
             helper.addTask(MainScreen.EVEN_TASKS.get(i));
         }
 
         //reading from database
         ArrayList<TaskItem> tasksss = helper.getAllTasks();
-        for(TaskItem item : tasksss) {
+        for (TaskItem item : tasksss) {
             String log = "Name: " + item.getName() + ", completed: " + item.getCompleted() + ", points: " + item.getPandaPoints() + ", time: " + item.getTimeOfDay() + ", place: " + item.getLocation();
             Log.i("reading from database", log);
         }
@@ -138,24 +141,24 @@ public class TaskManagerScreen extends AppCompatActivity implements TaskManagerL
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         Log.i("onCreate", "adapter was set");
-        /**FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });**/
 
 
 
     }
 
 
+    public void onResume() {
+        super.onResume();
+        if (morn.adapter != null && aft.adapter != null && even.adapter != null) {
+            morn.adapter.notifyDataSetChanged();
+            aft.adapter.notifyDataSetChanged();
+            even.adapter.notifyDataSetChanged();
+        }
+    }
 
     public void onDataRecieved(String name, String timeOfDay, int points, String location) {
         TaskItem newItem = new TaskItem(name, false, points, timeOfDay, location);
-        if(timeOfDay.equals("Morning")) {
+        if (timeOfDay.equals("Morning")) {
             MainScreen.MORN_TASKS.add(newItem);
         } else if (timeOfDay.equals("Evening")) {
             MainScreen.EVEN_TASKS.add(newItem);
