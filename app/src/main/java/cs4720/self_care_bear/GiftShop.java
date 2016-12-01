@@ -1,6 +1,8 @@
 package cs4720.self_care_bear;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -22,7 +24,8 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
     public static ArrayList<GiftItem> allGift;
     public static GiftItemFragment frag;
     public static TextView spendPts;
-
+    //for camera
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
 //    @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,15 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
 
 
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView tempSelfieView = (ImageView) findViewById(R.id.tempSelfieView);
+            tempSelfieView.setImageBitmap(imageBitmap);
+        }
+    }
     //TODO: Do things idk
     @Override
     public void onListFragmentInteraction(GiftItem item) {

@@ -87,7 +87,7 @@ public class GiftItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_giftitem_list, container, false);
 
         // Set the adapter
-        mContext = view.getContext();
+        mContext = this.getContext();
         rv = (RecyclerView) view.findViewById(R.id.giftList);
         rv.setLayoutManager(new GridLayoutManager(mContext, 2));
         rv.setAdapter(new GiftItemRecyclerViewAdapter(mContext, items, mListener));

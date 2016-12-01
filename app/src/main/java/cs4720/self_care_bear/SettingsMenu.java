@@ -7,14 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,10 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,10 +97,6 @@ public class SettingsMenu extends AppCompatActivity implements
 
     boolean timerRunning; //don't need to instantiate bc boolean i think
 
-    //for camera
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private Button cameraButton;
-    private ImageView mImageView;
 
 
     @Override
@@ -230,25 +221,9 @@ public class SettingsMenu extends AppCompatActivity implements
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
-
-        //camera button - temp
-        //camera test
-        cameraButton = (Button)findViewById(R.id.button2);
-
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                dispatchTakePictureIntent();
-            }
-        });
-
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
+
 
     protected void onStart() {
         super.onStart();
@@ -426,12 +401,6 @@ public class SettingsMenu extends AppCompatActivity implements
                     callCalAPI();
                 }
                 break;
-            case REQUEST_IMAGE_CAPTURE:
-                if (resultCode == RESULT_OK) {
-                    Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    mImageView.setImageBitmap(imageBitmap);
-                } //TODO: ADD AN IMAGEVIEW. TO THE LAYOUT.
         }
     }
 

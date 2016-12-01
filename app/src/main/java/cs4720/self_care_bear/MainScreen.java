@@ -88,7 +88,7 @@ public class MainScreen extends AppCompatActivity implements
         addGifts();
 
         //initialize points
-        P_POINTS = 0;
+        P_POINTS = 10000;
         MORN_END_TIME = 9;
         EVEN_START_TIME = 18;
 
@@ -148,7 +148,6 @@ public class MainScreen extends AppCompatActivity implements
         //textview for panda points
         pointsStatus = (TextView)findViewById(R.id.main_screen_status);
         // FOR TESTING PURPOSES
-        // are we still doing step counter
         pointsStatus.setText("Panda Points: " + P_POINTS);
 
 
@@ -166,7 +165,7 @@ public class MainScreen extends AppCompatActivity implements
         GiftItem drill = new GiftItem(R.mipmap.drill, "Drill", 500, false);
 //        Drawable img5 = getResources().getDrawable(R.mipmap.fireworks);
         GiftItem fireworks = new GiftItem(R.mipmap.fireworks, "Fireworks", 1000, false);
-        GiftItem camera = new GiftItem(R.mipmap.camera, "Camera", 3000, false);
+        GiftItem camera = new GiftItem(R.mipmap.camera, "Selfie", 3000, false);
 
         ALL_GIFTS.add(snack);
         ALL_GIFTS.add(flower);
