@@ -38,5 +38,5 @@
         android:text="Confirm"
         android:layout_alignBaseline="@+id/buyDecline"
         android:layout_alignBottom="@+id/buyDecline"
-        android:layout_alignParentEnd="true" />
+        android:layout_toEndOf="@+id/buyText" />
 </RelativeLayout>

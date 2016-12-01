@@ -15,10 +15,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -40,6 +45,8 @@ public class MainScreen extends AppCompatActivity implements
     //Made this public static so that gift shop can change it
     public static TextView pointsStatus;
     private TextView timeOfDay;
+    private TextView dialogue;
+    private ImageButton pandaBut;
 
     // static fields
     static public ArrayList<TaskItem> MORN_TASKS;
@@ -48,6 +55,11 @@ public class MainScreen extends AppCompatActivity implements
     public static int MORN_END_TIME;
     public static int EVEN_START_TIME;
     public static int P_POINTS;
+
+    private String[] morningStr;
+    private String[] afterStr;
+    private String[] evenStr;
+    private String[] rewardStr;
 
 
     @Override
@@ -58,6 +70,13 @@ public class MainScreen extends AppCompatActivity implements
         homeScreenPage = findViewById(R.id.homeScreen);
 
         timeOfDay = (TextView) findViewById(R.id.timeOfDayTextView);
+        dialogue = (TextView) findViewById(R.id.dialogText);
+
+        // dialogue string arrays
+        morningStr = getResources().getStringArray(R.array.morningStrings);
+        afterStr = getResources().getStringArray(R.array.afternoonStrings);
+        evenStr = getResources().getStringArray(R.array.eveningStrings);
+        rewardStr = getResources().getStringArray(R.array.rewardStrings);
 
         //make a list of tasks
         tasks = new ArrayList<>();
@@ -69,28 +88,55 @@ public class MainScreen extends AppCompatActivity implements
         addGifts();
 
         //initialize points
-        P_POINTS = 100;
+        P_POINTS = 0;
         MORN_END_TIME = 9;
         EVEN_START_TIME = 18;
-
 
         //check time of day
         Calendar c = Calendar.getInstance();
         if (c.HOUR_OF_DAY < 9 && c.HOUR_OF_DAY > 3 && MORN_TASKS != null) {
             tasks = MORN_TASKS;
             timeOfDay.setText("Morning Tasks");
+            dialogue.setText(morningStr[new Random().nextInt(morningStr.length)]);
 
         }
         else if (c.HOUR_OF_DAY >= 9 && c.HOUR_OF_DAY < 18 && AFT_TASKS != null) {
             tasks = AFT_TASKS;
             timeOfDay.setText("Afternoon Tasks");
+            dialogue.setText(afterStr[new Random().nextInt(afterStr.length)]);
         }
         else {
             if (EVEN_TASKS != null) { // between 18 and 3
                 tasks = EVEN_TASKS;
                 timeOfDay.setText("Evening Tasks");
+                dialogue.setText(evenStr[new Random().nextInt(evenStr.length)]);
             }
         }
+
+//        dialogue.setText("Testing, 1, 2, 3");
+
+
+
+        pandaBut = (ImageButton) findViewById(R.id.pandaBut);
+        pandaBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (tasks == MORN_TASKS) {
+                    dialogue.setText(morningStr[new Random().nextInt(morningStr.length)]);
+
+                }
+                else if (tasks == AFT_TASKS) {
+                    dialogue.setText(afterStr[new Random().nextInt(afterStr.length)]);
+                }
+                else {
+                    if (tasks == EVEN_TASKS) { // between 18 and 3
+                        dialogue.setText(evenStr[new Random().nextInt(evenStr.length)]);
+                    }
+                }
+
+            }
+        });
 
         //make the recyclerview
         homeTaskList = TaskListFragment.newInstance(tasks);
@@ -120,12 +166,14 @@ public class MainScreen extends AppCompatActivity implements
         GiftItem drill = new GiftItem(R.mipmap.drill, "Drill", 500, false);
 //        Drawable img5 = getResources().getDrawable(R.mipmap.fireworks);
         GiftItem fireworks = new GiftItem(R.mipmap.fireworks, "Fireworks", 1000, false);
+        GiftItem camera = new GiftItem(R.mipmap.camera, "Camera", 3000, false);
 
         ALL_GIFTS.add(snack);
         ALL_GIFTS.add(flower);
         ALL_GIFTS.add(umbrella);
         ALL_GIFTS.add(drill);
         ALL_GIFTS.add(fireworks);
+        ALL_GIFTS.add(camera);
 
         Log.i("addGifts", "" + ALL_GIFTS.get(0).getGiftName());
 
@@ -253,12 +301,14 @@ public class MainScreen extends AppCompatActivity implements
             taskNum.setCompleted(false);
             pointsStatus.setText(
                 "Panda Points: " + P_POINTS);
+
         } else {
             P_POINTS += taskNum.getPandaPoints();
             Toast.makeText(this, "You completed this task, good job! Panda Points =  " + P_POINTS, Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(true);
             pointsStatus.setText(
                     "Panda Points: " + P_POINTS);
+            dialogue.setText(rewardStr[new Random().nextInt(rewardStr.length)]);
         }
     }
 

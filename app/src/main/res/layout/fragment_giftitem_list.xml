@@ -7,9 +7,7 @@
     android:name="cs4720.self_care_bear.GiftItemFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
     android:layout_marginTop="16dp"
-    android:layout_marginRight="16dp"
     app:layoutManager="GridLayoutManager"
     tools:context="cs4720.self_care_bear.GiftItemFragment"
     tools:listitem="@layout/fragment_giftitem" />

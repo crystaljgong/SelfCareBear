@@ -51,7 +51,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getGiftName());
-        holder.mContentView.setText("" + mValues.get(position).getGiftPoints());
+        holder.mContentView.setText("" + mValues.get(position).getGiftPoints() + " PandaPoints");
         holder.mImageView.setImageResource(mValues.get(position).getImg());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +95,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                     dialog.setTitle("Buy Gift");
                     Log.i("onClick", "dialog just set up");
                     TextView text = (TextView) dialog.findViewById(R.id.buyText);
-                    text.setText("Would you like to purchase\n" + mIdView.getText() + "\nfor " + mContentView.getText() + " PandaPoints?");
+                    text.setText("Would you like to purchase\n" + mIdView.getText() + "\nfor " + mContentView.getText());
                     Log.i("onClick", "buy text set");
                     ImageView img = (ImageView) dialog.findViewById(R.id.buyImg);
                     img.setImageDrawable(mImageView.getDrawable());
@@ -108,7 +108,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                             Log.i("onClick", "setting confirm button onClick");
 
                             //TODO: add buy functionality lol
-                            int cost = Integer.parseInt(mContentView.getText().toString());
+                            int cost = mItem.getGiftPoints();
                             if(mItem.isBought() == true) {
                                 Toast.makeText(v.getContext(), "You already bought this gift!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
