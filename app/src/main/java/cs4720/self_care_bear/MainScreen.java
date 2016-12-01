@@ -45,7 +45,7 @@ public class MainScreen extends AppCompatActivity implements
     //Made this public static so that gift shop can change it
     public static TextView pointsStatus;
     private TextView timeOfDay;
-    private TextView dialogue;
+    public static TextView dialogue;
     private ImageButton pandaBut;
 
     // static fields
