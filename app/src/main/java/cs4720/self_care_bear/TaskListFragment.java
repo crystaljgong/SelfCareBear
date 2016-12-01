@@ -92,11 +92,11 @@ public class TaskListFragment extends Fragment {
 
         // Set the adapter
        // if (view instanceof RecyclerView) {
-            mContext = view.getContext();
-            rv = (RecyclerView)view.findViewById(R.id.taskListRV);
-            rv.setLayoutManager(new LinearLayoutManager(mContext));
-            rv.setItemAnimator(new DefaultItemAnimator());
-            rv.setAdapter(new TaskListRecyclerViewAdapter(mContext, tasks, mListener));
+        mContext = view.getContext();
+        rv = (RecyclerView)view.findViewById(R.id.taskListRV);
+        rv.setLayoutManager(new LinearLayoutManager(mContext));
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setAdapter(new TaskListRecyclerViewAdapter(mContext, tasks, mListener));
       //  }
         return view;
     }

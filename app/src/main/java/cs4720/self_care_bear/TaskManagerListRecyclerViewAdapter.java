@@ -98,7 +98,7 @@ public class TaskManagerListRecyclerViewAdapter extends RecyclerView.Adapter<Tas
             deleteIcon.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Task item has been deleted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), "Task item has been deleted", Toast.LENGTH_SHORT).show();
                     tasks.remove(getAdapterPosition());
                     notifyDataSetChanged();
                 }

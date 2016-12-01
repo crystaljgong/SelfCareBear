@@ -39,7 +39,6 @@ public class TaskManagerScreen extends AppCompatActivity
     static ProgressDialog mProgress;
     Button button;
     public static final String PREFS_NAME = "PrefsFile";
-    Context mContext;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -61,32 +60,32 @@ public class TaskManagerScreen extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_manager);
 
-        // restore preferences
-        SharedPreferences defaultTasks = getSharedPreferences(PREFS_NAME, 0);
-        String taskValue = defaultTasks.getString("taskValue", "none");
-
-        TextView taskItemName = (TextView) findViewById(R.id.taskName);
-        //taskItemName.setText(taskValue);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // restore file
-        String FILENAME = "a_file";
-        TextView editText2 = (TextView) findViewById(R.id.PandaPoints);
-
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            StringBuilder builder = new StringBuilder();
-            int ch;
-            while ((ch = fis.read()) != -1) {
-                builder.append((char) ch);
-            }
-            editText2.setText(builder.toString());
-            fis.close();
-        } catch (Exception e) {
-            Log.e("Storage", e.getMessage());
-        }
+//        // restore preferences
+//        SharedPreferences defaultTasks = getSharedPreferences(PREFS_NAME, 0);
+//        String taskValue = defaultTasks.getString("taskValue", "none");
+//
+//        TextView taskItemName = (TextView) findViewById(R.id.taskName);
+//        //taskItemName.setText(taskValue);
+//
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        // restore file
+//        String FILENAME = "a_file";
+//        TextView editText2 = (TextView) findViewById(R.id.PandaPoints);
+//
+//        try {
+//            FileInputStream fis = openFileInput(FILENAME);
+//            StringBuilder builder = new StringBuilder();
+//            int ch;
+//            while ((ch = fis.read()) != -1) {
+//                builder.append((char) ch);
+//            }
+//            editText2.setText(builder.toString());
+//            fis.close();
+//        } catch (Exception e) {
+//            Log.e("Storage", e.getMessage());
+//        }
 
         button = (Button) findViewById(R.id.addTaskButton);
 

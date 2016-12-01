@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,10 +33,12 @@ public class MainScreen extends AppCompatActivity implements
     //for the recyclerview
     private ArrayList<TaskItem> tasks;
     static public TaskListFragment homeTaskList;
+    public static ArrayList<GiftItem> ALL_GIFTS;
 
     //initialize views
     private View homeScreenPage;
-    private TextView pointsStatus;
+    //Made this public static so that gift shop can change it
+    public static TextView pointsStatus;
     private TextView timeOfDay;
 
     // static fields
@@ -63,9 +66,10 @@ public class MainScreen extends AppCompatActivity implements
 
         //initialize all task lists
         addTasks();
+        addGifts();
 
         //initialize points
-        P_POINTS = 0;
+        P_POINTS = 100;
         MORN_END_TIME = 9;
         EVEN_START_TIME = 18;
 
@@ -97,13 +101,35 @@ public class MainScreen extends AppCompatActivity implements
 
         //textview for panda points
         pointsStatus = (TextView)findViewById(R.id.main_screen_status);
-
+        // FOR TESTING PURPOSES
+        // are we still doing step counter
+        pointsStatus.setText("Panda Points: " + P_POINTS);
 
 
     }
 
+    public void addGifts() {
+        ALL_GIFTS = new ArrayList<>();
+//        Drawable img = getResources().getDrawable(R.mipmap.snack);
+        GiftItem snack = new GiftItem(R.mipmap.snack, "Snack", 50, false);
+//        Drawable img2 = getResources().getDrawable(R.mipmap.flowers);
+        GiftItem flower = new GiftItem(R.mipmap.flowers, "Flowers", 100, false);
+//        Drawable img3 = getResources().getDrawable(R.mipmap.umbrella);
+        GiftItem umbrella = new GiftItem(R.mipmap.umbrella, "Umbrella", 250, false);
+//        Drawable img4 = getResources().getDrawable(R.mipmap.drill);
+        GiftItem drill = new GiftItem(R.mipmap.drill, "Drill", 500, false);
+//        Drawable img5 = getResources().getDrawable(R.mipmap.fireworks);
+        GiftItem fireworks = new GiftItem(R.mipmap.fireworks, "Fireworks", 1000, false);
 
+        ALL_GIFTS.add(snack);
+        ALL_GIFTS.add(flower);
+        ALL_GIFTS.add(umbrella);
+        ALL_GIFTS.add(drill);
+        ALL_GIFTS.add(fireworks);
 
+        Log.i("addGifts", "" + ALL_GIFTS.get(0).getGiftName());
+
+    }
 
     public void addTasks() {
 

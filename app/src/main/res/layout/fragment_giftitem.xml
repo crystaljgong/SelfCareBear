@@ -9,7 +9,7 @@
         android:id="@+id/giftImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@color/black_overlay"
+        android:background="#ffffff"
         android:adjustViewBounds="true"/>
 
     <TextView

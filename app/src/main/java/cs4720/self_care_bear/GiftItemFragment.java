@@ -1,19 +1,18 @@
 package cs4720.self_care_bear;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cs4720.self_care_bear.dummy.DummyContent;
-import cs4720.self_care_bear.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -28,21 +27,33 @@ public class GiftItemFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
+    private Context mContext;
+    private RecyclerView rv;
+    private ArrayList<GiftItem> items;
+    public GiftItemRecyclerViewAdapter adapter;
+//    private RecyclerView.LayoutManager manager;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+
+    @SuppressLint("ValidFragment")
+    public GiftItemFragment(ArrayList<GiftItem> items) {
+        this.items = items;
+    }
+
     public GiftItemFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static GiftItemFragment newInstance(int columnCount) {
-        GiftItemFragment fragment = new GiftItemFragment();
+    public static GiftItemFragment newInstance(ArrayList<GiftItem> items) {
+        GiftItemFragment fragment = new GiftItemFragment(items);
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putParcelableArrayList("gift items", items);
         fragment.setArguments(args);
+        Log.i("constructor", "successful");
         return fragment;
     }
 
@@ -53,6 +64,21 @@ public class GiftItemFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        Log.i("onCreate", "successful");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("onDestroy", "onDestroy was called");
+    }
+
+    public void setData(ArrayList<GiftItem> gifts) {
+        this.items = gifts;
+    }
+
+    public ArrayList<GiftItem> getData() {
+        return items;
     }
 
     @Override
@@ -61,16 +87,11 @@ public class GiftItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_giftitem_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new GiftItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+        mContext = view.getContext();
+        rv = (RecyclerView) view.findViewById(R.id.giftList);
+        rv.setLayoutManager(new GridLayoutManager(mContext, 2));
+        rv.setAdapter(new GiftItemRecyclerViewAdapter(mContext, items, mListener));
+        Log.i("onCreateView", "successful");
         return view;
     }
 
@@ -104,6 +125,6 @@ public class GiftItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(GiftItem item);
     }
 }
