@@ -59,6 +59,7 @@ public class MainScreen extends AppCompatActivity implements
     private String[] afterStr;
     private String[] evenStr;
     private String[] rewardStr;
+    private Bitmap pic;
 
     public static ImageView snack;
     public static ImageView flower;
@@ -95,6 +96,9 @@ public class MainScreen extends AppCompatActivity implements
             MORN_TASKS = savedInstanceState.getParcelableArrayList("morn");
             EVEN_TASKS = savedInstanceState.getParcelableArrayList("even");
             AFT_TASKS = savedInstanceState.getParcelableArrayList("aft");
+            if(savedInstanceState.getParcelable("photo") != null) {
+                pic = savedInstanceState.getParcelable("photo");
+            }
             //making sure image stays on screen on rotation
             if (ALL_GIFTS.get(0).isBought()) {
                 snack.setVisibility(View.VISIBLE);
@@ -113,6 +117,7 @@ public class MainScreen extends AppCompatActivity implements
             }
             if (ALL_GIFTS.get(5).isBought()) {
                 camera.setVisibility(View.VISIBLE);
+                photo.setImageBitmap(pic);
                 photo.setVisibility(View.VISIBLE);
             }
         }
@@ -198,6 +203,8 @@ public class MainScreen extends AppCompatActivity implements
 
         //textview for panda points
         pointsStatus = (TextView) findViewById(R.id.main_screen_status);
+        pointsStatus.setText(
+                "Panda Points: " + P_POINTS);
 
     }
 
@@ -283,6 +290,9 @@ public class MainScreen extends AppCompatActivity implements
         savedInstanceState.putParcelableArrayList("morn", MORN_TASKS);
         savedInstanceState.putParcelableArrayList("aft", AFT_TASKS);
         savedInstanceState.putParcelableArrayList("even", EVEN_TASKS);
+        if (pic != null) {
+            savedInstanceState.putParcelable("photo", pic);
+        }
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -294,6 +304,9 @@ public class MainScreen extends AppCompatActivity implements
         MORN_TASKS = savedInstanceState.getParcelableArrayList("morn");
         AFT_TASKS = savedInstanceState.getParcelableArrayList("aft");
         EVEN_TASKS = savedInstanceState.getParcelableArrayList("even");
+        if(savedInstanceState.getParcelable("photo") != null) {
+            pic = savedInstanceState.getParcelable("photo");
+        }
     }
 
     @Override
@@ -386,6 +399,7 @@ public class MainScreen extends AppCompatActivity implements
             Bundle extras = data.getExtras();
 
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            pic = imageBitmap;
             photo.setImageBitmap(imageBitmap);
 
         }

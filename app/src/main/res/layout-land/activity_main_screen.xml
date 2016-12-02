@@ -111,12 +111,12 @@
             android:layout_marginTop="340dp"
             android:background="@mipmap/camera"/>
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="gone"
             android:id="@+id/photo"
-            android:layout_marginLeft="215dp"
-            android:layout_marginTop="160dp"/>
+            android:layout_marginLeft="181dp"
+            android:layout_marginTop="135dp"/>
 
     </RelativeLayout>
 
