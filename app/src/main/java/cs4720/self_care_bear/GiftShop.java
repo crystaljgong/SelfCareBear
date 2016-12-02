@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift_shop);
 
+        Window window = this.getWindow();
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
         allGift = MainScreen.ALL_GIFTS;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
