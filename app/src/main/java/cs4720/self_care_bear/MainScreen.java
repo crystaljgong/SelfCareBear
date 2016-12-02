@@ -77,8 +77,12 @@ public class MainScreen extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main_screen);
+        Log.i("configuration", "" + getResources().getConfiguration().orientation);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setContentView(R.layout.activity_main_screen_landscape);
+        } else {
+            setContentView(R.layout.activity_main_screen);
+        }
         homeScreenPage = findViewById(R.id.homeScreen);
 
         timeOfDay = (TextView) findViewById(R.id.timeOfDayTextView);

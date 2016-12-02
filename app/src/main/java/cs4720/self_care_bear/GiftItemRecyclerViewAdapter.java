@@ -73,7 +73,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
     @Override
     public int getItemCount() {
         Log.i("getItemCount", "was called");
-        return mValues.size();
+        return giftItems.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -139,7 +139,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                                         MainScreen.dialogue.setText((mContext.getResources().getString(R.string.fireworks)));
                                         MainScreen.fire.setVisibility(View.VISIBLE);
                                     } else {
-                                        MainScreen.dialogue.setText((mContext.getResources().getString(R.string.photo)));
+                                        MainScreen.dialogue.setText((mContext.getResources().getString(R.string.selfie)));
                                         MainScreen.camera.setVisibility(View.VISIBLE);
                                         dispatchTakePictureIntent();
                                     }
@@ -148,8 +148,6 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                                     GiftShop.spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
                                     MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
                                     Log.i("onClick", "item successfully bought!");
-                                    mItem.remove(getAdapterPosition());
-                                    notifyDataSetChanged();
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(v.getContext(), "You don't have enough points to buy this!", Toast.LENGTH_SHORT).show();
