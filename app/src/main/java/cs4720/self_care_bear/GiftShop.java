@@ -27,6 +27,7 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
     //for camera
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
+
     //    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +37,9 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (frag == null) {
-            frag = GiftItemFragment.newInstance(allGift);
-            Log.i("onCreate", "frag was made");
-            getSupportFragmentManager().beginTransaction().add(R.id.giftRV, frag).commit();
-        }
+        frag = GiftItemFragment.newInstance(allGift);
+        Log.i("onCreate", "frag was made");
+        getSupportFragmentManager().beginTransaction().add(R.id.giftRV, frag).commit();
 
         spendPts = (TextView) findViewById(R.id.spendingPoints);
         spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
@@ -62,12 +61,6 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImageView tempSelfieView = (ImageView) findViewById(R.id.tempSelfieView);
-            tempSelfieView.setImageBitmap(imageBitmap);
-            //TODO:  attempt to put image in makes this crash
-//            ImageView photoVIew = (ImageView) findViewById(R.id.photo);
-//            photoVIew.setImageBitmap(imageBitmap);
 
             Intent passBackToMain = new Intent();
             passBackToMain.putExtras(extras);

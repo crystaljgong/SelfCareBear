@@ -1,12 +1,7 @@
 package cs4720.self_care_bear;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +40,7 @@ public class MainScreen extends AppCompatActivity implements
 
     //initialize views
     private View homeScreenPage;
+
     //Made this public static so that gift shop can change it
     public static TextView pointsStatus;
     private TextView timeOfDay;
@@ -77,12 +72,7 @@ public class MainScreen extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Log.i("configuration", "" + getResources().getConfiguration().orientation);
-//        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            setContentView(R.layout.activity_main_screen_landscape);
-//        } else {
-//            setContentView(R.layout.activity_main_screen);
-//        }
+
         setContentView(R.layout.activity_main_screen);
 
         snack = (ImageView) findViewById(R.id.snackImg);
@@ -96,7 +86,7 @@ public class MainScreen extends AppCompatActivity implements
         if (savedInstanceState == null) {
             addTasks();
             addGifts();
-            P_POINTS = 10000;
+            P_POINTS = 4880;
 
         } else {
             ALL_GIFTS = savedInstanceState.getParcelableArrayList("gifts");
@@ -169,9 +159,6 @@ public class MainScreen extends AppCompatActivity implements
             }
         }
 
-//        dialogue.setText("Testing, 1, 2, 3");
-
-
         pandaBut = (ImageButton) findViewById(R.id.pandaBut);
         pandaBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,23 +198,15 @@ public class MainScreen extends AppCompatActivity implements
 
         //textview for panda points
         pointsStatus = (TextView) findViewById(R.id.main_screen_status);
-        // FOR TESTING PURPOSES
-        pointsStatus.setText("Panda Points: " + P_POINTS);
-
 
     }
 
     public void addGifts() {
         ALL_GIFTS = new ArrayList<>();
-//        Drawable img = getResources().getDrawable(R.mipmap.snack);
         GiftItem snack = new GiftItem(R.mipmap.snack, "Snack", 50, false);
-//        Drawable img2 = getResources().getDrawable(R.mipmap.flowers);
         GiftItem flower = new GiftItem(R.mipmap.flowers, "Flowers", 100, false);
-//        Drawable img3 = getResources().getDrawable(R.mipmap.umbrella);
         GiftItem umbrella = new GiftItem(R.mipmap.umbrella, "Umbrella", 250, false);
-//        Drawable img4 = getResources().getDrawable(R.mipmap.drill);
         GiftItem drill = new GiftItem(R.mipmap.drill, "Power Drill", 500, false);
-//        Drawable img5 = getResources().getDrawable(R.mipmap.fireworks);
         GiftItem fireworks = new GiftItem(R.mipmap.fireworks, "Fireworks", 1000, false);
         GiftItem camera = new GiftItem(R.mipmap.camera, "Selfie", 3000, false);
 
@@ -407,8 +386,7 @@ public class MainScreen extends AppCompatActivity implements
             Bundle extras = data.getExtras();
 
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImageView photoView = (ImageView) findViewById(R.id.photo);
-            photoView.setImageBitmap(imageBitmap);
+            photo.setImageBitmap(imageBitmap);
 
         }
     }

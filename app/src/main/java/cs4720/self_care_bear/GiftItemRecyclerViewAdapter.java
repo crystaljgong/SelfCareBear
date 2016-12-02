@@ -56,7 +56,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
         holder.mIdView.setText(giftItems.get(position).getGiftName());
         holder.mContentView.setText("" + giftItems.get(position).getGiftPoints() + " PandaPoints");
         holder.mImageView.setImageResource(giftItems.get(position).getImg());
-        if(holder.mItem.isBought() == true) {
+        if(holder.mItem.isBought()) {
             holder.mView.setAlpha((float) 0.4);
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -78,15 +78,15 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
         return giftItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public GiftItem mItem;
-        public final ImageView mImageView;
-        public Context mContext;
+    protected class ViewHolder extends RecyclerView.ViewHolder {
+        private final View mView;
+        private final TextView mIdView;
+        private final TextView mContentView;
+        private GiftItem mItem;
+        private final ImageView mImageView;
+        private Context mContext;
 
-        public ViewHolder(View view) {
+        private ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) mView.findViewById(R.id.giftName);
@@ -97,7 +97,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mItem.isBought() == true) {
+                    if (mItem.isBought()) {
                         Toast.makeText(v.getContext(), "You already bought this gift!", Toast.LENGTH_SHORT).show();
                     } else {
 
@@ -120,7 +120,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
 
                             //TODO: add buy functionality lol
                             int cost = mItem.getGiftPoints();
-                            if(mItem.isBought() == true) {
+                            if(mItem.isBought()) {
                                 Toast.makeText(v.getContext(), "You already bought this gift!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             } else {
@@ -146,9 +146,6 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                                         MainScreen.dialogue.setText((mContext.getResources().getString(R.string.selfie)));
                                         MainScreen.camera.setVisibility(View.VISIBLE);
                                         mView.setAlpha((float) 0.4);
-//                                        GiftShop.spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
-//                                        MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
-//                                        Log.i("onClick", "item successfully bought!");
                                         dialog.dismiss();
                                         dispatchTakePictureIntent();
                                         MainScreen.photo.setVisibility(View.VISIBLE);
@@ -159,7 +156,9 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                                     MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
                                     Log.i("onClick", "item successfully bought!");
                                     dialog.dismiss();
-                                    ((Activity)mContext).finish();
+                                    if (mItem.getGiftName() != "Selfie") {
+                                        ((Activity) mContext).finish();
+                                    }
                                 } else {
                                     Toast.makeText(v.getContext(), "You don't have enough points to buy this!", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();

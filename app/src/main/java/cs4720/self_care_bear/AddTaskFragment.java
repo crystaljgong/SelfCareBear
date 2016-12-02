@@ -232,7 +232,7 @@ public class AddTaskFragment extends DialogFragment {
                     if (farAway) {
                         point = point * 2;
                         Toast.makeText(getActivity(), "That's far away! You get double points if you complete this task. ", Toast.LENGTH_LONG).show();
-                        theName = theName + " (x2 pts)";
+                        theName = theName + " (x2 points)";
                     }
                 }
 
