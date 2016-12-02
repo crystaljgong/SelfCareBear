@@ -77,12 +77,34 @@ public class MainScreen extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("configuration", "" + getResources().getConfiguration().orientation);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setContentView(R.layout.activity_main_screen_landscape);
+//        Log.i("configuration", "" + getResources().getConfiguration().orientation);
+//        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            setContentView(R.layout.activity_main_screen_landscape);
+//        } else {
+//            setContentView(R.layout.activity_main_screen);
+//        }
+        setContentView(R.layout.activity_main_screen);
+
+        if(savedInstanceState == null) {
+            addTasks();
+            addGifts();
+            P_POINTS = 10000;
+
         } else {
-            setContentView(R.layout.activity_main_screen);
+            ALL_GIFTS = savedInstanceState.getParcelableArrayList("gifts");
+            tasks = savedInstanceState.getParcelableArrayList("tasks");
+            P_POINTS = savedInstanceState.getInt("points");
+            MORN_TASKS = savedInstanceState.getParcelableArrayList("morn");
+            EVEN_TASKS = savedInstanceState.getParcelableArrayList("even");
+            AFT_TASKS = savedInstanceState.getParcelableArrayList("aft");
+            //making sure image stays on screen on rotation
+            for(int i = 0; i < ALL_GIFTS.size(); i++) {
+                if (ALL_GIFTS.get(i).isBought()) {
+
+                }
+            }
         }
+        addGifts();
         homeScreenPage = findViewById(R.id.homeScreen);
 
         timeOfDay = (TextView) findViewById(R.id.timeOfDayTextView);
@@ -100,11 +122,8 @@ public class MainScreen extends AppCompatActivity implements
         tasks.add(dummy);
 
         //initialize all task lists
-        addTasks();
-        addGifts();
 
         //initialize points
-        P_POINTS = 10000;
         MORN_END_TIME = 9;
         EVEN_START_TIME = 18;
 
@@ -165,6 +184,7 @@ public class MainScreen extends AppCompatActivity implements
 
 
         //make the recyclerview
+
         homeTaskList = TaskListFragment.newInstance(tasks);
         getSupportFragmentManager().beginTransaction().add(R.id.taskListFrag, homeTaskList).commit();
 
@@ -264,12 +284,22 @@ public class MainScreen extends AppCompatActivity implements
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("points", P_POINTS);
+        savedInstanceState.putParcelableArrayList("tasks", tasks);
+        savedInstanceState.putParcelableArrayList("gifts", ALL_GIFTS);
+        savedInstanceState.putParcelableArrayList("morn", MORN_TASKS);
+        savedInstanceState.putParcelableArrayList("aft", AFT_TASKS);
+        savedInstanceState.putParcelableArrayList("even", EVEN_TASKS);
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public void onRestoreInstanceState(Bundle savedInstaceState) {
-        super.onRestoreInstanceState(savedInstaceState);
-        P_POINTS = savedInstaceState.getInt("points");
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        P_POINTS = savedInstanceState.getInt("points");
+        tasks = savedInstanceState.getParcelableArrayList("tasks");
+        ALL_GIFTS = savedInstanceState.getParcelableArrayList("gifts");
+        MORN_TASKS = savedInstanceState.getParcelableArrayList("morn");
+        AFT_TASKS = savedInstanceState.getParcelableArrayList("aft");
+        EVEN_TASKS = savedInstanceState.getParcelableArrayList("even");
     }
 
     @Override
@@ -306,7 +336,10 @@ public class MainScreen extends AppCompatActivity implements
             super.onBackPressed();
         }
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
