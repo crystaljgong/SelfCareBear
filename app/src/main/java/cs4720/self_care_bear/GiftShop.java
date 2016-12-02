@@ -44,6 +44,11 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     //TODO: Do things idk
     @Override
     public void onListFragmentInteraction(GiftItem item) {

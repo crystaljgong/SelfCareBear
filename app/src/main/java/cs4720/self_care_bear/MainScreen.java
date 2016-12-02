@@ -1,9 +1,11 @@
 package cs4720.self_care_bear;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +64,15 @@ public class MainScreen extends AppCompatActivity implements
     private String[] evenStr;
     private String[] rewardStr;
 
+    public static ImageView snack;
+    public static ImageView flower;
+    public static ImageView umbrella;
+    public static ImageView drill;
+    public static ImageView fire;
+    public static ImageView camera;
+    public static ImageView photo;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +100,7 @@ public class MainScreen extends AppCompatActivity implements
         addGifts();
 
         //initialize points
-        P_POINTS = 0;
+        P_POINTS = 100;
         MORN_END_TIME = 9;
         EVEN_START_TIME = 18;
 
@@ -138,6 +150,15 @@ public class MainScreen extends AppCompatActivity implements
             }
         });
 
+        snack = (ImageView) findViewById(R.id.snackImg);
+        flower = (ImageView) findViewById(R.id.flowImg);
+        umbrella = (ImageView) findViewById(R.id.umbImg);
+        drill = (ImageView) findViewById(R.id.drillImg);
+        fire = (ImageView) findViewById(R.id.fireImg);
+        camera = (ImageView) findViewById(R.id.camImg);
+        photo = (ImageView) findViewById(R.id.photo);
+
+
         //make the recyclerview
         homeTaskList = TaskListFragment.newInstance(tasks);
         getSupportFragmentManager().beginTransaction().add(R.id.taskListFrag, homeTaskList).commit();
@@ -163,10 +184,10 @@ public class MainScreen extends AppCompatActivity implements
 //        Drawable img3 = getResources().getDrawable(R.mipmap.umbrella);
         GiftItem umbrella = new GiftItem(R.mipmap.umbrella, "Umbrella", 250, false);
 //        Drawable img4 = getResources().getDrawable(R.mipmap.drill);
-        GiftItem drill = new GiftItem(R.mipmap.drill, "Drill", 500, false);
+        GiftItem drill = new GiftItem(R.mipmap.drill, "Power Drill", 500, false);
 //        Drawable img5 = getResources().getDrawable(R.mipmap.fireworks);
         GiftItem fireworks = new GiftItem(R.mipmap.fireworks, "Fireworks", 1000, false);
-        GiftItem camera = new GiftItem(R.mipmap.camera, "Camera", 3000, false);
+        GiftItem camera = new GiftItem(R.mipmap.camera, "Photo", 3000, false);
 
         ALL_GIFTS.add(snack);
         ALL_GIFTS.add(flower);
@@ -230,6 +251,22 @@ public class MainScreen extends AppCompatActivity implements
 //Navigation Drawer things
 //*****
 
+//    @Override
+//    public void onConfigurationChanged(Configuration config) {
+//        super.onConfigurationChanged(config);
+//        setContentView(R.layout.activity_main_screen);
+//    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt("points", P_POINTS);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstaceState) {
+        super.onRestoreInstanceState(savedInstaceState);
+        P_POINTS = savedInstaceState.getInt("points");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

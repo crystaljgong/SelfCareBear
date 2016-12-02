@@ -90,6 +90,10 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (mItem.isBought() == true) {
+                        Toast.makeText(v.getContext(), "You already bought this gift!", Toast.LENGTH_SHORT).show();
+                    } else {
+
                     final Dialog dialog = new Dialog(mContext);
                     dialog.setContentView(R.layout.dialog_buy_gift);
                     dialog.setTitle("Buy Gift");
@@ -109,17 +113,39 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
 
                             //TODO: add buy functionality lol
                             int cost = mItem.getGiftPoints();
-                            if(mItem.isBought() == true) {
+                            if (mItem.isBought() == true) {
                                 Toast.makeText(v.getContext(), "You already bought this gift!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             } else {
-                                if(cost <= MainScreen.P_POINTS) {
+                                if (cost <= MainScreen.P_POINTS) {
                                     Toast.makeText(v.getContext(), "Gift has been bought!", Toast.LENGTH_SHORT).show();
                                     MainScreen.P_POINTS -= cost;
+                                    if (mItem.getGiftName().equals("Snack")) {
+                                        MainScreen.dialogue.setText(mContext.getResources().getString(R.string.snack));
+                                        MainScreen.snack.setVisibility(View.VISIBLE);
+                                    } else if (mItem.getGiftName().equals("Flowers")) {
+                                        MainScreen.dialogue.setText((mContext.getResources().getString(R.string.flowers)));
+                                        MainScreen.flower.setVisibility(View.VISIBLE);
+                                    } else if (mItem.getGiftName().equals("Umbrella")) {
+                                        MainScreen.dialogue.setText((mContext.getResources().getString(R.string.umbrella)));
+                                        MainScreen.umbrella.setVisibility(View.VISIBLE);
+                                    } else if (mItem.getGiftName().equals("Power Drill")) {
+                                        MainScreen.dialogue.setText((mContext.getResources().getString(R.string.powerDrill)));
+                                        MainScreen.drill.setVisibility(View.VISIBLE);
+                                    } else if (mItem.getGiftName().equals("Fireworks")) {
+                                        MainScreen.dialogue.setText((mContext.getResources().getString(R.string.fireworks)));
+                                        MainScreen.fire.setVisibility(View.VISIBLE);
+                                    } else {
+                                        MainScreen.dialogue.setText((mContext.getResources().getString(R.string.photo)));
+                                        MainScreen.camera.setVisibility(View.VISIBLE);
+                                        MainScreen.photo.setVisibility(View.VISIBLE);
+                                    }
                                     mItem.setBought(true);
+                                    mView.setAlpha((float) 0.4);
                                     GiftShop.spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
                                     MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
                                     Log.i("onClick", "item successfully bought!");
+                                    mView.setEnabled(false);
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(v.getContext(), "You don't have enough points to buy this!", Toast.LENGTH_SHORT).show();
@@ -139,6 +165,8 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                     });
                     Log.i("onClick", "cancel button set");
                     dialog.show();
+
+                }
                 }
             });
         }

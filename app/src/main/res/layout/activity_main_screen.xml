@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="120dp"
-            android:layout_marginTop="230dp">
+            android:layout_marginTop="220dp">
 
             <ImageButton
                 android:id="@+id/pandaBut"
@@ -59,6 +59,67 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="40dp"
+                android:id="@+id/snackImg"
+                android:layout_height="40dp"
+                android:layout_marginTop="420dp"
+                android:layout_marginLeft="30dp"
+                android:visibility="gone"
+                android:background="@mipmap/snack"/>
+
+            <ImageView
+                android:layout_width="120dp"
+                android:id="@+id/flowImg"
+                android:layout_height="120dp"
+                android:visibility="gone"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="204dp"
+                android:background="@mipmap/flowers"/>
+            <ImageView
+                android:layout_width="230dp"
+                android:visibility="gone"
+                android:id="@+id/umbImg"
+                android:layout_height="230dp"
+                android:layout_marginLeft="230dp"
+                android:layout_marginTop="350dp"
+                android:background="@mipmap/umbrella"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:id="@+id/drillImg"
+                android:layout_height="100dp"
+                android:layout_marginLeft="420dp"
+                android:layout_marginTop="260dp"
+                android:visibility="gone"
+                android:background="@mipmap/drill"/>
+            <ImageView
+                android:layout_width="70dp"
+                android:id="@+id/fireImg"
+                android:layout_height="70dp"
+                android:layout_marginLeft="464dp"
+                android:layout_marginTop="430dp"
+                android:visibility="gone"
+                android:background="@mipmap/fireworks"/>
+            <ImageView
+                android:layout_width="70dp"
+                android:id="@+id/camImg"
+                android:layout_height="70dp"
+                android:layout_marginLeft="520dp"
+                android:visibility="gone"
+                android:layout_marginTop="340dp"
+                android:background="@mipmap/camera"/>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:visibility="gone"
+                android:id="@+id/photo"
+                android:layout_marginLeft="215dp"
+                android:layout_marginTop="160dp"/>
+
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -66,9 +127,9 @@
             android:layout_marginTop="103dp">
 
             <TextView
-                android:layout_width="260dp"
-                android:layout_height="110dp"
-                android:layout_margin="10dp"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
                 android:id="@+id/dialogText"
                 android:textSize="18dp"
                 android:text="Do your best today! Etc, etc"
@@ -80,11 +141,11 @@
             android:layout_width="match_parent"
             android:layout_height="290dp"
             android:layout_gravity="bottom"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -102,9 +163,10 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:id="@+id/taskListFrag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
                     android:layout_gravity="top"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="60dp">
 
 
@@ -115,12 +177,12 @@
             <TextView
                 android:id="@+id/main_screen_status"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="20dp"
 
                 android:gravity="end|bottom"
-                android:text="Panda points: 0\nSteps today: 0"
+                android:text="Panda points: 0"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp" />
 
