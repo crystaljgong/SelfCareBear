@@ -75,7 +75,7 @@ public class MakeAddEventTask extends AsyncTask<TaskItem, Void, String> { //<par
         cal.add(Calendar.DATE, 1);
 
         if (task.getTimeOfDay().equals("Morning")) {
-            int randomMorn = ThreadLocalRandom.current().nextInt(5, MORN_END_TIME);
+            int randomMorn = ThreadLocalRandom.current().nextInt(4, MORN_END_TIME);
             cal.set(java.util.Calendar.HOUR_OF_DAY, randomMorn);
         } else if (task.getTimeOfDay().equals("Afternoon")) {
             int randomAft = ThreadLocalRandom.current().nextInt(MORN_END_TIME, EVEN_START_TIME);

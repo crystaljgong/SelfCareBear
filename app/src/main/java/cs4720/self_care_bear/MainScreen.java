@@ -136,8 +136,8 @@ public class MainScreen extends AppCompatActivity implements
         //initialize all task lists
 
         //initialize points
-        MORN_END_TIME = 9;
-        EVEN_START_TIME = 18;
+        MORN_END_TIME = 8;
+        EVEN_START_TIME = 17;
 
         //check time of day
         Calendar c = Calendar.getInstance();

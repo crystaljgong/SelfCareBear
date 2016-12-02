@@ -157,7 +157,7 @@ public class SettingsMenu extends AppCompatActivity implements
         // Create the LocationRequest object
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(5 * 60 * 1000)        //every 5 min, in milliseconds
+                .setInterval(10 * 60 * 1000)        //every 10 min, in milliseconds
                 .setFastestInterval(60 * 1000); // every min, in milliseconds
 
         //CALENDAR
@@ -191,7 +191,7 @@ public class SettingsMenu extends AppCompatActivity implements
                                 });
                             }
                         };
-                        timer.schedule(task, 0, 1 * 60000); //every 30 minutes
+                        timer.schedule(task, 0, 15 * 60000); //every 15 minutes
                     }
 
                 } else {
