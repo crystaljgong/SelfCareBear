@@ -1,9 +1,12 @@
 package cs4720.self_care_bear;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +21,8 @@ import cs4720.self_care_bear.GiftItemFragment.OnListFragmentInteractionListener;
 import cs4720.self_care_bear.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -27,13 +31,12 @@ import java.util.List;
  */
 public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<GiftItem> mValues;
+    private final ArrayList<GiftItem> giftItems;
     private final OnListFragmentInteractionListener mListener;
     private Context mContext;
 
-
     public GiftItemRecyclerViewAdapter(Context context, ArrayList<GiftItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+        giftItems = items;
         mListener = listener;
         mContext = context;
         Log.i("constructor", "adapter made");
@@ -49,10 +52,10 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getGiftName());
-        holder.mContentView.setText("" + mValues.get(position).getGiftPoints() + " PandaPoints");
-        holder.mImageView.setImageResource(mValues.get(position).getImg());
+        holder.mItem = giftItems.get(position);
+        holder.mIdView.setText(giftItems.get(position).getGiftName());
+        holder.mContentView.setText("" + giftItems.get(position).getGiftPoints() + " PandaPoints");
+        holder.mImageView.setImageResource(giftItems.get(position).getImg());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,11 +116,11 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
 
                             //TODO: add buy functionality lol
                             int cost = mItem.getGiftPoints();
-                            if (mItem.isBought() == true) {
+                            if(mItem.isBought() == true) {
                                 Toast.makeText(v.getContext(), "You already bought this gift!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             } else {
-                                if (cost <= MainScreen.P_POINTS) {
+                                if(cost <= MainScreen.P_POINTS) {
                                     Toast.makeText(v.getContext(), "Gift has been bought!", Toast.LENGTH_SHORT).show();
                                     MainScreen.P_POINTS -= cost;
                                     if (mItem.getGiftName().equals("Snack")) {
@@ -138,14 +141,15 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                                     } else {
                                         MainScreen.dialogue.setText((mContext.getResources().getString(R.string.photo)));
                                         MainScreen.camera.setVisibility(View.VISIBLE);
-                                        MainScreen.photo.setVisibility(View.VISIBLE);
+                                        dispatchTakePictureIntent();
                                     }
                                     mItem.setBought(true);
                                     mView.setAlpha((float) 0.4);
                                     GiftShop.spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
                                     MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
                                     Log.i("onClick", "item successfully bought!");
-                                    mView.setEnabled(false);
+                                    mItem.remove(getAdapterPosition());
+                                    notifyDataSetChanged();
                                     dialog.dismiss();
                                 } else {
                                     Toast.makeText(v.getContext(), "You don't have enough points to buy this!", Toast.LENGTH_SHORT).show();
@@ -171,9 +175,20 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
             });
         }
 
+
+        private void dispatchTakePictureIntent() {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
+                ((Activity) mContext).startActivityForResult(takePictureIntent, GiftShop.REQUEST_IMAGE_CAPTURE);
+            }
+        }
+
+
+
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
+
 }

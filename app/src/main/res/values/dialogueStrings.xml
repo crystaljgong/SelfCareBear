@@ -34,9 +34,9 @@
     <string-array
         name="rewardStrings">
         <item>Great job, I knew you could do it!</item>
-        <item>You did your best, you should be proud!</item>
-        <item>The last time I tried to do that, it took me three days...</item>
-        <item>That must\'ve been hard, keep it up!</item>
+        <item>You did your best, I am so proud!</item>
+        <item>The last time I tried to do that, it took me three days!</item>
+        <item>I am very impressed, keep it up!</item>
     </string-array>
 
     <string name="snack">A snack! How did you know I was hungry?</string>
@@ -44,6 +44,6 @@
     <string name="umbrella">I needed a new umbrella, this one is perfect!</string>
     <string name="powerDrill">What a lovely drill! I\'ve been meaning to fix up the house, this\'ll get the job done nicely.</string>
     <string name="fireworks">Fireworks! We should set them off tonight for fun.</string>
-    <string name="photo">Oh my! A photo? It\'s beautiful!</string>
+    <string name="selfie">You took this photo? How lovely! I\'ll admire it every day.</string>
 
 </resources>

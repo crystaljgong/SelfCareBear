@@ -58,6 +58,7 @@ public class AddTaskFragment extends DialogFragment {
 //    TextView locationSelected;
     Button cancel;
     Button confirmAdd;
+    PlaceAutocompleteFragment autocompleteFragment;
 
     //for getting location
    // int PLACE_PICKER_REQUEST = 1;
@@ -102,9 +103,12 @@ public class AddTaskFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_add_task, container, false);
+
         getDialog().setTitle("Add Task");
+
 
         name = (EditText) rootView.findViewById(R.id.enterTaskName);
         timeOfDay = (RadioGroup) rootView.findViewById(R.id.radioTimeOfDay);
@@ -113,11 +117,15 @@ public class AddTaskFragment extends DialogFragment {
 //        locationSelected = (TextView) rootView.findViewById(R.id.selectedLocation);
         cancel = (Button) rootView.findViewById(R.id.cancel);
         confirmAdd = (Button) rootView.findViewById(R.id.confirm);
+        //make Place autocomplete fragment
+        autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         // cancel adding new task with cancel button
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                autocompleteFragment.onDestroy();
                 dismiss();
             }
         });
@@ -131,9 +139,7 @@ public class AddTaskFragment extends DialogFragment {
 //            }
 //        });
 
-        //make Place autocomplete fragment
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -181,6 +187,7 @@ public class AddTaskFragment extends DialogFragment {
                 dListener = (DataListener) getActivity();
                 //TODO: DISABLE CONFIRM BUTTON IF NO NAME OR LOCATION
                 dListener.onDataRecieved(name.getText().toString(), time, point, (String) placeSelected.getName());
+                autocompleteFragment.onDestroy();
                 dismiss();
             }
         });
