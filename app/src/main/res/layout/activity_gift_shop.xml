@@ -47,9 +47,10 @@
         android:layout_below="@id/spendingPoints">
 
         <ImageView
-            android:layout_width="250dp"
-            android:layout_height="267dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             app:srcCompat="@mipmap/camera"
+            android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"
             android:id="@+id/tempSelfieView"
             />

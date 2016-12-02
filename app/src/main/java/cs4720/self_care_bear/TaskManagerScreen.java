@@ -2,6 +2,7 @@
 
 package cs4720.self_care_bear;
 
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -93,7 +94,8 @@ public class TaskManagerScreen extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 AddTaskFragment frag = new AddTaskFragment();
-                frag.show(getSupportFragmentManager(), "Add Task");
+
+                frag.show(getFragmentManager(), "Add Task");
             }
         });
 

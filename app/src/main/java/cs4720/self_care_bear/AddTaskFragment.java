@@ -1,30 +1,24 @@
 package cs4720.self_care_bear;
 
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+
 
 import static android.app.Activity.RESULT_OK;
 
@@ -117,15 +111,28 @@ public class AddTaskFragment extends DialogFragment {
 //        locationSelected = (TextView) rootView.findViewById(R.id.selectedLocation);
         cancel = (Button) rootView.findViewById(R.id.cancel);
         confirmAdd = (Button) rootView.findViewById(R.id.confirm);
+
         //make Place autocomplete fragment
-        autocompleteFragment = (PlaceAutocompleteFragment)
-                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        //autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment = new PlaceAutocompleteFragment();
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.add(R.id.place_autocomplete_fragment_container, autocompleteFragment);
+        ft.commit();
+
+        //autocompleteFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         // cancel adding new task with cancel button
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                autocompleteFragment.onDestroy();
+                if (autocompleteFragment != null) {
+                    autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment_container);
+                    if (autocompleteFragment != null) {
+                        getChildFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+                    }
+                }
+
                 dismiss();
             }
         });
@@ -187,7 +194,14 @@ public class AddTaskFragment extends DialogFragment {
                 dListener = (DataListener) getActivity();
                 //TODO: DISABLE CONFIRM BUTTON IF NO NAME OR LOCATION
                 dListener.onDataRecieved(name.getText().toString(), time, point, (String) placeSelected.getName());
-                autocompleteFragment.onDestroy();
+
+                //delete this frag
+                if (autocompleteFragment != null) {
+                    autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment_container);
+                    if (autocompleteFragment != null) {
+                        getChildFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+                    }
+                }
                 dismiss();
             }
         });
@@ -227,6 +241,11 @@ public class AddTaskFragment extends DialogFragment {
         mListener = null;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
