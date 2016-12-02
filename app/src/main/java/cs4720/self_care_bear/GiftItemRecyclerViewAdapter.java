@@ -33,12 +33,12 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
 
     private final ArrayList<GiftItem> giftItems;
     private final OnListFragmentInteractionListener mListener;
-    private Context mContext;
+    private Context jContext;
 
     public GiftItemRecyclerViewAdapter(Context context, ArrayList<GiftItem> items, OnListFragmentInteractionListener listener) {
         giftItems = items;
         mListener = listener;
-        mContext = context;
+        jContext = context;
         Log.i("constructor", "adapter made");
     }
 
@@ -84,6 +84,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
         public final TextView mContentView;
         public GiftItem mItem;
         public final ImageView mImageView;
+        public Context mContext;
 
         public ViewHolder(View view) {
             super(view);
@@ -91,6 +92,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
             mIdView = (TextView) mView.findViewById(R.id.giftName);
             mContentView = (TextView) mView.findViewById(R.id.giftPoints);
             mImageView = (ImageView) mView.findViewById(R.id.giftImage);
+            mContext = jContext;
             Log.i("constructor", "viewholder made");
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -157,6 +159,7 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                                     MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
                                     Log.i("onClick", "item successfully bought!");
                                     dialog.dismiss();
+                                    ((Activity)mContext).finish();
                                 } else {
                                     Toast.makeText(v.getContext(), "You don't have enough points to buy this!", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();

@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:id="@+id/checkBox" />
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/taskItemName"
         android:text="This is some text for display purposes"
@@ -20,6 +22,12 @@
         android:textAppearance="?attr/textAppearanceListItem"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.15"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/taskItemName"
+        android:id="@+id/taskItemLocation"
+        android:text="This the location text"/>
 
-
+</RelativeLayout>
 </LinearLayout>

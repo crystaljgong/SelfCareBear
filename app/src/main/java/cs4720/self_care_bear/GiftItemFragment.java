@@ -65,6 +65,7 @@ public class GiftItemFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         Log.i("onCreate", "successful");
+        setRetainInstance(true);
     }
 
     @Override

@@ -48,6 +48,9 @@ public class TaskListRecyclerViewAdapter extends RecyclerView.Adapter<TaskListRe
         final TaskItem item = taskList.get(position);
         holder.taskItemName.setText(taskList.get(position).getName());
         holder.completed.setChecked(taskList.get(position).getCompleted());
+        if (taskList.get(position).getLocation() != "null") {
+            holder.taskItemLocation.setText("At " + taskList.get(position).getLocation());
+        }
 
         holder.completed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +75,13 @@ public class TaskListRecyclerViewAdapter extends RecyclerView.Adapter<TaskListRe
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView taskItemName;
         public CheckBox completed;
+        public TextView taskItemLocation;
 
         public ViewHolder(View view) {
             super(view);
             completed = (CheckBox) view.findViewById(R.id.checkBox);
             taskItemName = (TextView) view.findViewById(R.id.taskItemName);
+            taskItemLocation = (TextView) view.findViewById(R.id.taskItemLocation);
                 }
 
         @Override

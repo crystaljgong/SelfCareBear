@@ -37,8 +37,7 @@ import static cs4720.self_care_bear.GiftShop.REQUEST_IMAGE_CAPTURE;
  */
 public class MainScreen extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        TaskListFragment.OnListFragmentInteractionListener
-{
+        TaskListFragment.OnListFragmentInteractionListener {
 
     //for the recyclerview
     private ArrayList<TaskItem> tasks;
@@ -75,7 +74,6 @@ public class MainScreen extends AppCompatActivity implements
     public static ImageView photo;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +93,7 @@ public class MainScreen extends AppCompatActivity implements
         camera = (ImageView) findViewById(R.id.camImg);
         photo = (ImageView) findViewById(R.id.photo);
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             addTasks();
             addGifts();
             P_POINTS = 10000;
@@ -108,22 +106,22 @@ public class MainScreen extends AppCompatActivity implements
             EVEN_TASKS = savedInstanceState.getParcelableArrayList("even");
             AFT_TASKS = savedInstanceState.getParcelableArrayList("aft");
             //making sure image stays on screen on rotation
-            if(ALL_GIFTS.get(0).isBought()) {
+            if (ALL_GIFTS.get(0).isBought()) {
                 snack.setVisibility(View.VISIBLE);
             }
-            if(ALL_GIFTS.get(1).isBought()) {
+            if (ALL_GIFTS.get(1).isBought()) {
                 flower.setVisibility(View.VISIBLE);
             }
-            if(ALL_GIFTS.get(2).isBought()) {
+            if (ALL_GIFTS.get(2).isBought()) {
                 umbrella.setVisibility(View.VISIBLE);
             }
-            if(ALL_GIFTS.get(3).isBought()) {
+            if (ALL_GIFTS.get(3).isBought()) {
                 drill.setVisibility(View.VISIBLE);
             }
-            if(ALL_GIFTS.get(4).isBought()) {
+            if (ALL_GIFTS.get(4).isBought()) {
                 fire.setVisibility(View.VISIBLE);
             }
-            if(ALL_GIFTS.get(5).isBought()) {
+            if (ALL_GIFTS.get(5).isBought()) {
                 camera.setVisibility(View.VISIBLE);
                 photo.setVisibility(View.VISIBLE);
             }
@@ -159,13 +157,11 @@ public class MainScreen extends AppCompatActivity implements
             timeOfDay.setText("Morning Tasks");
             dialogue.setText(morningStr[new Random().nextInt(morningStr.length)]);
 
-        }
-        else if (currentHour >= MORN_END_TIME && currentHour < EVEN_START_TIME && AFT_TASKS != null) {
+        } else if (currentHour >= MORN_END_TIME && currentHour < EVEN_START_TIME && AFT_TASKS != null) {
             tasks = AFT_TASKS;
             timeOfDay.setText("Afternoon Tasks");
             dialogue.setText(afterStr[new Random().nextInt(afterStr.length)]);
-        }
-        else {
+        } else {
             if (EVEN_TASKS != null) { // between 18 and 3
                 tasks = EVEN_TASKS;
                 timeOfDay.setText("Evening Tasks");
@@ -176,7 +172,6 @@ public class MainScreen extends AppCompatActivity implements
 //        dialogue.setText("Testing, 1, 2, 3");
 
 
-
         pandaBut = (ImageButton) findViewById(R.id.pandaBut);
         pandaBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,11 +180,9 @@ public class MainScreen extends AppCompatActivity implements
                 if (tasks == MORN_TASKS) {
                     dialogue.setText(morningStr[new Random().nextInt(morningStr.length)]);
 
-                }
-                else if (tasks == AFT_TASKS) {
+                } else if (tasks == AFT_TASKS) {
                     dialogue.setText(afterStr[new Random().nextInt(afterStr.length)]);
-                }
-                else {
+                } else {
                     if (tasks == EVEN_TASKS) { // between 18 and 3
                         dialogue.setText(evenStr[new Random().nextInt(evenStr.length)]);
                     }
@@ -208,15 +201,16 @@ public class MainScreen extends AppCompatActivity implements
 
 
         //make the recyclerview
-
-        homeTaskList = TaskListFragment.newInstance(tasks);
-        getSupportFragmentManager().beginTransaction().add(R.id.taskListFrag, homeTaskList).commit();
+        if (homeTaskList == null) {
+            homeTaskList = TaskListFragment.newInstance(tasks);
+            getSupportFragmentManager().beginTransaction().add(R.id.taskListFrag, homeTaskList).commit();
+        }
 
         //navigation drawer stuff
         createNavigationDrawer();
 
         //textview for panda points
-        pointsStatus = (TextView)findViewById(R.id.main_screen_status);
+        pointsStatus = (TextView) findViewById(R.id.main_screen_status);
         // FOR TESTING PURPOSES
         pointsStatus.setText("Panda Points: " + P_POINTS);
 
@@ -272,10 +266,7 @@ public class MainScreen extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-//        pointsStatus.setText(
-//                "Panda Points: " + P_POINTS + "\n" +
-//                        "Steps today: " + STEPS
-//        );
+        homeTaskList.adapter.notifyDataSetChanged();
 
 
     }
@@ -360,6 +351,7 @@ public class MainScreen extends AppCompatActivity implements
             super.onBackPressed();
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -398,7 +390,7 @@ public class MainScreen extends AppCompatActivity implements
             Toast.makeText(this, "You didn't complete this task yet? Panda Points = " + P_POINTS, Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(false);
             pointsStatus.setText(
-                "Panda Points: " + P_POINTS);
+                    "Panda Points: " + P_POINTS);
 
         } else {
             P_POINTS += taskNum.getPandaPoints();

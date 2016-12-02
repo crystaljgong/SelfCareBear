@@ -53,6 +53,7 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/tempSelfieView"
             />
+
     </FrameLayout>
 
 </RelativeLayout>

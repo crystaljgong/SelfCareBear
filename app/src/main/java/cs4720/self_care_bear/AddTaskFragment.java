@@ -198,6 +198,8 @@ public class AddTaskFragment extends DialogFragment {
                     point = Integer.parseInt(pPoints);
                 }
 
+                String theName = name.getText().toString();
+
                 if(SettingsMenu.mLastLocation != null) {
                     Log.i("clicky", "" + SettingsMenu.mLastLocation.getLatitude());
 
@@ -216,15 +218,16 @@ public class AddTaskFragment extends DialogFragment {
                     end.setLongitude(newLon);
 
                     float dist = start.distanceTo(end);
-
-                    if (dist > 2000) {
+                    boolean farAway = dist > 2000;
+                    if (farAway) {
                         point = point * 2;
-                        Toast.makeText(getActivity(), "Double points if you make it there!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "That's far away! You get double points if you complete it. ", Toast.LENGTH_LONG).show();
+                        theName = theName + " (x2 pts)";
                     }
                 }
                 dListener = (DataListener) getActivity();
                 //TODO: DISABLE CONFIRM BUTTON IF NO NAME OR LOCATION
-                dListener.onDataRecieved(name.getText().toString(), time, point, (String) placeSelected.getName());
+                dListener.onDataRecieved(theName, time, point, (String) placeSelected.getName());
 
                 //delete this frag
                 if (autocompleteFragment != null) {
