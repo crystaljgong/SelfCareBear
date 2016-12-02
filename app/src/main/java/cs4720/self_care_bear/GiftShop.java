@@ -43,8 +43,18 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
 
         spendPts = (TextView) findViewById(R.id.spendingPoints);
         spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle saveInstanceState) {
+        saveInstanceState.putParcelableArrayList("gifts", allGift);
 
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle saveInstanceState) {
+        super.onRestoreInstanceState(saveInstanceState);
+        allGift = saveInstanceState.getParcelableArrayList("gifts");
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
