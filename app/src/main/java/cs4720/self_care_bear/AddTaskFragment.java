@@ -6,6 +6,8 @@ import android.content.Context;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,49 +115,37 @@ public class AddTaskFragment extends DialogFragment {
 
         getDialog().setTitle("Add Task");
 
+        confirmAdd = (Button) rootView.findViewById(R.id.confirm);
+        //initially disabled until fields are filled
+        confirmAdd.setEnabled(false);
 
         name = (EditText) rootView.findViewById(R.id.enterTaskName);
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().equals("")) {
+                    confirmAdd.setEnabled(false);
+                } else {
+                    confirmAdd.setEnabled(true);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         timeOfDay = (RadioGroup) rootView.findViewById(R.id.radioTimeOfDay);
         points = (RadioGroup) rootView.findViewById(R.id.radioPoints);
-//        locationButton = (Button) rootView.findViewById(R.id.buttonLocation);
-//        locationSelected = (TextView) rootView.findViewById(R.id.selectedLocation);
         cancel = (Button) rootView.findViewById(R.id.cancel);
-        confirmAdd = (Button) rootView.findViewById(R.id.confirm);
+
 
         //make Place autocomplete fragment
-        //autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
         autocompleteFragment = new PlaceAutocompleteFragment();
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.add(R.id.place_autocomplete_fragment_container, autocompleteFragment);
         ft.commit();
-
-        //autocompleteFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        // cancel adding new task with cancel button
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (autocompleteFragment != null) {
-                    autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment_container);
-                    if (autocompleteFragment != null) {
-                        getChildFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
-                    }
-                }
-
-                dismiss();
-            }
-        });
-
-
-//        //add location using Places api
-//        locationButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startPlacePicker();
-//            }
-//        });
-
 
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -169,6 +159,21 @@ public class AddTaskFragment extends DialogFragment {
             public void onError(Status status) {
                 // TODO: Handle the error.
                 Log.i("error", "An error occurred: " + status);
+            }
+        });
+
+        // cancel adding new task with cancel button
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (autocompleteFragment != null) {
+//                    autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment_container);
+//                    if (autocompleteFragment != null) {
+//                        getChildFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+//                    }
+//                }
+
+                dismiss();
             }
         });
 
@@ -198,9 +203,14 @@ public class AddTaskFragment extends DialogFragment {
                     point = Integer.parseInt(pPoints);
                 }
 
-                String theName = name.getText().toString();
+                String theName = name.getText().toString(); // no way for null b/c disabled if null
+                String location = "";
+                if (placeSelected == null) {
+                    location = "N/A";
+                }
+                else location = (String) placeSelected.getName();
 
-                if(SettingsMenu.mLastLocation != null) {
+                if(SettingsMenu.mLastLocation != null && placeSelected != null) {
                     Log.i("clicky", "" + SettingsMenu.mLastLocation.getLatitude());
 
                     double currLoc = SettingsMenu.mLastLocation.getLatitude();
@@ -221,21 +231,21 @@ public class AddTaskFragment extends DialogFragment {
                     boolean farAway = dist > 2000;
                     if (farAway) {
                         point = point * 2;
-                        Toast.makeText(getActivity(), "That's far away! You get double points if you complete it. ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "That's far away! You get double points if you complete this task. ", Toast.LENGTH_LONG).show();
                         theName = theName + " (x2 pts)";
                     }
                 }
+
                 dListener = (DataListener) getActivity();
-                //TODO: DISABLE CONFIRM BUTTON IF NO NAME OR LOCATION
-                dListener.onDataRecieved(theName, time, point, (String) placeSelected.getName());
+                dListener.onDataRecieved(theName, time, point, location);
 
                 //delete this frag
-                if (autocompleteFragment != null) {
-                    autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment_container);
-                    if (autocompleteFragment != null) {
-                        getChildFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
-                    }
-                }
+//                if (autocompleteFragment != null) {
+//                    autocompleteFragment = (PlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment_container);
+//                    if (autocompleteFragment != null) {
+//                        getChildFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+//                    }
+//                }
                 dismiss();
             }
         });
@@ -244,12 +254,6 @@ public class AddTaskFragment extends DialogFragment {
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {

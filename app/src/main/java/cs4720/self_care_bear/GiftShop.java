@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnListFragmentInteractionListener{
+public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnListFragmentInteractionListener {
 
     public static ArrayList<GiftItem> allGift;
     public static GiftItemFragment frag;
@@ -27,7 +27,7 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
     //for camera
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-//    @Override
+    //    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift_shop);
@@ -36,16 +36,18 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        frag = GiftItemFragment.newInstance(allGift);
-        Log.i("onCreate", "frag was made");
-        getSupportFragmentManager().beginTransaction().add(R.id.giftRV, frag).commit();
+        if (frag == null) {
+            frag = GiftItemFragment.newInstance(allGift);
+            Log.i("onCreate", "frag was made");
+            getSupportFragmentManager().beginTransaction().add(R.id.giftRV, frag).commit();
+        }
 
         spendPts = (TextView) findViewById(R.id.spendingPoints);
         spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
 
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {

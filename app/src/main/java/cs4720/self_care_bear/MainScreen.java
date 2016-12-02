@@ -387,14 +387,14 @@ public class MainScreen extends AppCompatActivity implements
     public void onListFragmentInteraction(TaskItem taskNum) {
         if (taskNum.getCompleted() == true) {
             P_POINTS -= taskNum.getPandaPoints();
-            Toast.makeText(this, "You didn't complete this task yet? Panda Points = " + P_POINTS, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "-" + P_POINTS + " Panda Points", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(false);
             pointsStatus.setText(
                     "Panda Points: " + P_POINTS);
 
         } else {
             P_POINTS += taskNum.getPandaPoints();
-            Toast.makeText(this, "You completed this task, good job! Panda Points =  " + P_POINTS, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "+" + P_POINTS + " Panda Points", Toast.LENGTH_SHORT).show();
             taskNum.setCompleted(true);
             pointsStatus.setText(
                     "Panda Points: " + P_POINTS);
