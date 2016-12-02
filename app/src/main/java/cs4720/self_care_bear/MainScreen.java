@@ -110,13 +110,14 @@ public class MainScreen extends AppCompatActivity implements
 
         //check time of day
         Calendar c = Calendar.getInstance();
-        if (c.HOUR_OF_DAY < 9 && c.HOUR_OF_DAY > 3 && MORN_TASKS != null) {
+        int currentHour = c.get(Calendar.HOUR_OF_DAY);
+        if (currentHour < MORN_END_TIME && currentHour > 4 && MORN_TASKS != null) {
             tasks = MORN_TASKS;
             timeOfDay.setText("Morning Tasks");
             dialogue.setText(morningStr[new Random().nextInt(morningStr.length)]);
 
         }
-        else if (c.HOUR_OF_DAY >= 9 && c.HOUR_OF_DAY < 18 && AFT_TASKS != null) {
+        else if (currentHour >= MORN_END_TIME && currentHour < EVEN_START_TIME && AFT_TASKS != null) {
             tasks = AFT_TASKS;
             timeOfDay.setText("Afternoon Tasks");
             dialogue.setText(afterStr[new Random().nextInt(afterStr.length)]);
@@ -212,8 +213,8 @@ public class MainScreen extends AppCompatActivity implements
         TaskItem mornin = new TaskItem("Get out of bed", false, 10, "Morning", "home");
         TaskItem mornin2 = new TaskItem("Brush your teeth", false, 10, "Morning", "home");
         TaskItem mornin3 = new TaskItem("Eat breakfast", false, 10, "Morning", "home");
-        TaskItem evenin = new TaskItem("Brush your teethteethteethteethteethteethteethteethteeth", false, 10, "Evening", "home");
-        TaskItem after = new TaskItem("Eat lunchlunchlunchlunchlunchlunchlunchlunchlunchlunchlunchlunch ", false, 10, "Afternoon", "home");
+        TaskItem evenin = new TaskItem("Brush your teeth", false, 10, "Evening", "home");
+        TaskItem after = new TaskItem("Eat lunch", false, 10, "Afternoon", "home");
         TaskItem evenin2 = new TaskItem("Go to sleep", false, 20, "Evening", "home");
 
         MORN_TASKS.add(mornin);

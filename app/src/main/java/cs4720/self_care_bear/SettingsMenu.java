@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -58,6 +59,9 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static cs4720.self_care_bear.MainScreen.EVEN_START_TIME;
+import static cs4720.self_care_bear.MainScreen.homeTaskList;
+import static cs4720.self_care_bear.TaskManagerScreen.aft;
+import static java.util.Calendar.HOUR_OF_DAY;
 
 
 public class SettingsMenu extends AppCompatActivity implements
@@ -187,7 +191,7 @@ public class SettingsMenu extends AppCompatActivity implements
                                 });
                             }
                         };
-                        timer.schedule(task, 0, 30 * 60000); //every 30 minutes
+                        timer.schedule(task, 0, 1 * 60000); //every 30 minutes
                     }
 
                 } else {
@@ -519,6 +523,8 @@ public class SettingsMenu extends AppCompatActivity implements
             TaskItem calTask = new TaskItem(nameLoc[0] + " (from Calendar)", false, 10, "afternoon", nameLoc[1]);
             if (!MainScreen.AFT_TASKS.contains(calTask)) {
                 MainScreen.AFT_TASKS.add(calTask);
+                aft.adapter.notifyDataSetChanged();
+                homeTaskList.adapter.notifyDataSetChanged();
                 System.out.println(task);
             }
             else Log.i("addTask", "didn't add " + calTask.getName() + " bc duplicate!");
@@ -572,11 +578,15 @@ public class SettingsMenu extends AppCompatActivity implements
             DateTime now = new DateTime(System.currentTimeMillis());
 
             //get evening time
-            java.util.Calendar cal = java.util.Calendar.getInstance();
-            cal.set(java.util.Calendar.HOUR_OF_DAY, EVEN_START_TIME);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            long millis = cal.getTimeInMillis();
+            Calendar c = Calendar.getInstance();
+            int currentHour = c.get(Calendar.HOUR_OF_DAY);
+            if (currentHour > EVEN_START_TIME) {  // if it's no longer afternoon, add tomorrow's afternoon tasks
+                c.add(Calendar.DAY_OF_MONTH, 1);
+            }
+            c.set(HOUR_OF_DAY, EVEN_START_TIME);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            long millis = c.getTimeInMillis();
 
             DateTime eveningTime = new DateTime(millis);
 
@@ -613,7 +623,7 @@ public class SettingsMenu extends AppCompatActivity implements
                                 start = event.getStart().getDate();
                             }
                             //add that string to the list of events
-                            if(!event.getSummary().contains("(From Self-Care-Bear)")) {
+                            if(!event.getSummary().contains("(from Self-Care-Bear)")) {
                                 eventStrings.add(
                                         //String.format("%s (%s)", event.getSummary(), start)); This has time and date stamp
                                         String.format("%s,%s", event.getSummary(), event.getLocation())); //Just has name of the event

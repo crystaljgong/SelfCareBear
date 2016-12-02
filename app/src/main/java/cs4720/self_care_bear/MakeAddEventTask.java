@@ -15,9 +15,8 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static cs4720.self_care_bear.MainScreen.EVEN_START_TIME;
 import static cs4720.self_care_bear.MainScreen.MORN_END_TIME;
@@ -68,7 +67,6 @@ public class MakeAddEventTask extends AsyncTask<TaskItem, Void, String> { //<par
 
         Log.i("postEvent", "calling postEventToCalApi!");
 
-
         //get time from task in dateTimeformat
         long millis;
         java.util.Calendar cal = java.util.Calendar.getInstance();
@@ -77,20 +75,19 @@ public class MakeAddEventTask extends AsyncTask<TaskItem, Void, String> { //<par
         cal.add(Calendar.DATE, 1);
 
         if (task.getTimeOfDay().equals("Morning")) {
-            cal.set(java.util.Calendar.HOUR_OF_DAY, 6);
+            int randomMorn = ThreadLocalRandom.current().nextInt(5, MORN_END_TIME);
+            cal.set(java.util.Calendar.HOUR_OF_DAY, randomMorn);
         } else if (task.getTimeOfDay().equals("Afternoon")) {
-            cal.set(java.util.Calendar.HOUR_OF_DAY, 10);
+            int randomAft = ThreadLocalRandom.current().nextInt(MORN_END_TIME, EVEN_START_TIME);
+            cal.set(java.util.Calendar.HOUR_OF_DAY, randomAft);
         } else if (task.getTimeOfDay().equals("Evening")) {
-            cal.set(java.util.Calendar.HOUR_OF_DAY, 18);
+            int randomEven = ThreadLocalRandom.current().nextInt(EVEN_START_TIME, 24);
+            cal.set(java.util.Calendar.HOUR_OF_DAY, randomEven);
         }
         millis = cal.getTimeInMillis();
         DateTime taskStartTime = new DateTime(millis);
-        DateTime taskEndTime = new DateTime(millis + 60000 * 60); //end time is 1 hour later
+        DateTime taskEndTime = new DateTime(millis + 60000 * 10); //end time is 10 minutes later
 
-
-//        String pageToken = null;
-//
-//        do {
         Event event = new Event()
                 .setSummary(task.getName() + " (from Self-Care-Bear)")
                 .setLocation(task.getLocation());
@@ -107,75 +104,35 @@ public class MakeAddEventTask extends AsyncTask<TaskItem, Void, String> { //<par
 
 
         String calendarId = "primary";
-        event = mService.events().insert(calendarId, event).execute();
-        System.out.printf("Event created: %s \n", event.getHtmlLink());
+        if (!task.getName().contains("(from Calendar)")) {
+            event = mService.events().insert(calendarId, event).execute();
+            return "Event created:\n" + event.getSummary() + "\nat " + event.getLocation();
+        }
+       else return "This event is already in your calendar.";
 
-//            CalendarList calendarList = mService.calendarList().list().setPageToken(pageToken).execute();
-//            List<CalendarListEntry> gotItems = calendarList.getItems();
-//
-//            pageToken = calendarList.getNextPageToken();
-//        } while (pageToken != null);
-
-//        DateFormat df = new SimpleDateFormat("HH:mm MM/dd");
-//        String startTime = df.format(event.getStart().getDateTime());
-//        String endTime = df.format(event.getEnd().getDateTime());
-
-        return "Event created:\n" + event.getSummary() + "\nat " + event.getLocation();
-//                "\n" +
-//               startTime +  " - " + endTime + "\n" +
-//                event.getLocation();
     }
 
 
     @Override
     protected void onPreExecute() {
         Log.i("postEvent", "called preexecute");
-//        calendarText.setText("");
-        Toast.makeText(mContext, "Calling Google Calendar API...", Toast.LENGTH_SHORT).show();
-//        // mProgress.show();
     }
 
     @Override
     protected void onPostExecute(String output) {
-        Log.i("postEvent", "called postexecute");
         if (output == null) {
             Toast.makeText(mContext, "Failed to add event.", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(mContext, output, Toast.LENGTH_LONG).show();
         }
-//        // mProgress.hide();
-//        if (output == null || output.size() == 0) {
-//            Toast.makeText(getBaseContext(), "No results returned.", Toast.LENGTH_SHORT).show();
-//        } else {
-//            output.add(0, "Data retrieved using the Google Calendar API:");
-//            calendarText.setText(TextUtils.join("\n", output));
-//            addCalTasks();
-//        }
     }
 
     @Override
     protected void onCancelled() {
         Log.i("postEvent", "cancelled postevent");
-        //TODO do something here? somehow connect?? idK????
         if (mLastError != null) {
-            Toast.makeText(mContext, mLastError.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Error: " +  mLastError.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        // mProgress.hide();
-//        if (mLastError != null) {
-//            if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-//                showGooglePlayServicesAvailabilityErrorDialog(
-//                        ((GooglePlayServicesAvailabilityIOException) mLastError)
-//                                .getConnectionStatusCode());
-//            } else if (mLastError instanceof UserRecoverableAuthIOException) {
-//                startActivityForResult(
-//                        ((UserRecoverableAuthIOException) mLastError).getIntent(),
-//                        REQUEST_AUTHORIZATION);
-//            } else {
-//                Toast.makeText(getBaseContext(), "The following error occurred:\n"
-//                        + mLastError.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        } else {
-//            Toast.makeText(getBaseContext(), "Request cancelled.", Toast.LENGTH_SHORT).show();
-//        }
+
     }
 }

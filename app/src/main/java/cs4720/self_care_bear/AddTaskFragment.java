@@ -261,50 +261,6 @@ public class AddTaskFragment extends DialogFragment {
         void onFragmentInteraction(Uri uri);
     }
 
-//    public void startPlacePicker() {
-//
-//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//
-//        // Check Google Play Service Available
-//        Toast.makeText(getActivity(), "Starting place picker...",
-//                Toast.LENGTH_SHORT).show();
-//        try {
-//            if (checkPlayServices()) {
-//                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-//            }
-//        } catch (Exception e) {
-//            Log.e("E ", "GooglePlayServices: " + e);
-//        }
-//
-//    }
-
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == PLACE_PICKER_REQUEST) {
-//            if (resultCode == RESULT_OK) {
-//                Place selectedPlace = PlacePicker.getPlace(getActivity(), data);
-//                // Do something with the place
-//                placeSelected = selectedPlace;
-//                locationSelected.setText(selectedPlace.getName());
-//                locationButton.setVisibility(View.GONE);
-//                locationSelected.setVisibility(View.VISIBLE);
-//            }
-//        }
-//    }
-
-//    private boolean checkPlayServices() {
-//        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-//        int result = googleAPI.isGooglePlayServicesAvailable(getActivity());
-//        if(result != ConnectionResult.SUCCESS) {
-//            if(googleAPI.isUserResolvableError(result)) {
-//                googleAPI.getErrorDialog(getActivity(), result, PLACE_PICKER_REQUEST).show();
-//            }
-//
-//            return false;
-//        }
-//
-//        return true;
-//    }
-
 
 
 }

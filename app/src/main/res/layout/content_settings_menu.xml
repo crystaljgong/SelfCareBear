@@ -20,7 +20,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="Set location as Current Location when adding task"
+            android:text="Get more points for tasks a long distance away"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"
@@ -46,7 +46,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="Sync Google Calendar with Afternoon Tasks"
+            android:text="Sync Tasks with Google Calendar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"

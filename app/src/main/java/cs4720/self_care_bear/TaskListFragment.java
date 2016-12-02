@@ -34,6 +34,7 @@ public class TaskListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private Context mContext;
     private RecyclerView rv;
+    public TaskListRecyclerViewAdapter adapter;
 
     @SuppressLint("ValidFragment")
     public TaskListFragment(ArrayList<TaskItem> items) {
@@ -96,7 +97,8 @@ public class TaskListFragment extends Fragment {
         rv = (RecyclerView)view.findViewById(R.id.taskListRV);
         rv.setLayoutManager(new LinearLayoutManager(mContext));
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(new TaskListRecyclerViewAdapter(mContext, tasks, mListener));
+        adapter = new TaskListRecyclerViewAdapter(mContext, tasks, mListener);
+        rv.setAdapter(adapter);
       //  }
         return view;
     }
