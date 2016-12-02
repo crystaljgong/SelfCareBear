@@ -59,6 +59,68 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="40dp"
+            android:id="@+id/snackImg"
+            android:layout_height="40dp"
+            android:layout_marginTop="420dp"
+            android:layout_marginLeft="30dp"
+            android:visibility="gone"
+            android:background="@mipmap/snack"/>
+
+        <ImageView
+            android:layout_width="120dp"
+            android:id="@+id/flowImg"
+            android:layout_height="120dp"
+            android:visibility="gone"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="204dp"
+            android:background="@mipmap/flowers"/>
+        <ImageView
+            android:layout_width="230dp"
+            android:visibility="gone"
+            android:id="@+id/umbImg"
+            android:layout_height="230dp"
+            android:layout_marginLeft="230dp"
+            android:layout_marginTop="350dp"
+            android:background="@mipmap/umbrella"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:id="@+id/drillImg"
+            android:layout_height="100dp"
+            android:layout_marginLeft="420dp"
+            android:layout_marginTop="260dp"
+            android:visibility="gone"
+            android:background="@mipmap/drill"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:id="@+id/fireImg"
+            android:layout_height="70dp"
+            android:layout_marginLeft="464dp"
+            android:layout_marginTop="430dp"
+            android:visibility="gone"
+            android:background="@mipmap/fireworks"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:id="@+id/camImg"
+            android:layout_height="70dp"
+            android:layout_marginLeft="520dp"
+            android:visibility="gone"
+            android:layout_marginTop="340dp"
+            android:background="@mipmap/camera"/>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:visibility="gone"
+            android:id="@+id/photo"
+            android:layout_marginLeft="215dp"
+            android:layout_marginTop="160dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

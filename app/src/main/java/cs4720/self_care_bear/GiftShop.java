@@ -38,7 +38,7 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
         setSupportActionBar(toolbar);
 
         frag = GiftItemFragment.newInstance(allGift);
-        Log.i("onCreate", "frag wasmade");
+        Log.i("onCreate", "frag was made");
         getSupportFragmentManager().beginTransaction().add(R.id.giftRV, frag).commit();
 
         spendPts = (TextView) findViewById(R.id.spendingPoints);
@@ -51,8 +51,11 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            ImageView tempSelfieView = (ImageView) findViewById(R.id.tempSelfieView);
-            MainScreen.photo.setImageBitmap(imageBitmap);
+            ImageView tempSelfieView = (ImageView) findViewById(R.id.tempSelfieView);
+            tempSelfieView.setImageBitmap(imageBitmap);
+            //TODO: attempt to put image in makes this crash
+//            ImageView photoVIew = (ImageView) findViewById(R.id.photo);
+//            photoVIew.setImageBitmap(imageBitmap);
         }
     }
 
