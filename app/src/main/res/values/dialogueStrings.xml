@@ -38,12 +38,12 @@
         <item>The last time I tried to do that, it took me three days!</item>
         <item>I am very impressed, keep it up!</item>
         <item>Nice.</item>
-        <item>You're so good at this.</item>
+        <item>You\'re so good at this.</item>
         <item>Hooray!</item>
         <item>Excellent.</item>
         <item>Wow, great!</item>
-        <item>I struggle with one sometimes, I'm glad you got it!</item>
-        <item>You're amazing.</item>
+        <item>I struggle with one sometimes, I\'m glad you got it!</item>
+        <item>You\'re amazing.</item>
     </string-array>
 
     <string name="snack">A snack! How did you know I was hungry?</string>
