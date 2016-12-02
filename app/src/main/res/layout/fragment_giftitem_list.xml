@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/giftList"
     android:name="cs4720.self_care_bear.GiftItemFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
+    android:layout_gravity="center"
     app:layoutManager="GridLayoutManager"
     tools:context="cs4720.self_care_bear.GiftItemFragment"
     tools:listitem="@layout/fragment_giftitem" />
