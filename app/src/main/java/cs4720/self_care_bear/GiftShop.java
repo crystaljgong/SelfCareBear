@@ -35,7 +35,7 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
         setSupportActionBar(toolbar);
 
         frag = GiftItemFragment.newInstance(allGift);
-        Log.i("onCreate", "frag was made");
+        Log.i("onCreate", "frag wasmade");
         getSupportFragmentManager().beginTransaction().add(R.id.giftRV, frag).commit();
 
         spendPts = (TextView) findViewById(R.id.spendingPoints);
