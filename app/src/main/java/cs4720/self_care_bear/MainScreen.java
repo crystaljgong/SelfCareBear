@@ -87,6 +87,14 @@ public class MainScreen extends AppCompatActivity implements
 //        }
         setContentView(R.layout.activity_main_screen);
 
+        snack = (ImageView) findViewById(R.id.snackImg);
+        flower = (ImageView) findViewById(R.id.flowImg);
+        umbrella = (ImageView) findViewById(R.id.umbImg);
+        drill = (ImageView) findViewById(R.id.drillImg);
+        fire = (ImageView) findViewById(R.id.fireImg);
+        camera = (ImageView) findViewById(R.id.camImg);
+        photo = (ImageView) findViewById(R.id.photo);
+
         if(savedInstanceState == null) {
             addTasks();
             addGifts();
@@ -100,10 +108,24 @@ public class MainScreen extends AppCompatActivity implements
             EVEN_TASKS = savedInstanceState.getParcelableArrayList("even");
             AFT_TASKS = savedInstanceState.getParcelableArrayList("aft");
             //making sure image stays on screen on rotation
-            for(int i = 0; i < ALL_GIFTS.size(); i++) {
-                if (ALL_GIFTS.get(i).isBought()) {
-
-                }
+            if(ALL_GIFTS.get(0).isBought()) {
+                snack.setVisibility(View.VISIBLE);
+            }
+            if(ALL_GIFTS.get(1).isBought()) {
+                flower.setVisibility(View.VISIBLE);
+            }
+            if(ALL_GIFTS.get(2).isBought()) {
+                umbrella.setVisibility(View.VISIBLE);
+            }
+            if(ALL_GIFTS.get(3).isBought()) {
+                drill.setVisibility(View.VISIBLE);
+            }
+            if(ALL_GIFTS.get(4).isBought()) {
+                fire.setVisibility(View.VISIBLE);
+            }
+            if(ALL_GIFTS.get(5).isBought()) {
+                camera.setVisibility(View.VISIBLE);
+                photo.setVisibility(View.VISIBLE);
             }
         }
         addGifts();

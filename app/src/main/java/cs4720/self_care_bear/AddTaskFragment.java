@@ -3,6 +3,7 @@ package cs4720.self_care_bear;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +15,22 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.api.services.calendar.model.Setting;
 
 import static android.app.Activity.RESULT_OK;
+import static cs4720.self_care_bear.SettingsMenu.mLastLocation;
 
 
 ///**
@@ -188,9 +198,30 @@ public class AddTaskFragment extends DialogFragment {
                     point = Integer.parseInt(pPoints);
                 }
 
-                Toast.makeText(getActivity(), "Place: " + placeSelected, Toast.LENGTH_LONG).show();
+                if(SettingsMenu.mLastLocation != null) {
+                    Log.i("clicky", "" + SettingsMenu.mLastLocation.getLatitude());
 
+                    double currLoc = SettingsMenu.mLastLocation.getLatitude();
+                    double curLocLong = SettingsMenu.mLastLocation.getLongitude();
+                    Location start = new Location("start");
+                    start.setLatitude(currLoc);
+                    start.setLongitude(curLocLong);
 
+                    LatLng newLoc = placeSelected.getLatLng();
+
+                    double newLat = newLoc.latitude;
+                    double newLon = newLoc.longitude;
+                    Location end = new Location("end");
+                    end.setLatitude(newLat);
+                    end.setLongitude(newLon);
+
+                    float dist = start.distanceTo(end);
+
+                    if (dist > 2000) {
+                        point = point * 2;
+                        Toast.makeText(getActivity(), "Double points if you make it there!", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 dListener = (DataListener) getActivity();
                 //TODO: DISABLE CONFIRM BUTTON IF NO NAME OR LOCATION
                 dListener.onDataRecieved(name.getText().toString(), time, point, (String) placeSelected.getName());

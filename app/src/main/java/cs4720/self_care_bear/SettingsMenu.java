@@ -75,7 +75,7 @@ public class SettingsMenu extends AppCompatActivity implements
     public static boolean LOCATION_ON;
 
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    public static Location mLastLocation;
     public boolean mRequestingLocationUpdates;
     private LocationRequest mLocationRequest;
 

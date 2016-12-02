@@ -117,8 +117,8 @@
                 android:background="@color/cardview_dark_background"
                 android:id="@+id/photo"
                 android:scaleType="centerCrop"
-                android:layout_marginLeft="215dp"
-                android:layout_marginTop="160dp"/>
+                android:layout_marginLeft="216dp"
+                android:layout_marginTop="141dp"/>
 
         </RelativeLayout>
         <RelativeLayout

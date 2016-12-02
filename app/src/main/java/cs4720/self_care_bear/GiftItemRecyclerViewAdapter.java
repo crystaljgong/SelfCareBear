@@ -54,9 +54,11 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = giftItems.get(position);
         holder.mIdView.setText(giftItems.get(position).getGiftName());
-        holder.mContentView.setText("" + giftItems.get(position).getGiftPoints() + " PandaPoints?");
+        holder.mContentView.setText("" + giftItems.get(position).getGiftPoints() + " PandaPoints");
         holder.mImageView.setImageResource(giftItems.get(position).getImg());
-
+        if(holder.mItem.isBought() == true) {
+            holder.mView.setAlpha((float) 0.4);
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
