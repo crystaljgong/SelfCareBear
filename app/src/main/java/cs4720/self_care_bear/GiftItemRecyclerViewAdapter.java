@@ -142,11 +142,12 @@ public class GiftItemRecyclerViewAdapter extends RecyclerView.Adapter<GiftItemRe
                                         MainScreen.dialogue.setText((mContext.getResources().getString(R.string.selfie)));
                                         MainScreen.camera.setVisibility(View.VISIBLE);
                                         mView.setAlpha((float) 0.4);
-                                        GiftShop.spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
-                                        MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
-                                        Log.i("onClick", "item successfully bought!");
+//                                        GiftShop.spendPts.setText("Your PandaPoints: " + MainScreen.P_POINTS);
+//                                        MainScreen.pointsStatus.setText("Panda Points: " + MainScreen.P_POINTS);
+//                                        Log.i("onClick", "item successfully bought!");
                                         dialog.dismiss();
                                         dispatchTakePictureIntent();
+                                        MainScreen.photo.setVisibility(View.VISIBLE);
                                     }
                                     mItem.setBought(true);
                                     mView.setAlpha((float) 0.4);

@@ -50,12 +50,11 @@ public class GiftShop extends AppCompatActivity implements GiftItemFragment.OnLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImageView tempSelfieView = (ImageView) findViewById(R.id.tempSelfieView);
-            tempSelfieView.setImageBitmap(imageBitmap);
-            //TODO: attempt to put image in makes this crash
-//            ImageView photoVIew = (ImageView) findViewById(R.id.photo);
-//            photoVIew.setImageBitmap(imageBitmap);
+
+            Intent passBackToMain = new Intent();
+            passBackToMain.putExtras(extras);
+            setResult(RESULT_OK, passBackToMain);
+            finish();
         }
     }
 

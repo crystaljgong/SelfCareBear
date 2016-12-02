@@ -2,6 +2,7 @@ package cs4720.self_care_bear;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -28,14 +29,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
+import static cs4720.self_care_bear.GiftShop.REQUEST_IMAGE_CAPTURE;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class MainScreen extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        TaskListFragment.OnListFragmentInteractionListener,
-        SensorEventListener
+        TaskListFragment.OnListFragmentInteractionListener
 {
 
     //for the recyclerview
@@ -354,7 +356,7 @@ public class MainScreen extends AppCompatActivity implements
             startActivity(startTaskManager);
         } else if (id == R.id.nav_shop) {
             Intent startGiftShop = new Intent(MainScreen.this, GiftShop.class);
-            startActivity(startGiftShop);
+            startActivityForResult(startGiftShop, REQUEST_IMAGE_CAPTURE);
 
         } else if (id == R.id.nav_settings) {
             Intent startSettings = new Intent(MainScreen.this, SettingsMenu.class);
@@ -386,13 +388,14 @@ public class MainScreen extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
 
-    }
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView photoView = (ImageView) findViewById(R.id.photo);
+            photoView.setImageBitmap(imageBitmap);
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        }
     }
 }
