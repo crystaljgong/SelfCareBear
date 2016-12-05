@@ -37,7 +37,7 @@ public class MakeAddEventTask extends AsyncTask<TaskItem, Void, String> { //<par
                 transport, jsonFactory, credential)
                 .setApplicationName("Self_Care_Bear")
                 .build();
-        Log.i("postEvent", "created a new makeAddEvetTask");
+        Log.i("postEvent", "created a new makeAddEventTask");
         mContext = context;
     }
 

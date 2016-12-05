@@ -172,11 +172,8 @@ public class SettingsMenu extends AppCompatActivity implements
 
                 if (isChecked) {
                     CALENDAR_ON = true;
-
-                    //calendarSwitch.setEnabled(false);
-                    calendarText.setText("");
+                    Toast.makeText(getBaseContext(), "Working...", Toast.LENGTH_LONG).show();
                     callCalAPI();
-                    //calendarSwitch.setEnabled(true);
 
                     //call every 30 minutes
                     if (!timerRunning) {
@@ -201,13 +198,6 @@ public class SettingsMenu extends AppCompatActivity implements
                         timer.cancel();
                         timer.purge();
                     }
-
-                    //CharSequence fromCal = "(from Calendar)";
-//                    for (TaskItem item : MainScreen.AFT_TASKS) {
-//                        if (item.getName().contains(fromCal)) {
-//                            MainScreen.AFT_TASKS.remove(item);
-//                        }
-//                    }
 
                     //Toast.makeText(getBaseContext(), "Removed tasks", Toast.LENGTH_SHORT).show();
                     googCalTasks.clear();
@@ -511,6 +501,7 @@ public class SettingsMenu extends AppCompatActivity implements
     }
 
     private void addCalTasks() {
+        boolean success = true;
         //for each task from google calendar, add it to afternoon tasks
         for (String task : googCalTasks) {
             Log.i("task", task);
@@ -523,14 +514,25 @@ public class SettingsMenu extends AppCompatActivity implements
             TaskItem calTask = new TaskItem(nameLoc[0] + " (from Calendar)", false, 10, "afternoon", nameLoc[1]);
             if (!MainScreen.AFT_TASKS.contains(calTask)) {
                 MainScreen.AFT_TASKS.add(calTask);
-                aft.adapter.notifyDataSetChanged();
-                homeTaskList.adapter.notifyDataSetChanged();
+                if (aft != null) {
+                    aft.adapter.notifyDataSetChanged();
+                    homeTaskList.adapter.notifyDataSetChanged();
+                }
+                else {
+                    success = false;
+                    break;
+                }
                 System.out.println(task);
             }
             else Log.i("addTask", "didn't add " + calTask.getName() + " bc duplicate!");
         }
-
-        Toast.makeText(this, "Added tasks.", Toast.LENGTH_SHORT).show();
+        if (success) {
+            Toast.makeText(this, "Added tasks.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Visit the task manager screen before doing this.", Toast.LENGTH_SHORT).show();
+            calendarSwitch.setChecked(false);
+        }
         //notify the main screen recyclerview if it's afternoon as well as task manager recycler view
     }
 

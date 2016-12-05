@@ -32,7 +32,6 @@ public class TaskManagerScreen extends AppCompatActivity
         AddTaskFragment.OnFragmentInteractionListener,
         AddTaskFragment.DataListener {
 
-
     static public TaskManagerListFragment morn;
     static public TaskManagerListFragment aft;
     static public TaskManagerListFragment even;

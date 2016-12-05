@@ -3,8 +3,6 @@ package cs4720.self_care_bear;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.gcm.Task;
-
 /**
  * Created by crystalgong on 11/1/16.
  */
